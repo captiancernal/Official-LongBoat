@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cauldron - CSU Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57;
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Variables specific to the_cauldron.html content */
+            --page-bg-cauldron: #f3f4f6; /* Original bg-gray-100 */
+            --text-primary-cauldron: #1f2937; /* Default text for this page */
+        }
+
+        /* Global body styles, adapted for the_cauldron.html */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--page-bg-cauldron);
+            color: var(--text-primary-cauldron);
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding-bottom: 3px;
+        }
+
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center;
+            gap: 0.1rem;
+            width: auto;
+        }
+
+        nav .nav-tab-row:nth-child(2) {
+            margin-top: -0.25rem;
+        }
+
+        nav .nav-tab-row a {
+            font-family: 'Audiowide', cursive;
+            font-size: 0.70rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.6rem 0.7rem;
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+            background-color: transparent;
+            border-radius: 4px 4px 0 0;
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+
+        nav .nav-tab-row a.active-tab {
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+            z-index: 1;
+        }
+
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green);
+        }
+        nav #mobile-menu a {
+            font-family: 'Audiowide', cursive;
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem;
+        }
+
+        /* --- Styles specific to the_cauldron.html content --- */
+        .gallery-placeholder {
+            background-color: #e2e8f0;
+            height: 200px;
+            border-radius: 0.375rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-placeholder:hover {
+             transform: scale(1.03);
+             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .gallery-placeholder img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        .podcast-episode {
+            border-left: 4px solid var(--csu-green);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            background-color: var(--csu-white); /* Ensure podcast cards have white bg */
+        }
+        .podcast-episode:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        main a { /* General link styling in main content */
+             transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+
+        /* Vimeo player styling */
+        .vimeo-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000; /* Optional: background color while loading */
+            border-radius: 0.375rem; /* Rounded corners for the container */
+            margin-top: 0.75rem; /* space above the video player */
+        }
+        .vimeo-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0; /* Remove default iframe border */
+            border-radius: 0.375rem; /* Match container rounding */
+        }
+
+
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green);
+            color: var(--csu-white);
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            margin-top: 2.5rem; /* mt-10 */
+        }
+        footer p {
+            font-size: 0.875rem; /* text-sm */
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+
+    </style>
+</head>
+<body class="bg-page-bg-cauldron">
+    <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper">
+                    <div class="nav-tabs-container">
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;">
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <header class="mb-8 mt-8">
+                <h1 class="text-3xl font-bold text-center text-gray-900">The Cauldron</h1>
+                <p class="text-center text-gray-600 mt-2">Stoking the fire, stirring the pot and serving the truth.</p>
+            </header>
+
+            <section id="gallery" class="mb-12">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-l-4 border-csu-green pl-3">Photo Gallery</h2>
+                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <div class="gallery-placeholder">
+                        <img src="https://i.imgur.com/ZdlFAWt.png" alt="Gallery Image 1: Action shot from a football game"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                    <div class="gallery-placeholder">
+                        <img src="https://imgur.com/7PSsTVP.png" alt="Gallery Image 2: Team huddle"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                    <div class="gallery-placeholder">
+                        <img src="https://imgur.com/RmkrV4E.png" alt="Gallery Image 3: Player celebrating a touchdown"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                    <div class="gallery-placeholder">
+                        <img src="https://imgur.com/9ML2Niy.png" alt="Gallery Image 4: Fans cheering in the stands"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                    <div class="gallery-placeholder">
+                        <img src="https://imgur.com/fkDgEli.png" alt="Gallery Image 5: Coach giving instructions" onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                    <div class="gallery-placeholder">
+                        <img src="https://imgur.com/JDNZNYV.png" alt="Gallery Image 6: Wide shot of the stadium"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                    <div class="gallery-placeholder">
+                        <img src="https://imgur.com/Jr5uyY2.png" alt="Gallery Image 7: Close-up of a player running"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                    <div class="gallery-placeholder">
+                        <img src="https://imgur.com/PzopsYZ.png" alt="Gallery Image 8: Team celebrating a victory"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/e2e8f0/64748b?text=Image+Not+Found'; this.parentElement.style.backgroundColor='#e2e8f0';">
+                    </div>
+                </div>
+            </section>
+
+            <section id="podcast" class="mb-8">
+                 <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-l-4 border-csu-green pl-3">Vikings Podcast</h2>
+                 <div class="space-y-6">
+                    <div class="bg-white shadow-md rounded-lg p-5 podcast-episode">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">Cauldron's Brew - Episode 8SS</h3>
+                        <p class="text-sm text-gray-500 mb-2">Posted: May 30, 2024 | Duration: As per video</p>
+                        <p class="text-gray-700 text-sm mb-3">Check out the latest episode of Cauldron's Brew! Dive deep into Vikings football talk.</p>
+                        <div class="vimeo-container">
+                            <iframe src="https://player.vimeo.com/video/1089255597?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    frameborder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+                                    allowfullscreen
+                                    title="Cauldrons Brew 8SS"></iframe>
+                        </div>
+                        </div>
+                    </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            // const tickerWrapElement = document.querySelector('.ticker-wrap'); // Ticker is not on this page
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+
+                // if (tickerWrapElement) {
+                //     tickerWrapElement.style.top = navHeight + 'px';
+                //     totalOffset += tickerWrapElement.offsetHeight;
+                // }
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px';
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem'; // Fallback if nav not found
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null;
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) {
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator);
+            }
+
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+
+                // Check if tabRect dimensions are valid before setting style
+                if (tabRect.width > 0 && tabRect.height > 0) {
+                    slidingIndicator.style.width = `${tabRect.width}px`;
+                    slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                } else {
+                    // Handle cases where tab might be hidden or not fully rendered
+                    // console.warn("Active tab has zero dimensions, indicator not moved.", tabElement);
+                }
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'the_cauldron.html');
+                setActiveTab(currentPageTab || allTabs[0]); // Fallback to first tab if current not found
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                    tab.addEventListener('click', (e) => { // No need to prevent default for same-page links unless using JS routing
+                        setActiveTab(tab);
+                    });
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+
+                // Initial placement after styles are applied and layout is stable
+                if (activeTab) {
+                     // Delay to ensure tab dimensions are correctly calculated after page load
+                    setTimeout(() => moveIndicatorToTab(activeTab), 250);
+                }
+            }
+            adjustLayout(); // Initial layout adjustment
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout(); // Adjust layout on load
+            // Ensure indicator is correctly positioned after all resources (like fonts) are loaded
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            if (activeTabElem && indicator && navTabsWrapper) {
+                 setTimeout(() => { // Add a slight delay to ensure correct measurement
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                     if (tabRect.width > 0 && tabRect.height > 0) {
+                        indicator.style.width = `${tabRect.width}px`;
+                        indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                    }
+                }, 100);
+            }
+        });
+        window.addEventListener('resize', () => {
+            adjustLayout(); // Re-adjust layout on resize
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    // No need for timeout here as resize implies elements are visible
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    if (tabRect.width > 0 && tabRect.height > 0) {
+                        indicator.style.width = `${tabRect.width}px`;
+                        indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                    }
+                }
+            }
+        });
+    </script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+</body>
+</html>

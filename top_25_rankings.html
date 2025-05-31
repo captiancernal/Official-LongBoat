@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Top 25 Rankings - Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57; 
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Variables specific to top_25_rankings.html content */
+            --page-bg-rankings: #F8F9FA; 
+            --table-header-bg-rankings: #E9ECEF; 
+            --table-border-color-rankings: #DEE2E6; 
+            --text-primary-rankings: #212529; 
+            --text-secondary-rankings: #495057; 
+            --gold-accent-rankings: #D4AF37; 
+        }
+
+        /* Global body styles, adapted for top_25_rankings.html */
+        body {
+            font-family: 'Lato', sans-serif; 
+            overflow-x: hidden; /* Changed from auto to hidden as table has its own scroll */
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0; 
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--page-bg-rankings); 
+            color: var(--text-primary-rankings); 
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper { 
+            position: relative;
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-end; 
+            padding-bottom: 3px; 
+        }
+        
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center; 
+            gap: 0.1rem; 
+            width: auto; 
+        }
+
+        nav .nav-tab-row:nth-child(2) { 
+            margin-top: -0.25rem; 
+        }
+
+        nav .nav-tab-row a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.70rem;  
+            letter-spacing: 0.04em; 
+            text-transform: uppercase; 
+            padding: 0.6rem 0.7rem; 
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative; 
+            z-index: 2; 
+            white-space: nowrap;
+            background-color: transparent; 
+            border-radius: 4px 4px 0 0; 
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+        
+        nav .nav-tab-row a.active-tab { 
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0; 
+            height: 3px; 
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1); 
+            z-index: 1; 
+        }
+        
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green); 
+        }
+        nav #mobile-menu a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.9rem; 
+            display: block; 
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem; 
+        }
+
+        /* --- Styles specific to top_25_rankings.html content --- */
+        .page-header h1 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--csu-green); 
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        }
+        .page-header p {
+            color: var(--text-secondary-rankings);
+        }
+
+        .rankings-table-container {
+            overflow-x: auto; 
+            background-color: var(--csu-white);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+            margin-top: 1.5rem;
+        }
+        .rankings-table {
+            width: 100%;
+            min-width: 800px; 
+            border-collapse: collapse;
+        }
+        .rankings-table th,
+        .rankings-table td {
+            padding: 0.75rem 1rem; 
+            text-align: center;
+            border: 1px solid var(--table-border-color-rankings);
+            font-size: 0.8rem; 
+            white-space: nowrap; 
+            font-weight: 500; 
+        }
+        .rankings-table thead th {
+            background-color: var(--table-header-bg-rankings);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            color: var(--text-primary-rankings);
+            position: sticky;
+            top: 0; 
+            z-index: 10;
+        }
+        .rankings-table tbody td:not(.rank-cell):hover {
+            filter: brightness(1.1); 
+        }
+        .rankings-table td.rank-cell {
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
+            background-color: var(--table-header-bg-rankings); 
+            color: var(--text-primary-rankings);
+            position: sticky;
+            left: 0; 
+            z-index: 5; 
+            border-right: 2px solid #adb5bd; 
+        }
+         .rankings-table td {
+            font-family: 'Graduate', serif; 
+            color: var(--text-primary-rankings); 
+        }
+        
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green); 
+            color: var(--csu-white); 
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem; 
+            margin-top: 3rem; /* mt-12 */
+            border-top: 4px solid var(--gold-accent-rankings); 
+        }
+        footer p {
+            font-size: 0.875rem; /* text-sm */
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+
+    </style>
+</head>
+<body class="bg-page-bg-rankings"> <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper"> 
+                    <div class="nav-tabs-container"> 
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;"> 
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> 
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="mb-10 text-center page-header mt-8"> <h1 class="text-4xl md:text-5xl font-bold mb-3">Final Top 25 Rankings</h1>
+                <p class="text-lg md:text-xl">A look at the final national standings from 2023 to 2029.</p>
+            </header>
+
+            <div x-data="top25RankingsData()" class="rankings-table-container">
+                <table class="rankings-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-cell">Rank</th>
+                            <template x-for="year in years" :key="year">
+                                <th x-text="year"></th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="item in rankings" :key="item.rank">
+                            <tr>
+                                <td class="rank-cell" x-text="item.rank"></td>
+                                <template x-for="year in years" :key="year + '-' + item.rank">
+                                    <td :style="getTeamColorStyle(item[year])" x-text="item[year] || 'N/A'"></td>
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        function top25RankingsData() {
+            return {
+                years: ['2023', '2024', '2025', '2026', '2027', '2028', '2029'],
+                rankings: [ 
+                    { rank: 1, '2023': 'MICH', '2024': 'ORE',  '2025': 'PSU',  '2026': 'UGA',  '2027': 'BAMA', '2028': 'CLEV', '2029': 'OHIO' },
+                    { rank: 2, '2023': 'WASH', '2024': 'ND',   '2025': 'CLEM', '2026': 'ORE',  '2027': 'M-OH', '2028': 'UGA',  '2029': 'CLEV' },
+                    { rank: 3, '2023': 'TEX',  '2024': 'MIA',  '2025': 'BAMA', '2026': 'FLA',  '2027': 'TAMU', '2028': 'M-OH', '2029': 'ORE'  },
+                    { rank: 4, '2023': 'UGA',  '2024': 'BAMA', '2025': 'ORE',  '2026': 'BAMA', '2027': 'OHIO', '2028': 'KSU',  '2029': 'UGA'  },
+                    { rank: 5, '2023': 'BAMA', '2024': 'OSU',  '2025': 'TEX',  '2026': 'KSU',  '2027': 'PSU',  '2028': 'MTSU', '2029': 'M-OH' },
+                    { rank: 6, '2023': 'ORE',  '2024': 'MISS', '2025': 'KSU',  '2026': 'OSU',  '2027': 'USC',  '2028': 'OHIO', '2029': 'ND'   },
+                    { rank: 7, '2023': 'FSU',  '2024': 'UGA',  '2025': 'UGA',  '2026': 'PITT', '2027': 'WASH', '2028': 'CHAR', '2029': 'LSU'  },
+                    { rank: 8, '2023': 'MIZ',  '2024': 'CLEM', '2025': 'ILL',  '2026': 'CLEM', '2027': 'VT',   '2028': 'ND',   '2029': 'MICH' },
+                    { rank: 9, '2023': 'MISS', '2024': 'TEX',  '2025': 'BC',   '2026': 'UMD',  '2027': 'PITT', '2028': 'NCST', '2029': 'MIA'  },
+                    { rank: 10, '2023': 'OSU', '2024': 'KSU',  '2025': 'BU',   '2026': 'ND',   '2027': 'NCST', '2028': 'OSU',  '2029': 'OU'   },
+                    { rank: 11, '2023': 'ARIZ','2024': 'PSU',  '2025': 'CLEV', '2026': 'CLEV', '2027': 'CLEV', '2028': 'TULN', '2029': 'ILL'  },
+                    { rank: 12, '2023': 'LSU', '2024': 'ASU',  '2025': 'GT',   '2026': 'MIA',  '2027': 'LSU',  '2028': 'USC',  '2029': 'MSU'  },
+                    { rank: 13, '2023': 'PSU', '2024': 'UMD',  '2025': 'CAL',  '2026': 'WASH', '2027': 'ND',   '2028': 'TAMU', '2029': 'UL'   },
+                    { rank: 14, '2023': 'ND',  '2024': 'UTAH', '2025': 'USC',  '2026': 'USC',  '2027': 'OU',   '2028': 'BU',   '2029': 'MASS' },
+                    { rank: 15, '2023': 'OU',  '2024': 'NCST', '2025': 'TULN', '2026': 'TULN', '2027': 'UCLA', '2028': 'MIA',  '2029': 'STAN' },
+                    { rank: 16, '2023': 'OKST','2024': 'ECU',  '2025': 'TXST', '2026': 'TAMU', '2027': 'USA',  '2028': 'MASS', '2029': 'TXST' },
+                    { rank: 17, '2023': 'UT',  '2024': 'BOIS', '2025': 'MICH', '2026': 'UT',   '2027': 'MTST', '2028': 'CAL',  '2029': 'UTEP' },
+                    { rank: 18, '2023': 'KSU', '2024': 'MIZ',  '2025': 'UT',   '2026': 'BC',   '2027': 'UL',   '2028': 'MICH', '2029': 'NMS'  },
+                    { rank: 19, '2023': 'LOU', '2024': 'UNT',  '2025': 'SMU',  '2026': 'BUFF', '2027': 'WKU',  '2028': 'ORST', '2029': 'ARST' },
+                    { rank: 20, '2023': 'CLEM','2024': 'WSU',  '2025': 'BALL', '2026': 'UNT',  '2027': 'AKR',  '2028': 'WAKE', '2029': 'ISU'  },
+                    { rank: 21, '2023': 'NCST','2024': 'SYR',  '2025': 'UK',   '2026': 'ASU',  '2027': 'BC',   '2028': 'IOWA', '2029': 'TULN' },
+                    { rank: 22, '2023': 'SMU', '2024': 'MRSH', '2025': 'LIB',  '2026': 'UL',   '2027': 'SJSU', '2028': 'TLSA', '2029': 'SMU'  },
+                    { rank: 23, '2023': 'KU',  '2024': 'PITT', '2025': 'OU',   '2026': 'ISU',  '2027': 'MIA',  '2028': 'CLEM', '2029': 'UCLA' },
+                    { rank: 24, '2023': 'IOWA','2024': 'UNLV', '2025': 'SHSU', '2026': 'M-OH', '2027': 'CSU',  '2028': 'PSU',  '2029': 'WASH' },
+                    { rank: 25, '2023': 'LIB', '2024': 'NEV',  '2025': 'SHSU', '2026': 'M-OH', '2027': 'COLO', '2028': 'SDSU', '2029': 'NCST' }
+                ],
+                getTeamColorStyle(teamAbbrev) {
+                    if (!teamAbbrev || teamAbbrev === 'N/A') return '';
+                    const teamColors = {
+                        'MICH': { bg: '#00274C', text: '#FFCB05' }, 'WASH': { bg: '#4B2E83', text: '#B7A57A' }, 'TEX':  { bg: '#BF5700', text: '#FFFFFF' }, 'UGA':  { bg: '#BA0C2F', text: '#000000' }, 'BAMA': { bg: '#9E1B32', text: '#FFFFFF' }, 'ORE':  { bg: '#154733', text: '#FEE123' }, 'FSU':  { bg: '#7F0000', text: '#CEB888' }, 'MIZ':  { bg: '#000000', text: '#F1B82D' }, 'MISS': { bg: '#CE1126', text: '#00205B' }, 'OSU':  { bg: '#BB0000', text: '#AAAAAA' }, 'ARIZ': { bg: '#CC0033', text: '#003366' }, 'LSU':  { bg: '#461D7C', text: '#FDD023' }, 'PSU':  { bg: '#041E42', text: '#FFFFFF' }, 'ND':   { bg: '#0C2340', text: '#AE9142' }, 'OU':   { bg: '#841617', text: '#FFFFFF' }, 'OKST': { bg: '#FF7300', text: '#000000' }, 'UT':   { bg: '#FF8200', text: '#FFFFFF' }, 'KSU':  { bg: '#512888', text: '#FFFFFF' }, 'LOU':  { bg: '#AD0000', text: '#000000' }, 'CLEM': { bg: '#F56600', text: '#522D80' }, 'NCST': { bg: '#CC0000', text: '#FFFFFF' }, 'SMU':  { bg: '#C8102E', text: '#0033A0' }, 'KU':   { bg: '#0051BA', text: '#E8000D' }, 'IOWA': { bg: '#000000', text: '#FFCD00' }, 'LIB':  { bg: '#002D62', text: '#A3002D' }, 'MIA':  { bg: '#005030', text: '#F47321' }, 'CLEV': { bg: 'var(--csu-green)', text: 'var(--csu-white)' }, 'TAMU': { bg: '#500000', text: '#FFFFFF' }, 'OHIO': { bg: '#00694E', text: '#FFFFFF' }, 'MTSU': { bg: '#0066A4', text: '#FFFFFF' }, 'USC':  { bg: '#990000', text: '#FFC72C' }, 'CHAR': { bg: '#005030', text: '#A99260' }, 'PITT': { bg: '#003594', text: '#FFB81C' }, 'ILL':  { bg: '#13294B', text: '#E84A27' }, 'BC':   { bg: '#8C001A', text: '#B5A36A' }, 'UMD':  { bg: '#E03A3E', text: '#FFD520' }, 'ASU':  { bg: '#8C1D40', text: '#FFC627' }, 'GT':   { bg: '#B3A369', text: '#00223E' }, 'CAL':  { bg: '#003262', text: '#FDB515' }, 'TULN': { bg: '#006747', text: '#418FDE' }, 'TLSA': { bg: '#002D62', text: '#DAA520' }, 'BUFF': { bg: '#005BBB', text: '#FFFFFF' }, 'UAB':  { bg: '#006A4E', text: '#FFC72C' }, 'UNT':  { bg: '#00853E', text: '#FFFFFF' }, 'UK':   { bg: '#0033A0', text: '#FFFFFF' }, 'SJSU': { bg: '#0055A2', text: '#E5A823' }, 'UL':   { bg: '#CE2828', text: '#FFFFFF' }, 'AKR':  { bg: '#00285E', text: '#B3A369' }, 'USA':  { bg: '#00205B', text: '#BF0D3E' }, 'MTST': { bg: '#00205B', text: '#B3A369' }, 'WKU':  { bg: '#C60C30', text: '#000000' }, 'COLO': { bg: '#CFB87C', text: '#000000' }, 'SDSU': { bg: '#A6192E', text: '#000000' }, 'NEV':  { bg: '#003366', text: '#AAAAAA' }, 'SHSU': { bg: '#F47920', text: '#FFFFFF' }, 'ORST': { bg: '#DC4405', text: '#000000' }, 'WAKE': { bg: '#000000', text: '#9E7E38' }, 'ARST': { bg: '#E41B23', text: '#000000' }, 'NMS':  { bg: '#891216', text: '#FFFFFF' }, 'UTEP': { bg: '#041E42', text: '#FF8200' }, 'MASS': { bg: '#881C1C', text: '#FFFFFF' }, 'BALL': { bg: '#BA0C2F', text: '#FFFFFF' }, 'ECU':  { bg: '#592C83', text: '#FDC82F' }, 'BOIS': { bg: '#0033A0', text: '#D64309' }, 'UNLV': { bg: '#C8102E', text: '#AEB2B8' }, 'MRSH': { bg: '#00B140', text: '#FFFFFF' }, 'SYR':  { bg: '#F76900', text: '#002D56' }, 'WSU':  { bg: '#981e32', text: '#CAC8C8' }, 'UTAH': { bg: '#B30000', text: '#FFFFFF' }, 'M-OH': { bg: '#C41230', text: '#FFFFFF' }, 'STAN': { bg: '#8C1B17', text: '#FFFFFF' }, 'TXST': { bg: '#500000', text: '#B3A369' }, 'UCLA': { bg: '#5DACEE', text: '#FFFFFF' }, 'MSU':  { bg: '#18453B', text: '#FFFFFF' }, 'FLA':  { bg: '#FA4616', text: '#FFFFFF' }, 'BU':   { bg: '#004833', text: '#FFB81C' }, 'VT':   { bg: '#630031', text: '#CF4420' }, 'CSU':  { bg: '#1E4D2B', text: '#C8C372' }, 'ISU':  { bg: '#C8102E', text: '#F1BE48' }  
+                    };
+                    const teamStyle = teamColors[teamAbbrev];
+                    if (teamStyle) {
+                        return `background-color: ${teamStyle.bg}; color: ${teamStyle.text};`;
+                    }
+                    return 'background-color: var(--csu-white); color: var(--text-primary-rankings);'; 
+                }
+            };
+        }
+
+        // Combined JavaScript for header and page-specific logic
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const tickerWrapElement = document.querySelector('.ticker-wrap'); 
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+
+                // if (tickerWrapElement) { // Ticker is not on this page
+                //     tickerWrapElement.style.top = navHeight + 'px';
+                //     totalOffset += tickerWrapElement.offsetHeight;
+                // }
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px'; 
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem'; 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+            
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+            
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null; 
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) { 
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator); 
+            }
+            
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+                slidingIndicator.style.width = `${tabRect.width}px`;
+                slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                // THIS IS THE LINE TO CHANGE FOR EACH PAGE
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'top_25_rankings.html'); 
+                setActiveTab(currentPageTab || allTabs[0]); 
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                    tab.addEventListener('click', (e) => {
+                        setActiveTab(tab); 
+                    });
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+                
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 150);
+                }
+            }
+            adjustLayout(); 
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                const tabRect = activeTabElem.getBoundingClientRect();
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                indicator.style.width = `${tabRect.width}px`;
+                indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+        }); 
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    indicator.style.width = `${tabRect.width}px`;
+                    indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+        }); 
+    </script>
+</body>
+</html>

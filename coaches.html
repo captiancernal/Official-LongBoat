@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coaches Corner - CSU Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&display=swap" rel="stylesheet">
+    <script defer>
+        function coachStatTrackerData() {
+            return {
+                selectedSeason: '2024',
+                seasonalData: {
+                    '2024': {
+                        categories: [
+                            { name: 'Passing Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Brett Gabbert', value: 4205 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Connor Bazelak', value: 3962 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Parker Navarro', value: 2551 } ]},
+                            { name: 'Rushing Leader Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Anthony Tyus III', value: 1345 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Terion Stewart', value: 1098 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Keyon Mozee', value: 915 } ]},
+                            { name: 'Receiving Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Cade McDonald', value: 1735 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Harold Fannin Jr.', value: 1119 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Coleman Owen', value: 887 } ]},
+                            { name: 'Tackles Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Ty Wise', value: 90 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Miles Fleming', value: 66 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Darius McClendon', value: 55 } ]},
+                            { name: 'Sacks Leader', rankings: [ { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Ali Saad', value: 9.0 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Matt Salopek', value: 4.0 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Bradley Weaver', value: 4.0 }  ]},
+                            { name: 'Interceptions Leader', rankings: [  { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Brock Horne', value: 2 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Tank Pearson', value: 2 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Raion Strader', value: 2 } ]},
+                            { name: 'Team Passing Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 4205 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 3962 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 2551 } ]},
+                            { name: 'Team Rushing Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 1922 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 1745 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 1260 } ]},
+                            { name: 'Points Per Game Average', rankings: [ { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 30.0 },  { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 29.3 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 27.9 } ]},
+                            { name: 'Offensive Ranking', rankings: [  { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 49 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 59 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 76 }  ]}
+                        ]
+                    },
+                    '2025': {
+                        categories: [
+                            { name: 'Passing Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Henry Hesson', value: 4483 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Amar\'e Hocker', value: 3817 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Nick Poulos', value: 1811 } ]},
+                            { name: 'Rushing Leader Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Rickey Hunt Jr.', value: 1678 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Jordan Brunson', value: 1062 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Terion Stewart', value: 1085 }  ]},
+                            { name: 'Receiving Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Lynel Billups-Williams', value: 1952 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Elijah Boyd', value: 844 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Chase Hendrick', value: 535 } ]},
+                            { name: 'Tackles Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Brenton Kumar', value: 95 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'DJ Walker', value: 67 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Donny Stephens', value: 66 } ]},
+                            { name: 'Sacks Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Corban Hondru', value: 6.5 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Elias Owens', value: 4.0 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Bradley Weaver', value: 3.5 } ]},
+                            { name: 'Interceptions Leader', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Michael Mack II', value: 5 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Larry Yates', value: 4 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Ryan Kahn', value: 2 } ]},
+                            { name: 'Team Passing Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 4483 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 3879 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 1821 } ]},
+                            { name: 'Team Rushing Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 2771 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 1617 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 1214 } ]},
+                            { name: 'Points Per Game Average', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 35.8 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 33.8 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 29.0 } ]},
+                            { name: 'Offensive Ranking', rankings: [  { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 7 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 13 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 49 } ]}
+                        ]
+                    },
+                    '2026': {
+                        categories: [
+                            { name: 'Passing Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Cornell Tavares', value: 5804 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Amar\'e Hocker', value: 4376 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'James Erbach', value: 2294 } ]},
+                            { name: 'Rushing Leader Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Rickey Hunt Jr.', value: 1664 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Nakai Amachree', value: 668 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Kai Atogwe', value: 555 } ]},
+                            { name: 'Receiving Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Lynel Billups-Williams', value: 2617 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Reshaud Exum', value: 989 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Chase Hendrick', value: 799 } ]},
+                            { name: 'Tackles Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Ryan Kahn', value: 89 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Bryce Elluk', value: 66 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Jack Fries', value: 56 } ]},
+                            { name: 'Sacks Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Oyeka Alexander', value: 8.0 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Justin Eklund', value: 7.0 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'RJ Keuchler', value: 5.0 } ]},
+                            { name: 'Interceptions Leader', rankings: [ { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Jayden Bellamy', value: 6 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Tony Mathis', value: 3 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Ryan Kahn', value: 2 } ]},
+                            { name: 'Team Passing Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 5804 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 4376 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 2350 } ]},
+                            { name: 'Team Rushing Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 2776 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 1382 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 877 } ]},
+                            { name: 'Points Per Game Average', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 41.5 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 38.8 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 36.5 } ]},
+                            { name: 'Offensive Ranking', rankings: [  { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 2 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 4 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 6 } ]}
+                        ]
+                    },
+                     '2027': {
+                        categories: [
+                            { name: 'Passing Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Cornell Tavares', value: 6047 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Amar\'e Hocker', value: 5317 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'James Erbach', value: 2456 } ]},
+                            { name: 'Rushing Leader Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Rickey Hunt Jr.', value: 1823 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Josh Ringer', value: 1176 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Baraka Nwangwu', value: 817 } ]},
+                            { name: 'Receiving Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Lynel Billups-Williams', value: 3428 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Kenny Tongues', value: 1445 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Ben Emery', value: 712 } ]},
+                            { name: 'Tackles Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Brenton Kumar', value: 109 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Marquel Bakhtiari', value: 75 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Nasir Biggums', value: 68 } ]},
+                            { name: 'Sacks Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Dalvin Ellerbe', value: 7.0 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'RJ Keuchler', value: 5.5 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Joe Shimko', value: 5.0 } ]},
+                            { name: 'Interceptions Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Barry Jurovich', value: 5 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Kendall Bannister', value: 4 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Mitch Mesko', value: 3 } ]},
+                            { name: 'Team Passing Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 6359 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 5416 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 2579 } ]},
+                            { name: 'Team Rushing Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 3009 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 1666 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 1253 } ]},
+                            { name: 'Points Per Game Average', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 41.8 },  { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 43.5 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 31.4 } ]},
+                            { name: 'Offensive Ranking', rankings: [  { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 1 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 2 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 22 } ]}
+                        ]
+                    },
+                    '2028': {
+                        categories: [
+                            { name: 'Passing Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Cornell Tavares', value: 6732 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Amar\'e Hocker', value: 5364 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Marques Rees', value: 2238 } ]},
+                            { name: 'Rushing Leader Yards', rankings: [ { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Baraka Nwangwu', value: 2329 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'John Ybarra', value: 1744 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Josh Ringer', value: 1458 } ]},
+                            { name: 'Receiving Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Gordon Buggs', value: 1908 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Kenny Tongues', value: 1685 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Kwabena Capers', value: 725 } ]},
+                            { name: 'Tackles Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Brenton Kumar', value: 88 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Nasir Biggums', value: 81 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Dorian Pringle', value: 72 } ]},
+                            { name: 'Sacks Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Josh Thorne', value: 10.0 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Troy Regovich', value: 8.5 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Martreece Dillard', value: 7.5 } ]},
+                            { name: 'Interceptions Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Barry Jurovich', value: 6 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Deandre Salaam', value: 5 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Thad Mckoy', value: 3 } ]},
+                            { name: 'Team Passing Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 6732 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 5553 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 2298 } ]},
+                            { name: 'Team Rushing Yards', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 3165 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 3022 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 1799 } ]},
+                            { name: 'Points Per Game Average', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 49.7 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 49.6 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 32.3 } ]},
+                            { name: 'Offensive Ranking', rankings: [  { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 1 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 2 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 15 } ]}
+                        ]
+                    },
+                    '2029': {
+                        categories: [
+                            { name: 'Passing Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Cornell Tavares', value: 7140 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Greg Price', value: 5123 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'James Erbach', value: 2798 } ]},
+                            { name: 'Rushing Leader Yards', rankings: [ { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Baraka Nwangwu', value: 2536 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Doug Major', value: 1655 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'John Ybarra', value: 1638 } ]},
+                            { name: 'Receiving Leader Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Keke Odighizuwa', value: 3181 },  { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Kenny Tongues', value: 1771 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Kwabena Capers', value: 799 } ]},
+                            { name: 'Tackles Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Devon Bullock', value: 109 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Nasir Biggums', value: 64 },  { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Nate Cavka', value: 74 } ]},
+                            { name: 'Sacks Leader', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Nelson Kumar', value: 10.0 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Antoine Farr', value: 9.0 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Jeremy Peppers', value: 6.5 }  ]},
+                            { name: 'Interceptions Leader', rankings: [ { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', leaderPlayerName: 'Nasir Biggums', value: 8 },  { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', leaderPlayerName: 'Randy Andrews', value: 7 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', leaderPlayerName: 'Larry Whitted', value: 5 } ]},
+                            { name: 'Team Passing Yards', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 7333 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 5584 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 2922 } ]},
+                            { name: 'Team Rushing Yards', rankings: [ { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 3646 },  { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 3444 }, { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 2263 } ]},
+                            { name: 'Points Per Game Average', rankings: [ { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 65.1 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 47.2 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 36.9 } ]},
+                            { name: 'Offensive Ranking', rankings: [  { name: 'Joseph Snyderwine', team: 'Miami (OH) RedHawks', teamAbbrev: 'MIA', value: 1 }, { name: 'Josh Dolan', team: 'Cleveland State Vikings', teamAbbrev: 'CSU', value: 2 }, { name: 'Timmy Slocombe', team: 'Ohio University Bobcats', teamAbbrev: 'OHU', value: 4 } ]}
+                        ]
+                    }
+                },
+                getCoachClass(teamName) {
+                    if (teamName.includes('Cleveland State')) return 'text-csu';
+                    if (teamName.includes('Miami (OH)')) return 'text-miami';
+                    if (teamName.includes('Ohio University')) return 'text-ohio';
+                    return 'text-csu-gray';
+                },
+                formatRank(value) {
+                    const suffixes = ["th", "st", "nd", "rd"];
+                    const numericValue = Number(value);
+                    if (isNaN(numericValue)) return value;
+                    const v = numericValue % 100;
+                    return numericValue + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0] || suffixes[0]);
+                },
+                init() {
+                    Object.values(this.seasonalData).forEach(season => {
+                        if (season.categories) {
+                            season.categories.forEach(category => {
+                                if(Array.isArray(category.rankings)) {
+                                    if (category.name === 'Offensive Ranking') {
+                                        category.rankings.sort((a, b) => a.value - b.value);
+                                    } else {
+                                        category.rankings.sort((a, b) => {
+                                            const valA = parseFloat(a.value);
+                                            const valB = parseFloat(b.value);
+                                            if (isNaN(valA) || isNaN(valB)) return String(b.value).localeCompare(String(a.value)); 
+                                            return valB - valA;
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    const availableSeasons = Object.keys(this.seasonalData).filter(year => this.seasonalData[year] && this.seasonalData[year].categories && this.seasonalData[year].categories.length > 0).sort((a,b) => a-b);
+                    if (availableSeasons.length > 0) {
+                        this.selectedSeason = availableSeasons[0];
+                    } else if (Object.keys(this.seasonalData).length > 0) {
+                        this.selectedSeason = Object.keys(this.seasonalData).sort((a,b) => a-b)[0];
+                    }
+                }
+            };
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        :root {
+            --csu-green: #004D40; --csu-white: #FFFFFF; --csu-gray: #52545A; --logo-gold: #B08D57; 
+            --nav-tab-text: #cbd5e1; --nav-tab-hover-text: var(--csu-white); --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold); --page-bg-coaches: #f3f4f6; --miami-red: #C41230; 
+            --ohio-green: #00694E; --text-primary-coaches: #1f2937; 
+        }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; animation: pageFadeIn 0.6s ease-out forwards; opacity: 0; padding-top: 0; background-color: var(--page-bg-coaches); color: var(--text-primary-coaches); }
+        @keyframes pageFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bg-csu-green { background-color: var(--csu-green); } .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); } .border-csu-green { border-color: var(--csu-green); }
+        .border-miami-red { border-color: var(--miami-red); } .text-miami-red { color: var(--miami-red); }
+        .border-ohio-green { border-color: var(--ohio-green); } .text-ohio-green { color: var(--ohio-green); }
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+        nav .nav-tabs-wrapper { position: relative; display: flex; flex-direction: column; align-items: flex-end; padding-bottom: 3px; }
+        nav .nav-tab-row { display: flex; align-items: center; gap: 0.1rem; width: auto; }
+        nav .nav-tab-row:nth-child(2) { margin-top: -0.25rem; }
+        nav .nav-tab-row a { font-family: 'Audiowide', cursive; font-size: 0.70rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.6rem 0.7rem; color: var(--nav-tab-text); transition: color 0.3s ease; position: relative; z-index: 2; white-space: nowrap; background-color: transparent; border-radius: 4px 4px 0 0; text-align: center; }
+        nav .nav-tab-row a:hover { color: var(--nav-tab-hover-text); }
+        nav .nav-tab-row a.active-tab { color: var(--nav-tab-active-text); }
+        .nav-sliding-indicator { position: absolute; bottom: 0; height: 3px; background-color: var(--nav-indicator-color); border-radius: 2px; transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1); z-index: 1; }
+        nav #mobile-menu { background-color: var(--csu-green); }
+        nav #mobile-menu a { font-family: 'Audiowide', cursive; font-size: 0.9rem; display: block; padding: 0.75rem 1rem; color: var(--nav-tab-text); border-radius: 0.25rem; margin-bottom: 0.25rem; text-transform: uppercase; }
+        nav #mobile-menu a:hover { background-color: rgba(255,255,255,0.1); color: var(--nav-tab-hover-text); }
+        nav.fixed-navbar { background-color: var(--csu-green); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; padding-top: 0.1rem; padding-bottom: 0.1rem; }
+        .coach-placeholder-img { display: flex; align-items: center; justify-content: center; margin: 0 auto; width: 128px; height: 128px; border-radius: 50%; background-color: #e2e8f0; border: 3px solid #cbd5e1;}
+        .coach-placeholder-img img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%;}
+        .coach-card { transition: transform 0.3s ease, box-shadow 0.3s ease; background-color: var(--csu-white); }
+        .coach-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+        .coach-name-button:hover h2 { text-decoration: underline; }
+        .stat-label { font-weight: 600; color: var(--csu-gray); font-size: 0.875rem; display: inline-block; }
+        .stat-value { font-weight: 500; color: #000; font-size: 0.875rem; display: inline-block; margin-left: 0.25rem; }
+        .snapshot-info { text-align: center; } .snapshot-info p { display: block; text-align: center; margin: 0.25rem 0; }
+        .snapshot-info .stat-label, .snapshot-info .stat-value { display: inline; }
+        main button.coach-name-button { transition: color 0.3s ease, background-color 0.3s ease, text-decoration 0.3s ease; cursor: pointer; text-align: center; background: none; border: none; padding: 0; }
+        .modal-backdrop { position: fixed; inset: 0; z-index: 60; background-color: rgba(55, 65, 81, 0.7); transition: opacity 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; backdrop-filter: blur(0px); }
+        .modal-backdrop-visible { opacity: 1; pointer-events: auto; backdrop-filter: blur(4px); }
+        .modal-content { background-color: white; border-radius: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); width: 100%; max-width: 42rem; padding: 1.5rem; position: relative; border-top: 4px solid var(--csu-green); transition: transform 0.3s ease-out, opacity 0.3s ease-out; max-height: 90vh; overflow-y: auto; opacity: 0; transform: scale(0.95); }
+        .modal-content-visible { opacity: 1; transform: scale(1); }
+        .profile-photo-modal { width: 120px; height: 120px; background-color: #e2e8f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1rem; border: 4px solid var(--csu-white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .profile-photo-modal img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%;}
+        .modal-section-title { font-size: 1.1rem; font-weight: 600; color: var(--csu-green); border-bottom: 1px solid #e5e7eb; padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+        .modal-stat-label { font-weight: 600; color: var(--csu-gray); font-size: 0.875rem; }
+        .modal-stat-value { font-weight: 500; color: #000; font-size: 0.875rem; }
+        .ai-blurb { font-size: 0.875rem; color: #374151; line-height: 1.6; font-style: italic; background-color: #f9fafb; padding: 0.75rem; border-radius: 0.375rem; }
+        .stat-tracker-section { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--csu-gray); }
+        .stat-category-card { background-color: var(--csu-white); border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); padding: 1.5rem; }
+        .stat-category-title { font-family: 'Oswald', sans-serif; font-size: 1.25rem; font-weight: 600; color: var(--csu-gray); margin-bottom: 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
+        .stat-ranking-list { list-style: none; padding-left: 0; }
+        .stat-ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f3f4f6; }
+        .stat-ranking-item:last-child { border-bottom: none; }
+        .rank-number { font-size: 1.1rem; font-weight: 700; color: var(--csu-gray); min-width: 2rem; }
+        .player-stat-name { font-weight: 600; font-size: 0.95rem; } 
+        .coach-stat-value { font-size: 1rem; font-weight: 700; color: #374151; }
+        .text-csu { color: var(--csu-green); } .text-miami { color: var(--miami-red); } .text-ohio { color: var(--ohio-green); }
+        .tracker-tab-button { font-family: 'Oswald', sans-serif; padding: 0.6rem 1rem; font-size: 0.9rem; font-weight: 500; color: var(--csu-gray); border-bottom: 3px solid transparent; transition: all 0.3s ease; text-transform: uppercase; }
+        .tracker-tab-button.active, .tracker-tab-button:hover { color: var(--csu-green); border-bottom-color: var(--csu-green); }
+        .tracker-tabs-container nav { -ms-overflow-style: none; scrollbar-width: none; }
+        .tracker-tabs-container nav::-webkit-scrollbar { display: none; }
+        footer { background-color: var(--csu-green); color: var(--csu-white); padding-top: 1.5rem; padding-bottom: 1.5rem; margin-top: 2.5rem; }
+        footer p { font-size: 0.875rem; } footer p.mt-1 { margin-top: 0.25rem; }
+    </style>
+</head>
+<body class="bg-page-bg-coaches">
+
+    <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper">
+                    <div class="nav-tabs-container">
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;">
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="mb-8 mt-8">
+                <h1 class="text-3xl font-bold text-center text-gray-900">Coaches Corner</h1>
+                <p class="text-center text-gray-600 mt-2">Tracking the head-to-head coaching rivalries.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-csu-green coach-card">
+                    <div class="coach-placeholder-img mb-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Cleveland_State_Vikings_logo.svg/200px-Cleveland_State_Vikings_logo.svg.png" 
+                             alt="Cleveland State Vikings Logo" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/128x128/004D40/FFFFFF?text=CSU'; this.alt='CSU Placeholder Logo';">
+                    </div>
+                    <button class="coach-name-button block w-full"
+                            data-id="coach_csu"
+                            data-name="Josh Dolan"
+                            data-team="Cleveland State Vikings"
+                            data-record="69-16"
+                            data-winpct="81.2%"
+                            data-nationalchamps="1"
+                            data-bowlrecord="10-1"
+                            data-playoffrecord="6-1"
+                            data-vs25="15-8"
+                            data-vsrivals="10-6" 
+                            data-draftpicks="4"
+                            data-vs_mia="6-2"
+                            data-vs_ohu="4-4"
+                            data-ai_blurb="Coach Josh Dolan has established Cleveland State as a powerhouse, boasting a remarkable 69-16 record (81.2% win rate) over six seasons (2024-2029). His tenure includes one National Championship (2028) and an impressive 10-1 bowl record. The Vikings consistently field a high-octane offense, frequently ranking among the nation's best in scoring and passing yards. This offensive dominance, combined with strong overall team performance and a 6-1 playoff record, defines Dolan's successful era at CSU.">
+                        <h2 class="text-2xl font-semibold text-gray-900">Josh Dolan</h2>
+                    </button>
+                    <p class="text-center text-csu-green font-medium mb-4">Cleveland State Vikings</p>
+                    <hr class="my-4">
+                    <h3 class="text-lg font-semibold text-center text-gray-800 mb-2">Career Snapshot</h3>
+                    <div class="snapshot-info text-sm text-gray-700 space-y-1">
+                        <p><span class="stat-label">Overall Record:</span> <span class="stat-value">69-16</span></p>
+                        <p><span class="stat-label">Win Percentage:</span> <span class="stat-value">81.2%</span></p>
+                        <p><span class="stat-label">National Champs:</span> <span class="stat-value">1</span></p>
+                        <p><span class="stat-label">Bowl Record:</span> <span class="stat-value">10-1</span></p>
+                        <p><span class="stat-label">Playoff Record:</span> <span class="stat-value">6-1</span></p>
+                        <p><span class="stat-label">Record vs Top 25:</span> <span class="stat-value">15-8</span></p>
+                        <p><span class="stat-label">Record vs Rivals:</span> <span class="stat-value">10-6</span></p>
+                        <p><span class="stat-label">1st Round Picks:</span> <span class="stat-value">4</span></p>
+                        <p><span class="stat-label">vs Miami (OH):</span> <span class="stat-value">6-2</span></p>
+                        <p><span class="stat-label">vs Ohio U:</span> <span class="stat-value">4-4</span></p>
+                    </div>
+                </div>
+
+                <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-miami-red coach-card">
+                     <div class="coach-placeholder-img mb-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Miami_Redhawks_logo.svg/300px-Miami_Redhawks_logo.svg.png" 
+                             alt="Miami (OH) RedHawks Logo"
+                             onerror="this.onerror=null; this.src='https://placehold.co/128x128/C41230/FFFFFF?text=MIA'; this.alt='MIA Placeholder Logo';">
+                     </div>
+                     <button class="coach-name-button block w-full"
+                             data-id="coach_mia"
+                             data-name="Joseph Snyderwine"
+                             data-team="Miami (OH) RedHawks"
+                             data-record="64-20"
+                             data-winpct="76.2%"
+                             data-nationalchamps="0"
+                             data-bowlrecord="8-3"
+                             data-playoffrecord="5-3"
+                             data-vs25="20-11"
+                             data-vsrivals="15-2" 
+                             data-draftpicks="1"
+                             data-vs_csu="2-6"
+                             data-vs_ohu="TBD"
+                             data-ai_blurb="Coach Joseph Snyderwine has guided Miami (OH) to significant success, achieving a 64-20 record (76.2% win rate) from 2024-2029. While still seeking a national title, his teams have consistently performed well, securing an 8-3 bowl record and a 5-3 playoff record. Snyderwine's era is marked by potent offenses that consistently rank high in scoring and total yardage, making Miami (OH) a consistent threat.">
+                        <h2 class="text-2xl font-semibold text-gray-900">Joseph Snyderwine</h2></button>
+                    <p class="text-center text-miami-red font-medium mb-4">Miami (OH) RedHawks</p>
+                    <hr class="my-4">
+                    <h3 class="text-lg font-semibold text-center text-gray-800 mb-2">Career Snapshot</h3>
+                    <div class="snapshot-info text-sm text-gray-700 space-y-1">
+                        <p><span class="stat-label">Overall Record:</span> <span class="stat-value">64-20</span></p>
+                        <p><span class="stat-label">Win Percentage:</span> <span class="stat-value">76.2%</span></p>
+                        <p><span class="stat-label">National Champs:</span> <span class="stat-value">0</span></p>
+                        <p><span class="stat-label">Bowl Record:</span> <span class="stat-value">8-3</span></p>
+                        <p><span class="stat-label">Playoff Record:</span> <span class="stat-value">5-3</span></p>
+                        <p><span class="stat-label">Record vs Top 25:</span> <span class="stat-value">20-11</span></p>
+                        <p><span class="stat-label">Record vs Rivals:</span> <span class="stat-value">15-2</span></p>
+                        <p><span class="stat-label">1st Round Picks:</span> <span class="stat-value">1</span></p>
+                        <p><span class="stat-label">vs Cleveland St:</span> <span class="stat-value">2-6</span></p>
+                        <p><span class="stat-label">vs Ohio U:</span> <span class="stat-value">TBD</span></p>
+                    </div>
+                </div>
+
+                <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-ohio-green coach-card">
+                    <div class="coach-placeholder-img mb-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Ohio_Bobcats_logo.svg/200px-Ohio_Bobcats_logo.svg.png" 
+                             alt="Ohio University Bobcats Logo"
+                             onerror="this.onerror=null; this.src='https://placehold.co/128x128/00694E/FFFFFF?text=OHU'; this.alt='OHU Placeholder Logo';">
+                    </div>
+                     <button class="coach-name-button block w-full"
+                             data-id="coach_ohu"
+                             data-name="Timmy Slocombe"
+                             data-team="Ohio University Bobcats"
+                             data-record="60-23"
+                             data-winpct="72.3%"
+                             data-nationalchamps="1"
+                             data-bowlrecord="7-2"
+                             data-playoffrecord="5-2"
+                             data-vs25="11-13"
+                             data-vsrivals="11-13" 
+                             data-draftpicks="0"
+                             data-vs_csu="4-4"
+                             data-vs_mia="TBD"
+                             data-ai_blurb="Coach Timmy Slocombe has transformed Ohio University into a formidable program over six seasons (2024-2029), amassing an impressive 60-23 overall record (72.3% win rate). His leadership culminated in a National Championship in 2029 and a conference championship in 2027, with a strong 7-2 bowl record and 5-2 playoff record. The Bobcats made four bowl appearances under Slocombe. The team's consistent offensive prowess, often reflected in high PPG rankings, marks his successful tenure.">
+                        <h2 class="text-2xl font-semibold text-gray-900">Timmy Slocombe</h2></button>
+                    <p class="text-center text-ohio-green font-medium mb-4">Ohio University Bobcats</p>
+                    <hr class="my-4">
+                    <h3 class="text-lg font-semibold text-center text-gray-800 mb-2">Career Snapshot</h3>
+                    <div class="snapshot-info text-sm text-gray-700 space-y-1">
+                        <p><span class="stat-label">Overall Record:</span> <span class="stat-value">60-23</span></p>
+                        <p><span class="stat-label">Win Percentage:</span> <span class="stat-value">72.3%</span></p>
+                        <p><span class="stat-label">National Champs:</span> <span class="stat-value">1</span></p>
+                        <p><span class="stat-label">Bowl Record:</span> <span class="stat-value">7-2</span></p>
+                        <p><span class="stat-label">Playoff Record:</span> <span class="stat-value">5-2</span></p>
+                        <p><span class="stat-label">Record vs Top 25:</span> <span class="stat-value">11-13</span></p>
+                        <p><span class="stat-label">Record vs Rivals:</span> <span class="stat-value">11-13</span></p>
+                        <p><span class="stat-label">1st Round Picks:</span> <span class="stat-value">0</span></p>
+                        <p><span class="stat-label">vs Cleveland St:</span> <span class="stat-value">4-4</span></p>
+                        <p><span class="stat-label">vs Miami (OH):</span> <span class="stat-value">TBD</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <section id="coach-stat-tracker" class="stat-tracker-section" x-data="coachStatTrackerData()">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Coach vs. Coach Stat Tracker</h2>
+
+                <div class="border-b-2 border-gray-300 mb-6 tracker-tabs-container">
+                    <nav class="-mb-px flex space-x-1 sm:space-x-2 overflow-x-auto pb-1 justify-center" aria-label="Stat Seasons">
+                        <template x-for="season in Object.keys(seasonalData).sort((a,b) => a - b)" :key="season">
+                            <button @click="selectedSeason = season"
+                                    :class="{ 'active': selectedSeason === season }"
+                                    class="tracker-tab-button">
+                                <span x-text="season + ' Season'"></span>
+                            </button>
+                        </template>
+                    </nav>
+                </div>
+
+                <div x-show="seasonalData[selectedSeason]" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <template x-for="category in seasonalData[selectedSeason].categories" :key="category.name">
+                        <div class="stat-category-card">
+                            <h3 class="stat-category-title" x-text="category.name"></h3>
+                            <ul class="stat-ranking-list">
+                                <template x-for="(coachEntry, index) in category.rankings" :key="coachEntry.teamAbbrev">
+                                    <li class="stat-ranking-item">
+                                        <div class="flex items-center">
+                                            <span class="rank-number" x-text="(index + 1) + '.'"></span>
+                                            <span class="player-stat-name ml-2" :class="getCoachClass(coachEntry.team)"
+                                                  x-text="coachEntry.leaderPlayerName ? coachEntry.leaderPlayerName + ' (' + coachEntry.teamAbbrev + ')' : coachEntry.name + ' (' + coachEntry.teamAbbrev + ')'">
+                                            </span>
+                                        </div>
+                                        <span class="coach-stat-value" x-text="category.name === 'Offensive Ranking' ? formatRank(coachEntry.value) : coachEntry.value"></span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>
+                </div>
+                 <div x-show="!seasonalData[selectedSeason]" class="text-center text-gray-500 py-8">
+                    Select a season to view stats.
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="coachModal" class="modal-backdrop modal-hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" style="display: none;">
+        <div id="modalContent" class="modal-content modal-hidden">
+            <button id="closeModalButton" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center mb-5">
+                <div class="profile-photo-modal">
+                     <img id="modalCoachLogo" src="https://placehold.co/120x120/CCCCCC/FFFFFF?text=Logo" alt="Coach Team Logo" 
+                          onerror="this.onerror=null; this.src='https://placehold.co/120x120/CCCCCC/FFFFFF?text=Error'; this.alt='Error Loading Logo';">
+                </div>
+                <h2 id="modalCoachName" class="text-2xl font-bold text-gray-900">[COACH_NAME_PLACEHOLDER]</h2>
+                <p class="text-lg text-csu-green font-semibold mt-1"> Head Coach, <span id="modalCoachTeam">[TEAM_PLACEHOLDER]</span></p>
+            </div>
+            <div>
+                <section class="mb-4">
+                    <h3 class="modal-section-title">Coaching Record</h3>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div><span class="modal-stat-label block">Overall Record:</span><span id="modalCoachRecord" class="modal-stat-value">[W]-[L]</span></div>
+                        <div><span class="modal-stat-label block">Winning Pct:</span><span id="modalCoachWinPct" class="modal-stat-value">[...]%</span></div>
+                        <div><span class="modal-stat-label block">National Champs:</span><span id="modalCoachNationalChamps" class="modal-stat-value">[#]</span></div>
+                        <div><span class="modal-stat-label block">Bowl Record:</span><span id="modalCoachBowlRecord" class="modal-stat-value">[W]-[L]</span></div>
+                        <div><span class="modal-stat-label block">Playoff Record:</span><span id="modalCoachPlayoffRecord" class="modal-stat-value">[W]-[L]</span></div>
+                        <div><span class="modal-stat-label block">Record vs Top 25:</span><span id="modalCoachVs25" class="modal-stat-value">[W]-[L]</span></div>
+                        <div><span class="modal-stat-label block">Record vs Rivals:</span><span id="modalCoachVsRivals" class="modal-stat-value">[W]-[L]</span></div>
+                        <div><span class="modal-stat-label block">1st Round Picks:</span><span id="modalCoachDraftPicks" class="modal-stat-value">[#]</span></div>
+                    </div>
+                </section>
+                <section class="mb-4">
+                    <h3 class="modal-section-title">Head-to-Head</h3>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div id="h2h_vs_csu_div" style="display: none;"><span class="modal-stat-label block">vs Cleveland St:</span><span id="modalCoachVsCSU" class="modal-stat-value">[W]-[L]</span></div>
+                        <div id="h2h_vs_mia_div" style="display: none;"><span class="modal-stat-label block">vs Miami (OH):</span><span id="modalCoachVsMIA" class="modal-stat-value">[W]-[L]</span></div>
+                        <div id="h2h_vs_ohu_div" style="display: none;"><span class="modal-stat-label block">vs Ohio U:</span><span id="modalCoachVsOHU" class="modal-stat-value">[W]-[L]</span></div>
+                    </div>
+                </section>
+                <section class="mb-4">
+                    <h3 class="modal-section-title">AI Performance Analysis</h3>
+                    <p id="modalAiBlurb" class="ai-blurb">[AI analysis will appear here...]</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        // Script for coachStatTrackerData is now in the head
+        // Other page-specific JavaScript (event listeners, layout adjustments)
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const tickerWrapElement = document.querySelector('.ticker-wrap');
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+
+                if (tickerWrapElement) {
+                    tickerWrapElement.style.top = navHeight + 'px';
+                    totalOffset += tickerWrapElement.offsetHeight;
+                }
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px';
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null;
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) {
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator);
+            }
+
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+                slidingIndicator.style.width = `${tabRect.width}px`;
+                slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'coaches.html');
+                setActiveTab(currentPageTab || allTabs[0]);
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 150);
+                }
+            }
+            adjustLayout();
+
+             // --- Coach Modal Logic ---
+            const modal = document.getElementById('coachModal');
+            const modalContentElement = document.getElementById('modalContent');
+            const closeModalButton = document.getElementById('closeModalButton');
+            const coachLinks = document.querySelectorAll('button.coach-name-button');
+            const modalCoachLogo = document.getElementById('modalCoachLogo');
+
+            function showCoachModal(coachData) {
+                document.getElementById('modalCoachName').textContent = coachData.name || '[N/A]';
+                document.getElementById('modalCoachTeam').textContent = coachData.team || '[N/A]';
+                document.getElementById('modalCoachRecord').textContent = coachData.record || '[N/A]';
+                document.getElementById('modalCoachWinPct').textContent = coachData.winpct || '[N/A]';
+                document.getElementById('modalCoachNationalChamps').textContent = coachData.nationalchamps || '[N/A]';
+                document.getElementById('modalCoachBowlRecord').textContent = coachData.bowlrecord || '[N/A]';
+                document.getElementById('modalCoachPlayoffRecord').textContent = coachData.playoffrecord || '[N/A]';
+                document.getElementById('modalCoachVs25').textContent = coachData.vs25 || '[N/A]';
+                document.getElementById('modalCoachVsRivals').textContent = coachData.vsrivals || '[N/A]'; 
+                document.getElementById('modalCoachDraftPicks').textContent = coachData.draftpicks || '[N/A]';
+
+                if (modalCoachLogo) {
+                    if (coachData.id === 'coach_csu') {
+                        modalCoachLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Cleveland_State_Vikings_logo.svg/200px-Cleveland_State_Vikings_logo.svg.png';
+                        modalCoachLogo.alt = 'Cleveland State Vikings Logo';
+                        modalCoachLogo.onerror = function() { this.onerror=null; this.src='https://placehold.co/120x120/004D40/FFFFFF?text=CSU'; this.alt='CSU Placeholder Logo'; };
+                    } else if (coachData.id === 'coach_mia') {
+                        modalCoachLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Miami_Redhawks_logo.svg/300px-Miami_Redhawks_logo.svg.png';
+                        modalCoachLogo.alt = 'Miami (OH) RedHawks Logo';
+                        modalCoachLogo.onerror = function() { this.onerror=null; this.src='https://placehold.co/120x120/C41230/FFFFFF?text=MIA'; this.alt='MIA Placeholder Logo'; };
+                    } else if (coachData.id === 'coach_ohu') {
+                        modalCoachLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Ohio_Bobcats_logo.svg/200px-Ohio_Bobcats_logo.svg.png';
+                        modalCoachLogo.alt = 'Ohio University Bobcats Logo';
+                        modalCoachLogo.onerror = function() { this.onerror=null; this.src='https://placehold.co/120x120/00694E/FFFFFF?text=OHU'; this.alt='OHU Placeholder Logo'; };
+                    } else {
+                        modalCoachLogo.src = 'https://placehold.co/120x120/CCCCCC/FFFFFF?text=Logo';
+                        modalCoachLogo.alt = 'Default Coach Logo';
+                        modalCoachLogo.onerror = function() { this.onerror=null; this.src='https://placehold.co/120x120/CCCCCC/FFFFFF?text=Error'; this.alt='Error Loading Logo'; };
+                    }
+                }
+
+
+                const vsCSUDiv = document.getElementById('h2h_vs_csu_div');
+                const vsMIADiv = document.getElementById('h2h_vs_mia_div');
+                const vsOHUDiv = document.getElementById('h2h_vs_ohu_div');
+
+                if(vsCSUDiv) vsCSUDiv.style.display = 'none';
+                if(vsMIADiv) vsMIADiv.style.display = 'none';
+                if(vsOHUDiv) vsOHUDiv.style.display = 'none';
+
+                if (coachData.id === 'coach_csu') { 
+                    if(vsMIADiv && coachData.vs_mia && coachData.vs_mia !== '[N/A]' && coachData.vs_mia.toLowerCase() !== 'tbd') {
+                        document.getElementById('modalCoachVsMIA').textContent = coachData.vs_mia;
+                        vsMIADiv.style.display = 'block';
+                    }
+                    if(vsOHUDiv && coachData.vs_ohu && coachData.vs_ohu !== '[N/A]' && coachData.vs_ohu.toLowerCase() !== 'tbd') {
+                        document.getElementById('modalCoachVsOHU').textContent = coachData.vs_ohu;
+                        vsOHUDiv.style.display = 'block';
+                    }
+                } else if (coachData.id === 'coach_mia') { 
+                     if(vsCSUDiv && coachData.vs_csu && coachData.vs_csu !== '[N/A]' && coachData.vs_csu.toLowerCase() !== 'tbd') {
+                        document.getElementById('modalCoachVsCSU').textContent = coachData.vs_csu;
+                        vsCSUDiv.style.display = 'block';
+                    }
+                    if(vsOHUDiv && coachData.vs_ohu && coachData.vs_ohu !== '[N/A]' && coachData.vs_ohu.toLowerCase() !== 'tbd') {
+                        document.getElementById('modalCoachVsOHU').textContent = coachData.vs_ohu;
+                        vsOHUDiv.style.display = 'block';
+                    }
+                } else if (coachData.id === 'coach_ohu') { 
+                     if(vsCSUDiv && coachData.vs_csu && coachData.vs_csu !== '[N/A]' && coachData.vs_csu.toLowerCase() !== 'tbd') {
+                        document.getElementById('modalCoachVsCSU').textContent = coachData.vs_csu;
+                        vsCSUDiv.style.display = 'block';
+                    }
+                     if(vsMIADiv && coachData.vs_mia && coachData.vs_mia !== '[N/A]' && coachData.vs_mia.toLowerCase() !== 'tbd') {
+                        document.getElementById('modalCoachVsMIA').textContent = coachData.vs_mia;
+                        vsMIADiv.style.display = 'block';
+                    }
+                }
+
+                document.getElementById('modalAiBlurb').textContent = coachData.ai_blurb || '[No analysis available.]';
+                if (modal) {
+                    modal.style.display = 'flex';
+                    requestAnimationFrame(() => {
+                        modal.classList.add('modal-backdrop-visible');
+                        if(modalContentElement) modalContentElement.classList.add('modal-content-visible');
+                    });
+                }
+            }
+
+            function hideCoachModal() {
+                if (modalContentElement) modalContentElement.classList.remove('modal-content-visible');
+                if (modal) {
+                    modal.classList.remove('modal-backdrop-visible');
+                    setTimeout(() => { modal.style.display = 'none'; }, 300);
+                }
+            }
+
+            coachLinks.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const coachData = {
+                        id: button.dataset.id, name: button.dataset.name, team: button.dataset.team,
+                        record:   button.dataset.record, winpct:   button.dataset.winpct,
+                        nationalchamps: button.dataset.nationalchamps, bowlrecord: button.dataset.bowlrecord,
+                        playoffrecord: button.dataset.playoffrecord, vs25: button.dataset.vs25,
+                        vsrivals: button.dataset.vsrivals, draftpicks: button.dataset.draftpicks,
+                        vs_csu:   button.dataset.vs_csu, 
+                        vs_mia:   button.dataset.vs_mia, 
+                        vs_ohu:   button.dataset.vs_ohu, 
+                        ai_blurb: button.dataset.ai_blurb
+                    };
+                    showCoachModal(coachData);
+                });
+            });
+
+            if(closeModalButton) closeModalButton.addEventListener('click', hideCoachModal);
+            if(modal) modal.addEventListener('click', (event) => { if (event.target === modal) { hideCoachModal(); } });
+            document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modal && modal.style.display === 'flex') { hideCoachModal(); } });
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                const tabRect = activeTabElem.getBoundingClientRect();
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                indicator.style.width = `${tabRect.width}px`;
+                indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+        });
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    indicator.style.width = `${tabRect.width}px`;
+                    indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viking Recruiting - Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57; 
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Variables specific to viking_recruiting.html content */
+            --page-bg-recruiting: #F8F9FA;
+            --table-header-bg-recruiting: #E9ECEF;
+            --table-border-color-recruiting: #DEE2E6;
+            --text-primary-recruiting: #212529;
+            --text-secondary-recruiting: #495057;
+            --gold-accent-recruiting: #D4AF37; 
+        }
+
+        /* Global body styles, adapted for viking_recruiting.html */
+        body {
+            font-family: 'Lato', sans-serif; 
+            overflow-x: hidden; 
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0; 
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--page-bg-recruiting); 
+            color: var(--text-primary-recruiting); 
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper { 
+            position: relative;
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-end; 
+            padding-bottom: 3px; 
+        }
+        
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center; 
+            gap: 0.1rem; 
+            width: auto; 
+        }
+
+        nav .nav-tab-row:nth-child(2) { 
+            margin-top: -0.25rem; 
+        }
+
+        nav .nav-tab-row a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.70rem;  
+            letter-spacing: 0.04em; 
+            text-transform: uppercase; 
+            padding: 0.6rem 0.7rem; 
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative; 
+            z-index: 2; 
+            white-space: nowrap;
+            background-color: transparent; 
+            border-radius: 4px 4px 0 0; 
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+        
+        nav .nav-tab-row a.active-tab { 
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0; 
+            height: 3px; 
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1); 
+            z-index: 1; 
+        }
+        
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green); 
+        }
+        nav #mobile-menu a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.9rem; 
+            display: block; 
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem; 
+        }
+
+        /* --- Styles specific to viking_recruiting.html content --- */
+        .page-header h1 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--csu-green);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        }
+        .page-header p {
+            color: var(--text-secondary-recruiting);
+        }
+
+        .main-tab-button {
+            font-family: 'Oswald', sans-serif;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--csu-gray);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .main-tab-button.active, .main-tab-button:hover {
+            color: var(--csu-green);
+            border-bottom-color: var(--csu-green);
+        }
+        .main-tab-button.active {
+            background-color: rgba(0, 77, 64, 0.05);
+        }
+        .main-tabs-container nav {
+            display: flex;
+            justify-content: center; 
+            border-bottom: 2px solid var(--table-border-color-recruiting);
+            margin-bottom: 1.5rem;
+        }
+
+        .year-tab-button {
+            font-family: 'Oswald', sans-serif;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary-recruiting);
+            border: 1px solid transparent;
+            border-bottom: 2px solid transparent;
+            border-radius: 0.25rem 0.25rem 0 0;
+            margin: 0 0.25rem;
+            transition: all 0.2s ease-in-out;
+        }
+        .year-tab-button.active {
+            color: var(--csu-green);
+            border-color: var(--table-border-color-recruiting);
+            border-bottom-color: var(--page-bg-recruiting); 
+            background-color: var(--page-bg-recruiting);
+            position: relative;
+            top: 1px; 
+        }
+        .year-tab-button:hover:not(.active) {
+            background-color: #e9ecef;
+            border-bottom-color: #ced4da;
+        }
+        .year-tabs-container nav {
+            display: flex;
+            overflow-x: auto;
+            padding-bottom: 0; 
+            border-bottom: 1px solid var(--table-border-color-recruiting);
+            margin-bottom: 1rem;
+        }
+        
+        .data-table-container {
+            overflow-x: auto;
+            background-color: var(--csu-white);
+            border-radius: 0.375rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .data-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+        .data-table th,
+        .data-table td {
+            padding: 0.65rem 0.9rem;
+            text-align: left;
+            border: 1px solid var(--table-border-color-recruiting);
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        .data-table thead th {
+            background-color: var(--table-header-bg-recruiting);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 500;
+            color: var(--text-primary-recruiting);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .data-table tbody tr:nth-child(even) {
+            background-color: #fdfdfd;
+        }
+        .data-table tbody tr:hover {
+            background-color: #f1f3f5;
+        }
+        .data-table .text-center { text-align: center; }
+        .data-table .text-right { text-align: right; }
+        
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green); 
+            color: var(--csu-white); 
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem; 
+            margin-top: 3rem; /* mt-12 */
+            border-top: 4px solid var(--gold-accent-recruiting); 
+        }
+        footer p {
+            font-size: 0.875rem; /* text-sm */
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+
+    </style>
+</head>
+<body class="bg-page-bg-recruiting"> 
+    <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper"> 
+                    <div class="nav-tabs-container"> 
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;"> 
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> 
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10"> 
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="mb-10 text-center page-header mt-8"> 
+                <h1 class="text-4xl md:text-5xl font-bold mb-3">Recruiting Tracker</h1>
+                <p class="text-lg md:text-xl">Tracking Recruits, Graduates, and Transfers by Season.</p>
+            </header>
+
+            <div x-data="teamChangesData()" class="mb-6">
+                <div class="main-tabs-container">
+                    <nav aria-label="Main Categories">
+                        <button @click="selectedMainTab = 'recruits'" :class="{ 'active': selectedMainTab === 'recruits' }" class="main-tab-button">Recruits</button>
+                        <button @click="selectedMainTab = 'graduates'" :class="{ 'active': selectedMainTab === 'graduates' }" class="main-tab-button">Graduates</button>
+                        <button @click="selectedMainTab = 'transfers'" :class="{ 'active': selectedMainTab === 'transfers' }" class="main-tab-button">Transfers</button>
+                    </nav>
+                </div>
+
+                <div class="year-tabs-container mt-4">
+                    <nav class="flex justify-center" aria-label="Years">
+                        <template x-for="year in availableYears" :key="year">
+                            <button @click="selectedYear = year"
+                                    :class="{ 'active': selectedYear === year }"
+                                    class="year-tab-button">
+                                <span x-text="year"></span>
+                            </button>
+                        </template>
+                    </nav>
+                </div>
+
+                <div class="mt-6">
+                    <div x-show="selectedMainTab === 'recruits' && teamData[selectedYear]?.recruits?.length > 0" class="data-table-container">
+                        <h3 class="text-xl font-semibold text-csu-green p-4" x-text="selectedYear + ' Recruiting Class'"></h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nat. Rank</th><th>POS</th><th>Player</th><th class="text-center">Stars</th><th>State</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="player in teamData[selectedYear]?.recruits" :key="player.name">
+                                    <tr>
+                                        <td class="text-center" x-text="player.natRank"></td>
+                                        <td x-text="player.pos"></td>
+                                        <td x-text="player.name"></td>
+                                        <td class="text-center" x-text="player.stars"></td>
+                                        <td x-text="player.state"></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div x-show="selectedMainTab === 'recruits' && (!teamData[selectedYear]?.recruits || teamData[selectedYear]?.recruits?.length === 0)" class="text-center text-gray-500 py-4">
+                        No recruiting data available for <span x-text="selectedYear"></span>.
+                    </div>
+
+                    <div x-show="selectedMainTab === 'graduates' && teamData[selectedYear]?.graduates?.length > 0" class="data-table-container">
+                        <h3 class="text-xl font-semibold text-csu-green p-4" x-text="selectedYear + ' Graduates & Drafted Players'"></h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Class</th><th>Player</th><th>Pos</th><th class="text-center">Ovr</th><th class="text-center">Drafted?</th><th>RD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="player in teamData[selectedYear]?.graduates" :key="player.name">
+                                    <tr>
+                                        <td x-text="player.class"></td>
+                                        <td x-text="player.name"></td>
+                                        <td x-text="player.pos"></td>
+                                        <td class="text-center" x-text="player.ovr"></td>
+                                        <td class="text-center" x-text="player.drafted"></td>
+                                        <td x-text="player.rd"></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                     <div x-show="selectedMainTab === 'graduates' && (!teamData[selectedYear]?.graduates || teamData[selectedYear]?.graduates?.length === 0)" class="text-center text-gray-500 py-4">
+                        No graduation/draft data available for <span x-text="selectedYear"></span>.
+                    </div>
+
+                    <div x-show="selectedMainTab === 'transfers' && teamData[selectedYear]?.transfers?.length > 0" class="data-table-container">
+                        <h3 class="text-xl font-semibold text-csu-green p-4" x-text="selectedYear + ' Transfers'"></h3>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank/Class</th><th>Player</th><th>Pos</th><th>To</th><th>From</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="player in teamData[selectedYear]?.transfers" :key="player.name">
+                                    <tr>
+                                        <td x-text="player.rank || player.class"></td> <td x-text="player.name"></td>
+                                        <td x-text="player.pos"></td>
+                                        <td x-text="player.to"></td>
+                                        <td x-text="player.from"></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div x-show="selectedMainTab === 'transfers' && (!teamData[selectedYear]?.transfers || teamData[selectedYear]?.transfers?.length === 0)" class="text-center text-gray-500 py-4">
+                        No transfer data available for <span x-text="selectedYear"></span>.
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        function teamChangesData() {
+            return {
+                selectedMainTab: 'recruits', 
+                selectedYear: '2024',    
+                availableYears: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+                teamData: {
+                    '2024': {
+                        recruits: [
+                            { natRank: 692, pos: 'QB', name: 'Willie Gado', stars: 3, state: 'GA' }, { natRank: 850, pos: 'QB', name: 'Morgan Landry', stars: 3, state: 'FL' }, { natRank: 1077, pos: 'QB', name: 'Amar\'e Hocker', stars: 3, state: 'FL' }, { natRank: 436, pos: 'HB', name: 'Nolan McCormick', stars: 3, state: 'OH' }, { natRank: 1196, pos: 'HB', name: 'Shareef Bradbury', stars: 3, state: 'FL' }, { natRank: 1088, pos: 'WR', name: 'Rashaud Exum', stars: 3, state: 'MI' }, { natRank: 1595, pos: 'WR', name: 'Kareem Duggan', stars: 3, state: 'OH' }, { natRank: 1280, pos: 'TE', name: 'Brian Everett', stars: 3, state: 'OH' }, { natRank: 1604, pos: 'TE', name: 'Mike Hardrick', stars: 3, state: 'IN' }, { natRank: 1664, pos: 'TE', name: 'Willie Brooks', stars: 3, state: 'OH' }, { natRank: 454, pos: 'OG', name: 'Cam Booker', stars: 3, state: 'MI' }, { natRank: 1603, pos: 'OG', name: 'Marquise Willett', stars: 3, state: 'MI' }, { natRank: 1839, pos: 'OG', name: 'Russ Cheeks', stars: 3, state: 'AL' }, { natRank: 75, pos: 'C', name: 'Jacob Rizy', stars: 4, state: 'CT' }, { natRank: 1740, pos: 'RG', name: 'Finau Vittatoe', stars: 3, state: 'OH' }, { natRank: 1094, pos: 'RT', name: 'Storm Lampman', stars: 3, state: 'WI' }, { natRank: 1189, pos: 'RT', name: 'Tyree Moses', stars: 3, state: 'OH' }, { natRank: 817, pos: 'DT', name: 'Alex Sharp', stars: 3, state: 'MI' }, { natRank: 1153, pos: 'DE', name: 'J.D. Tanney', stars: 3, state: 'WY' }, { natRank: 2857, pos: 'DE', name: 'Moses Keglar', stars: 2, state: 'OH' }, { natRank: 1098, pos: 'MLB', name: 'Deandre Salaam', stars: 3, state: 'MN' }, { natRank: 1647, pos: 'MLB', name: 'Jeremy Peppers', stars: 3, state: 'OK' }, { natRank: 3269, pos: 'MLB', name: 'Tobias Gaiter', stars: 1, state: 'OH' }, { natRank: 1668, pos: 'OLB', name: 'Mitch Mesko', stars: 3, state: 'OK' }, { natRank: 1071, pos: 'FS', name: 'DeMarco Locke', stars: 3, state: 'OH' }, { natRank: 1878, pos: 'SS', name: 'Cliff Jackson', stars: 2, state: 'MI' }, { natRank: 2701, pos: 'SS', name: 'Layne Robbins', stars: 2, state: 'OH' }, { natRank: 2533, pos: 'K', name: 'Jermaine Kasay', stars: 2, state: 'OH' }
+                        ],
+                        graduates: [
+                            { class: 'JR', name: 'Harold Fannin Jr.', pos: 'TE', ovr: 95, drafted: 'YES', rd: '1st' }, { class: 'SR', name: 'Jordan Oladokun', pos: 'CB', ovr: 88, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Brock Horne', pos: 'MLB', ovr: 83, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Connor Bazelak', pos: 'QB', ovr: 81, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Alex Wollschlaeger', pos: 'RT', ovr: 80, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Ali Saad', pos: 'LE', ovr: 79, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Charles Rosser', pos: 'LOLB', ovr: 78, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Dontrez Brown', pos: 'DT', ovr: 78, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Malcolm Johnson Jr.', pos: 'WR', ovr: 77, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Tunde Fatukasi', pos: 'RG', ovr: 77, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Darius McClendon', pos: 'CB', ovr: 77, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Jacorey Benjamin', pos: 'CB', ovr: 77, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Trent Simms', pos: 'ROLB', ovr: 76, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Anthony Hawkins', pos: 'DT', ovr: 76, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Demetrius Hardamon', pos: 'LOLB', ovr: 75, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Levi Gazarek', pos: 'TE', ovr: 74, drafted: 'NO', rd: 'N/A' }, { class: 'HB', name: 'Jaison Patterson', pos: 'HB', ovr: 74, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Jordan Porter', pos: 'RE', ovr: 73, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Nick Reimer', pos: 'LT', ovr: 73, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Dierre Kelly', pos: 'DT', ovr: 73, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Jaylon Tillman', pos: 'WR', ovr: 72, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Billie Roberts', pos: 'LT', ovr: 72, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Chace Davis', pos: 'LE', ovr: 72, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Jake Burns', pos: 'RG', ovr: 71, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Todd Bumphis', pos: 'CB', ovr: 71, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Patrick Day', pos: 'SS', ovr: 70, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Jalen Burton', pos: 'CB', ovr: 70, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Avi McGary', pos: 'LOLB', ovr: 68, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Jamal Johnson', pos: 'HB', ovr: 68, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Camden Orth', pos: 'QB', ovr: 67, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Pasean Wimberly', pos: 'HB', ovr: 57, drafted: 'NO', rd: 'N/A' }
+                        ],
+                        transfers: [
+                            { rank: 'JR', name: 'Jacob Rizy', pos: 'C', to: 'CLEV', from: 'FSU' }, { rank: 'JR', name: 'Nolan McCormick', pos: 'HB', to: 'CLEV', from: 'OHIO' }
+                        ]
+                    },
+                    '2025': {
+                        recruits: [
+                            { natRank: 29, pos: 'RG', name: 'Jamie Cleveland', stars: 5, state: 'MD'}, { natRank: 30, pos: 'HB', name: 'Terrelle Francis', stars: 5, state: 'MO'}, { natRank: 75, pos: 'RT', name: 'Deontae Meekins', stars: 4, state: 'PA'}, { natRank: 144, pos: 'HB', name: 'Baraka Nwangwu', stars: 4, state: 'FL'}, { natRank: 151, pos: 'TE', name: 'Darren Klein', stars: 4, state: 'VA'}, { natRank: 368, pos: 'QB', name: 'Juan Newcomb', stars: 4, state: 'GA'}, { natRank: 386, pos: 'CB', name: 'Reshard Adkins', stars: 4, state: 'CA'}, { natRank: 404, pos: 'RT', name: 'Darren Colclough', stars: 4, state: 'IN'}, { natRank: 530, pos: 'RE', name: 'Melvin Maginn', stars: 3, state: 'IL'}, { natRank: 854, pos: 'WR', name: 'Sam Russo', stars: 3, state: 'IL'}, { natRank: 911, pos: 'WR', name: 'George Ghee', stars: 3, state: 'GA'}, { natRank: 999, pos: 'CB', name: 'Nate Cavka', stars: 3, state: 'FL'}, { natRank: 1103, pos: 'CB', name: 'Calvin Sauer', stars: 3, state: 'GA'}, { natRank: 1132, pos: 'CB', name: 'Paul McCutcheon', stars: 3, state: 'MD'}, { natRank: 1230, pos: 'MLB', name: 'Duane Droege', stars: 3, state: 'OH'}, { natRank: 661, pos: 'DT', name: 'Kris Kampmoyer', stars: 3, state: 'OH'}, { natRank: 1180, pos: 'MLB', name: 'Lamar Booker', stars: 3, state: 'TX'}, { natRank: 1663, pos: 'CB', name: 'Jon McNeal', stars: 3, state: 'GA'}, { natRank: 1772, pos: 'DT', name: 'Marquel Bakhtiari', stars: 3, state: 'TX'}
+                        ],
+                        graduates: [
+                            { class: 'SR(RS)', name: 'Terion Stewart', pos: 'HB', ovr: 86, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Nate Pabst', pos: 'LG', ovr: 82, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Alex Padgett', pos: 'RG', ovr: 84, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Jacob Rizy', pos: 'C', ovr: 81, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Joseph Sipp Jr.', pos: 'ROLB', ovr: 80, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Cade Zimmerly', pos: 'LG', ovr: 79, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'John Henderson', pos: 'P', ovr: 79, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Darius Lorfils', pos: 'FS', ovr: 77, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'CJ Brown', pos: 'SS', ovr: 75, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'RJ Garcia II', pos: 'WR', ovr: 75, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Donny Stephens', pos: 'MLB', ovr: 74, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Darius Gaddy', pos: 'DT', ovr: 74, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Nolan McCormick', pos: 'HB', ovr: 72, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Finn Hogan', pos: 'WR', ovr: 72, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'George Carlson', pos: 'TE', ovr: 64, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Evan Branch-Haynes', pos: 'DT', ovr: 63, drafted: 'NO', rd: 'N/A' }
+                        ],
+                        transfers: [
+                            { rank: 1, name: 'Jayden Bellamy', pos: 'CB', to: 'CLEV', from: 'SYR' }, { rank: 50, name: 'Bryce Eliuk', pos: 'MLB', to: 'CLEV', from: 'EMU' }, { rank: 74, name: 'Michael Richard', pos: 'FS', to: 'CLEV', from: 'CMU' }, { rank: 80, name: 'Jalen Slappy', pos: 'RG', to: 'CLEV', from: 'MRSH' }, { rank: 91, name: 'Emmett Mosley V', pos: 'WR', to: 'CLEV', from: 'STAN' }, { rank: 158, name: 'Marcus Sanders Jr', pos: 'WR', to: 'CLEV', from: 'GSU' }
+                        ]
+                    },
+                    '2026': {
+                        recruits: [
+                            { natRank: 23, pos: 'WR', name: 'Keenan Tonges', stars: 5, state: 'MN' }, { natRank: 69, pos: 'RT', name: 'Cameron McPhearson', stars: 4, state: 'OH' }, { natRank: 89, pos: 'TE', name: 'Dell Ojabo', stars: 4, state: 'TN' }, { natRank: 335, pos: 'TE', name: 'Stephen Everett', stars: 4, state: 'IL' }, { natRank: 361, pos: 'LT', name: 'Marcus Durant', stars: 4, state: 'MI' }, { natRank: 402, pos: 'HB', name: 'Lee Dailey', stars: 4, state: 'OH' }, { natRank: 498, pos: 'LOLB', name: 'Carl Rhinehart', stars: 3, state: 'OH' }, { natRank: 536, pos: 'RE', name: 'Nelson Clarke', stars: 3, state: 'IL' }, { natRank: 559, pos: 'LG', name: 'Demar Moncrief', stars: 3, state: 'KY' }, { natRank: 742, pos: 'RG', name: 'Eric Carraway', stars: 3, state: 'OH' }, { natRank: 748, pos: 'MLB', name: 'Jermaine Peters', stars: 3, state: 'FL' }, { natRank: 792, pos: 'K', name: 'Rashaud Boiman', stars: 3, state: 'FL' }, { natRank: 805, pos: 'LE', name: 'Ronnie Betiku', stars: 3, state: 'MN' }, { natRank: 810, pos: 'WR', name: 'Jayden Kafka', stars: 3, state: 'OH' }, { natRank: 890, pos: 'LE', name: 'Josh Posey', stars: 3, state: 'OH' }, { natRank: 1207, pos: 'HB', name: 'Matthew President', stars: 3, state: 'OH' }, { natRank: 1421, pos: 'C', name: 'Titus Peart', stars: 3, state: 'IN' }
+                        ],
+                        graduates: [
+                            { class: 'SR(RS)', name: 'Jayden Bellamy', pos: 'CB', ovr: 90, drafted: 'YES', rd: '2nd' }, { class: 'JR(RS)', name: 'Lucien Anderson III', pos: 'QB', ovr: 72, drafted: 'NO', rd: 'CUT' }, { class: 'SR(RS)', name: 'Bryce Eliuk', pos: 'MLB', ovr: 80, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Michael Richard', pos: 'CB', ovr: 80, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Marcus Sanders Jr.', pos: 'TE', ovr: 77, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Reshard Adkins', pos: 'CB', ovr: 76, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Justin Eklund', pos: 'LOLB', ovr: 75, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Dalyn White', pos: 'RE', ovr: 74, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Shawn Thigpen', pos: 'WR', ovr: 72, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Cynceir McNeal', pos: 'WR', ovr: 72, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Jabari Mitchel', pos: 'MLB', ovr: 70, drafted: 'NO', rd: 'N/A' }
+                        ],
+                        transfers: [
+                            { class: 'SR', name: 'Marquese Williams', pos: 'HB', to: 'CLEV', from: 'AKR' }, { class: 'JR', name: 'Shareef Bradbury', pos: 'HB', to: 'CLEV', from: 'MRSH' }, { class: 'FR(RS)', name: 'Marquel Bahktiari', pos: 'MLB', to: 'CLEV', from: 'ECU' }, { class: 'SO', name: 'Steven Magnum', pos: 'CB', to: 'CLEV', from: 'AKR' }
+                        ]
+                    },
+                    '2027': {
+                        recruits: [
+                            { natRank: 4, pos: 'QB', name: 'Dave Shelley', stars: 5, state: 'MI' }, { natRank: 9, pos: 'WR', name: 'Isiah Boutte', stars: 5, state: 'MI' }, { natRank: 31, pos: 'QB', name: 'Greg Price', stars: 5, state: 'OK' }, { natRank: 115, pos: 'RG', name: 'Bobby John', stars: 4, state: 'OH' }, { natRank: 297, pos: 'HB', name: 'Collin Sandland', stars: 4, state: 'OH' }, { natRank: 328, pos: 'WR', name: 'Dakota McNitt', stars: 4, state: 'OH' }, { natRank: 336, pos: 'WR', name: 'Nazir McNitt', stars: 4, state: 'OH' }, { natRank: 436, pos: 'FS', name: 'Jacques Jasmine', stars: 4, state: 'MI' }, { natRank: 468, pos: 'RT', name: 'Gio Peat', stars: 3, state: 'WY' }, { natRank: 487, pos: 'HB', name: 'Dee Layne', stars: 3, state: 'LA' }, { natRank: 535, pos: 'SS', name: 'Jon Moss', stars: 3, state: 'OH' }, { natRank: 780, pos: 'ROLB', name: 'Emeka Iwuoma', stars: 3, state: 'MD' }, { natRank: 879, pos: 'LG', name: 'Tracey Connors', stars: 3, state: 'OH' }, { natRank: 935, pos: 'DT', name: 'Jamaal Stubbs', stars: 3, state: 'OH' }, { natRank: 1066, pos: 'ROLB', name: 'Theo Paul', stars: 3, state: 'GA' }, { natRank: 1166, pos: 'RG', name: 'Kerry Herrmann', stars: 3, state: 'OH' }, { natRank: 1328, pos: 'MLB', name: 'Steve Decicco', stars: 3, state: 'OH' }, { natRank: 1341, pos: 'ROLB', name: 'Shane Brutus', stars: 3, state: 'IN' }, { natRank: 1371, pos: 'DT', name: 'Fredrick Sharpe', stars: 3, state: 'DE' }, { natRank: 1505, pos: 'DT', name: 'Vernon Turpin', stars: 3, state: 'PA' }, { natRank: 1605, pos: 'MLB', name: 'Cole Roseman', stars: 3, state: 'OH' }, { natRank: 1795, pos: 'SS', name: 'Alejandro Marquez', stars: 3, state: 'OH' }
+                        ],
+                        graduates: [
+                            { class: 'SR(RS)', name: 'Jace Henry', pos: 'CB', ovr: 84, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Marquese Williams', pos: 'HB', ovr: 83, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Larry Yates', pos: 'SS', ovr: 83, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Brody Bolyn', pos: 'C', ovr: 82, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Finau Vittatoe', pos: 'RG', ovr: 82, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Ian Van Der Merwe', pos: 'LG', ovr: 82, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Emmit Mosley V', pos: 'WR', ovr: 81, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Tracy Revels', pos: 'FS', ovr: 78, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'James Thomas Jr.', pos: 'RT', ovr: 78, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Jacob Harris', pos: 'TE', ovr: 76, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Alijah Williams', pos: 'ROLB', ovr: 75, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Brian Everett', pos: 'TE', ovr: 72, drafted: 'NO', rd: 'N/A' }
+                        ],
+                        transfers: [
+                            { class: 'SO', name: 'Deliyon Freeman', pos: 'CB', to: 'CLEV', from: 'HAW' }, { class: 'JR', name: 'Tavares Kalu', pos: 'SS', to: 'CLEV', from: 'BOIS' }, { class: 'SO', name: 'Andrew Dennis', pos: 'LG', to: 'CLEV', from: 'LOU' }
+                        ]
+                    },
+                    '2028': {
+                        recruits: [
+                            { natRank: 2, pos: 'CB', name: 'Randy Andrews', stars: 5, state: 'CA' }, { natRank: 3, pos: 'HB', name: 'Robert Okoronkwo', stars: 5, state: 'MO' }, { natRank: 8, pos: 'MLB', name: 'Iosefa Savoie', stars: 5, state: 'MA' }, { natRank: 28, pos: 'LE', name: 'Salesi Jewel', stars: 5, state: 'OH' }, { natRank: 39, pos: 'LT', name: 'Jarry Horner', stars: 4, state: 'HI' }, { natRank: 40, pos: 'RG', name: 'Manuel Ramos', stars: 4, state: 'TX' }, { natRank: 106, pos: 'ROLB', name: 'Juan Rivera', stars: 4, state: 'TX' }, { natRank: 114, pos: 'HB', name: 'Dalton Jameson', stars: 4, state: 'OH' }, { natRank: 128, pos: 'WR', name: 'B.J. Lord', stars: 4, state: 'MI' }, { natRank: 135, pos: 'QB', name: 'Joshua Talib', stars: 4, state: 'MI' }, { natRank: 139, pos: 'RG', name: 'Seth Molinaro', stars: 4, state: 'SC' }, { natRank: 153, pos: 'DT', name: 'Chip Lennon', stars: 4, state: 'OH' }, { natRank: 161, pos: 'CB', name: 'Malik Bean', stars: 4, state: 'MI' }, { natRank: 351, pos: 'RT', name: 'Barry Rutter', stars: 4, state: 'IN' }, { natRank: 370, pos: 'RT', name: 'Howie Stevens', stars: 4, state: 'WI' }, { natRank: 444, pos: 'TE', name: 'Matthew Hix', stars: 4, state: 'MI' }, { natRank: 584, pos: 'CB', name: 'Nyles Sills', stars: 3, state: 'OH' }, { natRank: 1220, pos: 'DT', name: 'Joshua Bucannon', stars: 3, state: 'IN' }, { natRank: 1300, pos: 'CB', name: 'James Whitt', stars: 3, state: 'FL' }
+                        ],
+                        graduates: [
+                            { class: 'SR(RS)', name: 'Elias Owens', pos: 'LE', ovr: 87, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Deliyon Freeman', pos: 'CB', ovr: 87, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Julian Henderson', pos: 'LG', ovr: 87, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Cam Booker', pos: 'RE', ovr: 86, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Amar\'e Hocker', pos: 'QB', ovr: 86, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Rashaud Exum', pos: 'WR', ovr: 85, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Martreece Dillard', pos: 'LE', ovr: 84, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Dorian Pringle', pos: 'ROLB', ovr: 84, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Mitch Mesko', pos: 'SS', ovr: 84, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Morgan Landry', pos: 'QB', ovr: 84, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Joe Shimko', pos: 'RE', ovr: 83, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Rico Steele', pos: 'LT', ovr: 82, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Nakai Amachree', pos: 'HB', ovr: 82, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Shareef Bradbury', pos: 'HB', ovr: 81, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Kal-El Pascal', pos: 'CB', ovr: 81, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'TJ Nelson', pos: 'FS', ovr: 80, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Deandre Salaam', pos: 'MLB', ovr: 79, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Andrew Dennis', pos: 'LG', ovr: 79, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Moses Keglar', pos: 'DT', ovr: 73, drafted: 'NO', rd: 'N/A' }, { class: 'SR', name: 'Willie Brooks', pos: 'FB', ovr: 71, drafted: 'NO', rd: 'N/A' }
+                        ],
+                        transfers: [
+                            { class: 'FR', name: 'Lee Dailey', pos: 'HB', to: 'CLEV', from: 'PITT' }, { class: 'SO', name: 'Tyler Jameson', pos: 'RG', to: 'CLEV', from: 'UK' }
+                        ]
+                    },
+                    '2029': {
+                        recruits: [
+                            { natRank: 2, pos: 'HB', name: 'Sam Fatafehi', stars: 5, state: 'NJ' }, { natRank: 27, pos: 'CB', name: 'Lyle Chick', stars: 5, state: 'FL' }, { natRank: 32, pos: 'LOLB', name: 'Emanuel Longo', stars: 5, state: 'OH' }, { natRank: 83, pos: 'CB', name: 'Romeo Ford', stars: 4, state: 'MI' }, { natRank: 95, pos: 'LG', name: 'Bobby Ervin', stars: 4, state: 'NJ' }, { natRank: 125, pos: 'ATH', name: 'Josh McAdoo', stars: 4, state: 'OH' }, { natRank: 181, pos: 'C', name: 'Kelvin Fink', stars: 4, state: 'NC' }, { natRank: 221, pos: 'RT', name: 'Walt Reiff', stars: 4, state: 'MA' }, { natRank: 416, pos: 'DT', name: 'Dave Donnerson', stars: 4, state: 'KY' }, { natRank: 421, pos: 'ROLB', name: 'Leon Azur', stars: 4, state: 'CA' }, { natRank: 532, pos: 'FS', name: 'Andres Nagy', stars: 3, state: 'FL' }, { natRank: 674, pos: 'RE', name: 'Vince Carney', stars: 3, state: 'NJ' }, { natRank: 584, pos: 'RT', name: 'George Cave', stars: 3, state: 'KS' }, { natRank: 497, pos: 'CB', name: 'Shakir Vigil', stars: 3, state: 'FL' }, { natRank: 581, pos: 'RG', name: 'John Guardado', stars: 3, state: 'FL' }, { natRank: 504, pos: 'ATH', name: 'Alfonso Sauer', stars: 3, state: 'MS' }, { natRank: 867, pos: 'QB', name: 'Clayton Gay', stars: 3, state: 'CA' }
+                        ],
+                        graduates: [
+                            { class: 'JR', name: 'Kenny Tongues', pos: 'WR', ovr: 91, drafted: 'YES', rd: '1st' }, { class: 'SR', name: 'Baraka Nwangwu', pos: 'HB', ovr: 95, drafted: 'YES', rd: '1st' }, { class: 'SR(RS)', name: 'J.D. Tanney', pos: 'RE', ovr: 89, drafted: 'YES', rd: '1st' }, { class: 'SR(RS)', name: 'Russ Cheeks', pos: 'LE', ovr: 87, drafted: 'YES', rd: '7th' }, { class: 'SR', name: 'Deontae Meekins', pos: 'LT', ovr: 85, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Jeremy Peppers', pos: 'LOLB', ovr: 82, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Tavares Kalu', pos: 'SS', ovr: 83, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Tyree Moses', pos: 'C', ovr: 80, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Storm Lampman', pos: 'RT', ovr: 80, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Alex Sharp', pos: 'DT', ovr: 81, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Kareem Duggan', pos: 'TE', ovr: 81, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Layne Robbins', pos: 'CB', ovr: 77, drafted: 'NO', rd: 'N/A' }, { class: 'SR(RS)', name: 'Jermaine Kasay', pos: 'P', ovr: 77, drafted: 'NO', rd: 'N/A' }
+                        ],
+                        transfers: [
+                            { class: 'JR', name: 'Patrick Bickley', pos: 'LE', to: 'CLEV', from: 'BUFF' }, { class: 'SO', name: 'Joe Goodin', pos: 'RE', to: 'CLEV', from: 'JMU' }, { class: 'SO', name: 'Jon Donaldson', pos: 'TE', to: 'CLEV', from: 'OSU' }, { class: 'JR', name: 'Willie Ausbon', pos: 'LG', to: 'CLEV', from: 'TOL' }, { class: 'N/A', name: 'Jesus Mond', pos: 'FS', to: 'CLEV', from: 'NAVY' } 
+                        ]
+                    },
+                    '2030': { recruits: [], graduates: [], transfers: [] }
+                },
+                init() {
+                    Object.values(this.teamData).forEach(yearData => {
+                        if(yearData.recruits) {
+                            yearData.recruits.sort((a, b) => {
+                                const rankA = parseInt(a.natRank); const rankB = parseInt(b.natRank);
+                                if (isNaN(rankA) && isNaN(rankB)) return 0; if (isNaN(rankA)) return 1; if (isNaN(rankB)) return -1;
+                                return rankA - rankB;
+                            });
+                        }
+                        if(yearData.graduates) yearData.graduates.sort((a,b) => b.ovr - a.ovr);
+                        if(yearData.transfers) {
+                            yearData.transfers.sort((a,b) => {
+                                const rankA = parseInt(a.rank); const rankB = parseInt(b.rank);
+                                if (!isNaN(rankA) && !isNaN(rankB)) return rankA - rankB;
+                                const classSort = (a.class || '').localeCompare(b.class || '');
+                                if (classSort !== 0) return classSort;
+                                return a.name.localeCompare(b.name); 
+                            });
+                        }
+                    });
+                }
+            };
+        }
+
+        // Combined JavaScript for header and page-specific logic
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const tickerWrapElement = document.querySelector('.ticker-wrap'); 
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px'; 
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem'; 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+            
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+            
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null; 
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) { 
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator); 
+            }
+            
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+                slidingIndicator.style.width = `${tabRect.width}px`;
+                slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'viking_recruiting.html'); 
+                setActiveTab(currentPageTab || allTabs[0]); 
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                    tab.addEventListener('click', (e) => {
+                        setActiveTab(tab); 
+                    });
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+                
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 150);
+                }
+            }
+            adjustLayout(); 
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                const tabRect = activeTabElem.getBoundingClientRect();
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                indicator.style.width = `${tabRect.width}px`;
+                indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+        }); 
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    indicator.style.width = `${tabRect.width}px`;
+                    indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+        }); 
+    </script>
+</body>
+</html>

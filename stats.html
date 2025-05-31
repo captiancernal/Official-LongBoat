@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats Hub - CSU Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57; 
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Variables specific to stats.html content */
+            --page-bg-stats: #f3f4f6; /* Original bg-gray-100 */
+            --table-header-bg: #f3f4f6; 
+            --table-row-even-bg: #f9fafb; 
+            --table-row-hover-bg: #e0f2f1; 
+            --table-border-color: #e5e7eb; 
+            --text-primary-stats: #1f2937; /* Default text color for this page's content */
+        }
+
+        /* Global body styles, adapted for stats.html */
+        body {
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0; 
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--page-bg-stats); 
+            color: var(--text-primary-stats); 
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper { 
+            position: relative;
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-end; 
+            padding-bottom: 3px; 
+        }
+        
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center; 
+            gap: 0.1rem; 
+            width: auto; 
+        }
+
+        nav .nav-tab-row:nth-child(2) { 
+            margin-top: -0.25rem; 
+        }
+
+        nav .nav-tab-row a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.70rem;  
+            letter-spacing: 0.04em; 
+            text-transform: uppercase; 
+            padding: 0.6rem 0.7rem; 
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative; 
+            z-index: 2; 
+            white-space: nowrap;
+            background-color: transparent; 
+            border-radius: 4px 4px 0 0; 
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+        
+        nav .nav-tab-row a.active-tab { 
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0; 
+            height: 3px; 
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1); 
+            z-index: 1; 
+        }
+        
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green); 
+        }
+        nav #mobile-menu a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.9rem; 
+            display: block; 
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem; 
+        }
+
+        /* --- Styles specific to stats.html content --- */
+        .stats-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; }
+        .stats-table th, .stats-table td {
+            padding: 0.5rem 0.75rem; text-align: left;
+            border-bottom: 1px solid var(--table-border-color);
+            white-space: nowrap; 
+        }
+        .stats-table th {
+            background-color: var(--table-header-bg);
+            font-weight: 600; position: sticky; top: 0; z-index: 10;
+        }
+        .stats-table tr:nth-child(even) { background-color: var(--table-row-even-bg); }
+        .stats-table tr:hover { background-color: var(--table-row-hover-bg); }
+        
+        .stats-table button.player-link { /* More specific selector for player links in stats table */
+            font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.9rem;
+            letter-spacing: 0.5px; color: var(--csu-green);
+            transition: color 0.3s ease, text-decoration 0.3s ease; 
+            cursor: pointer; background: none; border: none; padding: 0; text-align: left;
+        }
+        .stats-table button.player-link:hover { text-decoration: underline; color: #00332c; }
+
+        .stats-table td.stat-value, .stats-table th.stat-value { text-align: right; }
+        .stats-table .player-name-cell { font-weight: 500; }
+
+        .tab-button { /* For season tabs within stats page */
+            transition: all 0.3s ease; padding: 0.75rem 1rem; font-size: 0.875rem;
+            font-weight: 500; border-bottom-width: 2px; border-color: transparent;
+            color: #6b7280; border-radius: 0.375rem 0.375rem 0 0; 
+            white-space: nowrap; font-family: 'Oswald', sans-serif;
+        }
+        .tab-button.active { border-color: var(--csu-green); color: var(--csu-green); background-color: #e0f2f1; }
+        .tab-button:not(.active):hover { background-color: #f3f4f6;}
+        .tabs-container nav { -ms-overflow-style: none; scrollbar-width: none; }
+        .tabs-container nav::-webkit-scrollbar { display: none; }
+        
+        .table-container { 
+            max-height: 400px; overflow-y: auto; 
+            border: 1px solid var(--table-border-color); 
+            border-radius: 0.375rem;
+            margin-bottom: 2rem; 
+        }
+
+        /* Modal Styles from original stats.html */
+        .modal-backdrop { position: fixed; inset: 0; z-index: 60; background-color: rgba(55, 65, 81, 0.7); transition: opacity 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; backdrop-filter: blur(0px); }
+        .modal-backdrop-visible { opacity: 1; pointer-events: auto; backdrop-filter: blur(4px); }
+        .modal-content { background-color: white; border-radius: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); width: 100%; max-width: 48rem; padding: 1.5rem; position: relative; border-top: 4px solid var(--csu-green); transition: transform 0.3s ease-out, opacity 0.3s ease-out; max-height: 90vh; overflow-y: auto; opacity: 0; transform: scale(0.95); }
+        .modal-content-visible { opacity: 1; transform: scale(1); }
+        .profile-photo-modal { width: 120px; height: 120px; background-color: #e2e8f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1rem; color: var(--csu-gray); font-style: italic; border: 4px solid var(--csu-white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .modal-section-title { font-size: 1.1rem; font-weight: 600; color: var(--csu-green); border-bottom: 1px solid #e5e7eb; padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+        .modal-stat-label { font-weight: 600; color: var(--csu-gray); font-size: 0.875rem; }
+        .modal-stat-value { font-weight: 500; color: #000; font-size: 0.875rem; }
+        .modal-table th { background-color: #f9fafb; font-size: 0.75rem; padding: 0.4rem 0.5rem; text-align: left; white-space: nowrap;}
+        .modal-table td { padding: 0.4rem 0.5rem; font-size: 0.75rem; border-bottom: 1px solid #e5e7eb; text-align: right; }
+        .modal-table td:first-child { text-align: left; font-weight: 500;}
+        .modal-table tr:last-child td { border-bottom: none; }
+        .modal-table thead th { position: sticky; top: 0; background-color: #f3f4f6; z-index: 1; }
+        
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green); 
+            color: var(--csu-white); 
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem; 
+            margin-top: 2.5rem; /* mt-10 */
+        }
+        footer p {
+            font-size: 0.875rem; /* text-sm */
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+
+    </style>
+</head>
+<body class="bg-page-bg-stats"> <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper"> 
+                    <div class="nav-tabs-container"> 
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;"> 
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> 
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10" x-data="playerStatsData()"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="mb-8 mt-8"> <h1 class="text-3xl font-bold text-center text-gray-900">Player Statistics Hub</h1>
+                <p class="text-center text-gray-600 mt-2">Detailed player performance metrics by season.</p>
+            </header>
+
+            <div class="mb-6">
+                <div class="border-b border-gray-200 tabs-container">
+                    <nav class="-mb-px flex space-x-2 sm:space-x-4 overflow-x-auto pb-1" aria-label="Tabs">
+                        <template x-for="year in Object.keys(allSeasonData).sort()" :key="year">
+                            <button @click="selectedSeason = year" :class="{ 'active': selectedSeason === year }" class="tab-button">
+                                <span x-text="year + ' Season Stats'"></span>
+                            </button>
+                        </template>
+                    </nav>
+                </div>
+
+                <div class="mt-6">
+                    <template x-if="allSeasonData[selectedSeason]">
+                        <div x-transition>
+                            <section class="mb-8">
+                                <h3 class="text-xl font-semibold text-csu-green mb-3">Passing Statistics</h3>
+                                <div class="bg-white shadow-md rounded-lg overflow-x-auto table-container">
+                                    <table class="stats-table min-w-[1000px]">
+                                        <thead>
+                                            <tr>
+                                                <th>Player</th><th>POS</th><th class="stat-value">YDS</th><th class="stat-value">AVG/G</th><th class="stat-value">COMP</th><th class="stat-value">ATT</th><th class="stat-value">TD</th><th class="stat-value">INT</th><th class="stat-value">COMP%</th><th class="stat-value">RATE</th><th class="stat-value">YPA</th><th class="stat-value">LONG</th><th class="stat-value">SACKS</th><th class="stat-value">GP</th><th class="stat-value">QBR</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="player in allSeasonData[selectedSeason]?.passing" :key="player.name">
+                                                <tr>
+                                                    <td class="player-name-cell"><button class="player-link stats-table button.player-link" @click="openPlayerModal(player)" x-text="player.name"></button></td>
+                                                    <td x-text="player.pos"></td>
+                                                    <td class="stat-value" x-text="player.yds"></td>
+                                                    <td class="stat-value" x-text="player.avg_g"></td>
+                                                    <td class="stat-value" x-text="player.comp"></td>
+                                                    <td class="stat-value" x-text="player.att"></td>
+                                                    <td class="stat-value" x-text="player.td"></td>
+                                                    <td class="stat-value" x-text="player.int"></td>
+                                                    <td class="stat-value" x-text="player.comp_pct"></td>
+                                                    <td class="stat-value" x-text="player.rate"></td>
+                                                    <td class="stat-value" x-text="player.ypa"></td>
+                                                    <td class="stat-value" x-text="player.long"></td>
+                                                    <td class="stat-value" x-text="player.sacks"></td>
+                                                    <td class="stat-value" x-text="player.gp"></td>
+                                                    <td class="stat-value" x-text="player.qbr"></td>
+                                                </tr>
+                                            </template>
+                                            <template x-if="!allSeasonData[selectedSeason]?.passing || allSeasonData[selectedSeason]?.passing.length === 0">
+                                                <tr><td colspan="15" class="text-center text-gray-500 py-3">No passing statistics available for this season.</td></tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                            <section class="mb-8">
+                                <h3 class="text-xl font-semibold text-csu-green mb-3">Rushing Statistics</h3>
+                                <div class="bg-white shadow-md rounded-lg overflow-x-auto table-container">
+                                    <table class="stats-table min-w-[900px]">
+                                        <thead>
+                                            <tr>
+                                                <th>Player</th><th>POS</th><th class="stat-value">CAR</th><th class="stat-value">YDS</th><th class="stat-value">YPC</th><th class="stat-value">TD</th><th class="stat-value">YPG</th><th class="stat-value">FUMB</th><th class="stat-value">LONG</th><th class="stat-value">GP</th><th class="stat-value">20+</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="player in allSeasonData[selectedSeason]?.rushing" :key="player.name">
+                                                <tr>
+                                                    <td class="player-name-cell"><button class="player-link stats-table button.player-link" @click="openPlayerModal(player)" x-text="player.name"></button></td>
+                                                    <td x-text="player.pos"></td>
+                                                    <td class="stat-value" x-text="player.car"></td>
+                                                    <td class="stat-value" x-text="player.yds"></td>
+                                                    <td class="stat-value" x-text="player.ypc"></td>
+                                                    <td class="stat-value" x-text="player.td"></td>
+                                                    <td class="stat-value" x-text="player.ypg"></td>
+                                                    <td class="stat-value" x-text="player.fumb"></td>
+                                                    <td class="stat-value" x-text="player.long"></td>
+                                                    <td class="stat-value" x-text="player.gp"></td>
+                                                    <td class="stat-value" x-text="player.plus20"></td>
+                                                </tr>
+                                            </template>
+                                            <template x-if="!allSeasonData[selectedSeason]?.rushing || allSeasonData[selectedSeason]?.rushing.length === 0">
+                                                <tr><td colspan="10" class="text-center text-gray-500 py-3">No rushing statistics available for this season.</td></tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                            <section class="mb-8">
+                                <h3 class="text-xl font-semibold text-csu-green mb-3">Receiving Statistics</h3>
+                                <div class="bg-white shadow-md rounded-lg overflow-x-auto table-container">
+                                    <table class="stats-table min-w-[900px]">
+                                        <thead>
+                                            <tr>
+                                                <th>Player</th><th>POS</th><th class="stat-value">REC</th><th class="stat-value">YDS</th><th class="stat-value">AVG</th><th class="stat-value">TD</th><th class="stat-value">YAC</th><th class="stat-value">YPG</th><th class="stat-value">LONG</th><th class="stat-value">GP</th><th class="stat-value">DROPS</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="player in allSeasonData[selectedSeason]?.receiving" :key="player.name">
+                                                <tr>
+                                                    <td class="player-name-cell"><button class="player-link stats-table button.player-link" @click="openPlayerModal(player)" x-text="player.name"></button></td>
+                                                    <td x-text="player.pos"></td>
+                                                    <td class="stat-value" x-text="player.rec"></td>
+                                                    <td class="stat-value" x-text="player.yds"></td>
+                                                    <td class="stat-value" x-text="player.avg"></td>
+                                                    <td class="stat-value" x-text="player.td"></td>
+                                                    <td class="stat-value" x-text="player.yac"></td>
+                                                    <td class="stat-value" x-text="player.ypg"></td>
+                                                    <td class="stat-value" x-text="player.long"></td>
+                                                    <td class="stat-value" x-text="player.gp"></td>
+                                                    <td class="stat-value" x-text="player.drops"></td>
+                                                </tr>
+                                            </template>
+                                            <template x-if="!allSeasonData[selectedSeason]?.receiving || allSeasonData[selectedSeason]?.receiving.length === 0">
+                                                <tr><td colspan="10" class="text-center text-gray-500 py-3">No receiving statistics available for this season.</td></tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+
+                            <section class="mb-8">
+                                <h3 class="text-xl font-semibold text-csu-green mb-3">Kicking Statistics</h3>
+                                <div class="bg-white shadow-md rounded-lg overflow-x-auto table-container">
+                                    <table class="stats-table min-w-[900px]">
+                                        <thead>
+                                            <tr>
+                                                <th>Player</th><th>POS</th><th class="stat-value">FGM</th><th class="stat-value">FGA</th><th class="stat-value">FG%</th><th class="stat-value">XPM</th><th class="stat-value">XPA</th><th class="stat-value">XP%</th><th class="stat-value">LONG</th><th class="stat-value">FGM &lt;29</th><th class="stat-value">FGM 30-39</th><th class="stat-value">FGM 40-49</th><th class="stat-value">FGM 50+</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="player in allSeasonData[selectedSeason]?.kicking" :key="player.name">
+                                                <tr>
+                                                    <td class="player-name-cell"><button class="player-link stats-table button.player-link" @click="openPlayerModal(player)" x-text="player.name"></button></td>
+                                                    <td x-text="player.pos"></td>
+                                                    <td class="stat-value" x-text="player.fgm"></td>
+                                                    <td class="stat-value" x-text="player.fga"></td>
+                                                    <td class="stat-value" x-text="player.fg_pct"></td>
+                                                    <td class="stat-value" x-text="player.xpm"></td>
+                                                    <td class="stat-value" x-text="player.xpa"></td>
+                                                    <td class="stat-value" x-text="player.xp_pct"></td>
+                                                    <td class="stat-value" x-text="player.long"></td>
+                                                    <td class="stat-value" x-text="player.fgm_u29"></td>
+                                                    <td class="stat-value" x-text="player.fgm_30_39"></td>
+                                                    <td class="stat-value" x-text="player.fgm_40_49"></td>
+                                                    <td class="stat-value" x-text="player.fgm_50_plus"></td>
+                                                </tr>
+                                            </template>
+                                            <template x-if="!allSeasonData[selectedSeason]?.kicking || allSeasonData[selectedSeason]?.kicking.length === 0">
+                                                <tr><td colspan="13" class="text-center text-gray-500 py-3">No kicking statistics available for this season.</td></tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                            
+                            <template x-if="selectedSeason > '2029'"> 
+                                <div class="text-center text-gray-500 py-8">Statistics for the <span x-text="selectedSeason"></span> season will be updated soon.</div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="playerModal" class="modal-backdrop" x-data="modalData()" 
+         x-show="isOpen" 
+         @open-player-modal.window="openModal($event.detail)" 
+         @keydown.escape.window="closeModal()"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         :class="{ 'modal-backdrop-visible': isOpen }"
+         @click.self="closeModal()" style="display: none;">
+        <div class="modal-content" 
+             x-show="isOpen"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 transform scale-95"
+             x-transition:enter-end="opacity-100 transform scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 transform scale-100"
+             x-transition:leave-end="opacity-0 transform scale-95"
+             :class="{ 'modal-content-visible': isOpen }"
+             @click.stop>
+            <button @click="closeModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center mb-5">
+                <div class="profile-photo-modal">[Photo]</div>
+                <h2 x-text="player.name || '[PLAYER_NAME]'" class="text-2xl font-bold text-gray-900 font-['Oswald'] uppercase tracking-wide"></h2>
+                <p class="text-lg text-csu-green font-semibold mt-1">
+                    <span x-text="player.pos || '[POS]'"></span> 
+                    <template x-if="player.number">| #<span x-text="player.number"></span></template>
+                </p>
+            </div>
+            <div>
+                <section class="mb-4"><h3 class="modal-section-title">Player Info</h3><div class="grid grid-cols-2 gap-3 text-sm"><div><span class="modal-stat-label block">Height:</span><span x-text="player.height || 'N/A'" class="modal-stat-value"></span></div><div><span class="modal-stat-label block">Weight:</span><span x-text="player.weight || 'N/A'" class="modal-stat-value"></span></div><div><span class="modal-stat-label block">Year/Class:</span><span x-text="player.year || 'N/A'" class="modal-stat-value"></span></div><div><span class="modal-stat-label block">Team:</span><span x-text="player.team || 'CSU'" class="modal-stat-value"></span></div><div><span class="modal-stat-label block">Hometown:</span><span x-text="player.hometown || 'N/A'" class="modal-stat-value"></span></div></div></section>
+                <section class="mb-4"><h3 class="modal-section-title">Season Statistics (Modal)</h3><div id="modalSeasonStatsContainer" class="table-container"><p class="text-sm text-gray-500 italic">Detailed season stats for modal coming soon...</p></div></section>
+                <section class="mb-4"><h3 class="modal-section-title">Career Statistics (Modal)</h3><div class="overflow-x-auto"><table class="w-full modal-table"><tbody id="modalCareerStatsBody"><tr><td colspan="4" class="text-sm text-gray-500 italic text-center">Career stats for modal coming soon...</td></tr></tbody></table></div></section>
+                <section class="mb-4"><h3 class="modal-section-title">Awards & Accolades</h3><ul x-html="player.awards ? player.awards.split(',').map(a => '<li>'+a.trim()+'</li>').join('') : '<li>No awards listed.</li>'" class="list-disc list-inside text-xs text-gray-700 space-y-1 pl-2"></ul></section>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        function modalData() { // Renamed from playerModalData to avoid conflict if any
+            return {
+                isOpen: false,
+                player: {},
+                openModal(detail) {
+                    this.player = detail.player; // Assuming detail is { player: playerData, season: seasonYear }
+                                                // Or just player data if season is not needed directly in modalData
+                    this.isOpen = true;
+                    // Logic to populate modalSeasonStatsContainer or modalCareerStatsBody would go here
+                    // For now, it's just a placeholder in the HTML
+                },
+                closeModal() {
+                    this.isOpen = false;
+                    setTimeout(() => { this.player = {}; }, 300);
+                }
+            }
+        }
+
+        function playerStatsData() {
+            return {
+                selectedSeason: '2024',
+                allSeasonData: {
+                    '2024': {
+                        passing: [
+                            { name: 'Connor Bazelak', pos: 'QB', yds: 3962, avg_g: 304.8, comp: 301, att: 436, td: 35, int: 17, comp_pct: '69%', rate: 164.0, ypa: 9.1, long: 79, sacks: 10, gp: 13, qbr: 83.7, team: 'CSU', id:'bazelak_c_2024' },
+                            { name: 'Camden Orth', pos: 'QB', yds: 0, avg_g: 0.0, comp: 0, att: 0, td: 0, int: 0, comp_pct: '0%', rate: 0.0, ypa: 0.0, long: 0, sacks: 0, gp: 13, qbr: 5.2, team: 'CSU', id:'orth_c_2024' }
+                        ],
+                        rushing: [
+                            { name: 'Terion Stewart', pos: 'RB', car: 247, yds: 1098, ypc: 4.4, td: 13, ypg: 84.5, fumb: 2, long: 40, gp: 13, plus20: 4, team: 'CSU', id:'stewart_t_2024' },
+                            { name: 'Jaison Patterson', pos: 'RB', car: 101, yds: 568, ypc: 5.6, td: 2, ypg: 43.7, fumb: 1, long: 47, gp: 13, plus20: 2, team: 'CSU', id:'patterson_j_2024' },
+                            { name: 'RJ Garcia II', pos: 'WR', car: 10, yds: 30, ypc: 3.0, td: 0, ypg: 2.3, fumb: 0, long: 9, gp: 13, plus20: 0, team: 'CSU', id:'garcia_rj_2024_rush' },
+                            { name: 'Jaylon Tillman', pos: 'WR', car: 6, yds: 31, ypc: 5.2, td: 0, ypg: 2.4, fumb: 0, long: 13, gp: 13, plus20: 0, team: 'CSU', id:'tillman_j_2024_rush' },
+                            { name: 'Eric Baber', pos: 'FB', car: 5, yds: 13, ypc: 2.6, td: 0, ypg: 1.0, fumb: 0, long: 7, gp: 13, plus20: 0, team: 'CSU', id:'baber_e_2024_rush' },
+                            { name: 'Malcolm Johnson Jr.', pos: 'WR', car: 2, yds: 33, ypc: 16.5, td: 0, ypg: 2.5, fumb: 1, long: 22, gp: 13, plus20: 1, team: 'CSU', id:'johnson_m_2024_rush'},
+                            { name: 'Jamal Johnson', pos: 'RB', car: 1, yds: 2, ypc: 2.0, td: 0, ypg: 0.4, fumb: 0, long: 5, gp: 2, plus20: 0, team: 'CSU', id:'johnson_j_2024_rush'}
+                        ],
+                        receiving: [
+                            { name: 'Harold Fannin Jr.', pos: 'TE', rec: 80, yds: 1119, avg: 14.0, td: 12, yac: 462, ypg: 86.1, long: 59, gp: 13, drops: 3, team: 'CSU', id:'fannin_h_2024' },
+                            { name: 'RJ Garcia II', pos: 'WR', rec: 63, yds: 883, avg: 14.0, td: 10, yac: 410, ypg: 67.9, long: 79, gp: 13, drops: 7, team: 'CSU', id:'garcia_rj_2024_rec' },
+                            { name: 'Malcolm Johnson Jr.', pos: 'WR', rec: 38, yds: 657, avg: 17.3, td: 8, yac: 189, ypg: 50.5, long: 49, gp: 13, drops: 3, team: 'CSU', id:'johnson_m_2024_rec' },
+                            { name: 'Jaison Patterson', pos: 'HB', rec: 56, yds: 536, avg: 9.6, td: 0, yac: 495, ypg: 41.2, long: 29, gp: 13, drops: 4, team: 'CSU', id:'patterson_j_2024_rec' },
+                            { name: 'Jaylon Tillman', pos: 'WR', rec: 26, yds: 329, avg: 12.7, td: 2, yac: 102, ypg: 25.3, long: 51, gp: 13, drops: 3, team: 'CSU', id:'tillman_j_2024_rec' },
+                            { name: 'Finn Hogan', pos: 'WR', rec: 16, yds: 240, avg: 15.0, td: 1, yac: 110, ypg: 18.5, long: 75, gp: 13, drops: 3, team: 'CSU', id:'hogan_f_2024' },
+                            { name: 'Terion Stewart', pos: 'HB', rec: 12, yds: 109, avg: 9.1, td: 0, yac: 90, ypg: 8.4, long: 43, gp: 13, drops: 3, team: 'CSU', id:'stewart_t_2024_rec' },
+                            { name: 'Levi Gazarek', pos: 'TE', rec: 8, yds: 81, avg: 10.1, td: 1, yac: 17, ypg: 6.2, long: 18, gp: 13, drops: 1, team: 'CSU', id:'gazarek_l_2024' },
+                            { name: 'Jacob Harris', pos: 'TE', rec: 2, yds: 8, avg: 4.0, td: 1, yac: 4, ypg: 0.6, long: 5, gp: 13, drops: 1, team: 'CSU', id:'harris_j_2024' },
+                            { name: 'Eric Baber', pos: 'FB', rec: 1, yds: 2, avg: 2.0, td: 0, yac: 0, ypg: 0.2, long: 2, gp: 13, drops: 0, team: 'CSU', id:'baber_e_2024_rec' }
+                        ],
+                        kicking: [
+                            { name: 'Jackson Kleather', pos: 'K', fgm: 13, fga: 14, fg_pct: '93%', xpm: 49, xpa: 49, xp_pct: '100%', long: 40, fgm_u29: '6/6', fgm_30_39: '6/6', fgm_40_49: '1/2', fgm_50_plus: '0/0', team: 'CSU', id:'kleather_j_2024' }
+                        ]
+                    },
+                    '2025': {
+                        passing: [
+                            { name: 'Amar\'e Hocker', pos: 'QB', yds: 3817, avg_g: 293.6, comp: 289, att: 450, td: 33, int: 18, comp_pct: '64%', rate: 151.6, ypa: 8.5, long: 75, sacks: 13, gp: 13, qbr: 78.7, team: 'CSU', id:'hocker_a_2025' },
+                            { name: 'Morgan Landry', pos: 'QB', yds: 62, avg_g: 5.6, comp: 5, att: 11, td: 0, int: 0, comp_pct: '45%', rate: 92.7, ypa: 5.6, long: 18, sacks: 0, gp: 11, qbr: 7.7, team: 'CSU', id:'landry_m_2025' }
+                        ],
+                        rushing: [
+                            { name: 'Terion Stewart', pos: 'RB', car: 198, yds: 1085, ypc: 5.5, td: 14, ypg: 83.5, fumb: 2, long: 35, gp: 13, plus20: 6, team: 'CSU', id:'stewart_t_2025' },
+                            { name: 'Nolan McCormick', pos: 'RB', car: 69, yds: 405, ypc: 5.9, td: 2, ypg: 33.8, fumb: 1, long: 23, gp: 12, plus20: 1, team: 'CSU', id:'mccormick_n_2025' },
+                            { name: 'Amar\'e Hocker', pos: 'QB', car: 50, yds: 55, ypc: 1.1, td: 5, ypg: 4.2, fumb: 2, long: 11, gp: 13, plus20: 0, team: 'CSU', id:'hocker_a_2025_rush' },
+                            { name: 'RJ Garcia II', pos: 'WR', car: 6, yds: 34, ypc: 5.7, td: 1, ypg: 2.6, fumb: 0, long: 10, gp: 13, plus20: 0, team: 'CSU', id:'garcia_rj_2025_rush' },
+                            { name: 'Caleb Goodloe', pos: 'WR', car: 8, yds: 31, ypc: 3.9, td: 0, ypg: 2.4, fumb: 1, long: 8, gp: 13, plus20: 0, team: 'CSU', id:'goodloe_c_2025_rush' },
+                            { name: 'Morgan Landry', pos: 'QB', car: 3, yds: 7, ypc: 2.3, td: 0, ypg: 0.6, fumb: 0, long: 22, gp: 11, plus20: 0, team: 'CSU', id:'landry_m_2025_rush' },
+                            { name: 'Nakai Amachree', pos: 'HB', car: 3, yds: 6, ypc: 2.0, td: 0, ypg: 0.9, fumb: 0, long: 2, gp: 7, plus20: 0, team: 'CSU', id:'amachree_n_2025_rush' },
+                            { name: 'Finn Hogan', pos: 'WR', car: 2, yds: 0, ypc: 0.0, td: 1, ypg: 0.0, fumb: 0, long: 2, gp: 13, plus20: 0, team: 'CSU', id:'hogan_f_2025_rush' }
+                        ],
+                        receiving: [
+                            { name: 'Elijah Boyd', pos: 'TE', rec: 66, yds: 844, avg: 12.8, td: 5, yac: 317, ypg: 64.9, long: 39, gp: 13, drops: 6, team: 'CSU', id:'boyd_e_2025' },
+                            { name: 'RJ Garcia II', pos: 'WR', rec: 39, yds: 815, avg: 20.9, td: 8, yac: 301, ypg: 62.7, long: 75, gp: 13, drops: 9, team: 'CSU', id:'garcia_rj_2025_rec' },
+                            { name: 'Caleb Goodloe', pos: 'WR', rec: 64, yds: 737, avg: 11.5, td: 8, yac: 289, ypg: 56.7, long: 54, gp: 13, drops: 7, team: 'CSU', id:'goodloe_c_2025_rec' },
+                            { name: 'Finn Hogan', pos: 'WR', rec: 29, yds: 425, avg: 14.7, td: 2, yac: 127, ypg: 32.7, long: 51, gp: 13, drops: 2, team: 'CSU', id:'hogan_f_2025_rec' },
+                            { name: 'Nolan McCormick', pos: 'RB', rec: 43, yds: 392, avg: 9.1, td: 3, yac: 312, ypg: 32.7, long: 27, gp: 12, drops: 7, team: 'CSU', id:'mccormick_n_2025_rec' },
+                            { name: 'Terion Stewart', pos: 'RB', rec: 14, yds: 246, avg: 17.6, td: 1, yac: 164, ypg: 18.9, long: 66, gp: 13, drops: 3, team: 'CSU', id:'stewart_t_2025_rec' },
+                            { name: 'Jacob Harris', pos: 'TE', rec: 22, yds: 235, avg: 10.7, td: 3, yac: 66, ypg: 18.1, long: 31, gp: 13, drops: 0, team: 'CSU', id:'harris_j_2025_rec' },
+                            { name: 'Shawn Thigpen', pos: 'WR', rec: 4, yds: 80, avg: 20.0, td: 0, yac: 18, ypg: 6.2, long: 26, gp: 13, drops: 0, team: 'CSU', id:'thigpen_s_2025' },
+                            { name: 'Mike Hardrick', pos: 'TE', rec: 9, yds: 53, avg: 5.9, td: 3, yac: 29, ypg: 4.1, long: 9, gp: 13, drops: 0, team: 'CSU', id:'hardrick_m_2025' },
+                            { name: 'Cynceir McNeal', pos: 'WR', rec: 3, yds: 45, avg: 15.0, td: 0, yac: 15, ypg: 3.5, long: 18, gp: 13, drops: 0, team: 'CSU', id:'mcneal_c_2025' },
+                            { name: 'Kareem Duggan', pos: 'WR', rec: 1, yds: 7, avg: 7.0, td: 0, yac: 3, ypg: 0.5, long: 7, gp: 13, drops: 0, team: 'CSU', id:'duggan_k_2025_rec' }
+                        ],
+                        kicking: [
+                            { name: 'Jackson Kleather', pos: 'K', fgm: 9, fga: 12, fg_pct: '75%', xpm: 45, xpa: 46, xp_pct: '98%', long: 53, fgm_u29: '2/4', fgm_30_39: '2/3', fgm_40_49: '4/4', fgm_50_plus: '1/1', team: 'CSU', id:'kleather_j_2025' }
+                        ]
+                    },
+                    '2026': {
+                        passing: [
+                            { name: 'Amar\'e Hocker', pos: 'QB', yds: 4376, avg_g: 336.6, comp: 315, att: 446, td: 41, int: 11, comp_pct: '71%', rate: 178.4, ypa: 9.8, long: 90, sacks: 17, gp: 13, qbr: 79.6, team: 'CSU', id:'hocker_a_2026' },
+                            { name: 'Morgan Landry', pos: 'QB', yds: 0, avg_g: 0.0, comp: 0, att: 0, td: 0, int: 0, comp_pct: '0%', rate: 0.0, ypa: 0.0, long: 0, sacks: 0, gp: 0, qbr: 0.0, team: 'CSU', id:'landry_m_2026' } 
+                        ],
+                        rushing: [
+                            { name: 'Nakai Amachree', pos: 'RB', car: 161, yds: 668, ypc: 4.1, td: 4, ypg: 51.4, fumb: 1, long: 26, gp: 13, plus20: 1, team: 'CSU', id:'amachree_n_2026' },
+                            { name: 'Baraka Nwangwu', pos: 'RB', car: 82, yds: 392, ypc: 4.8, td: 2, ypg: 30.2, fumb: 0, long: 17, gp: 13, plus20: 0, team: 'CSU', id:'nwangwu_b_2026' },
+                            { name: 'Amar\'e Hocker', pos: 'QB', car: 78, yds: 222, ypc: 2.8, td: 4, ypg: 17.1, fumb: 3, long: 29, gp: 13, plus20: 3, team: 'CSU', id:'hocker_a_2026_rush' },
+                            { name: 'Caleb Goodloe', pos: 'WR', car: 11, yds: 58, ypc: 5.3, td: 1, ypg: 4.5, fumb: 1, long: 22, gp: 13, plus20: 1, team: 'CSU', id:'goodloe_c_2026_rush' },
+                            { name: 'Emmett Mosley V', pos: 'WR', car: 6, yds: 31, ypc: 5.2, td: 2, ypg: 2.4, fumb: 0, long: 18, gp: 13, plus20: 0, team: 'CSU', id:'mosley_e_2026_rush' },
+                            { name: 'Rashaud Exum', pos: 'QB', car: 6, yds: 30, ypc: 5.0, td: 0, ypg: 2.3, fumb: 0, long: 17, gp: 13, plus20: 0, team: 'CSU', id:'exum_r_2026_rush' }
+                        ],
+                        receiving: [
+                            { name: 'Rashaud Exum', pos: 'WR', rec: 64, yds: 989, avg: 15.5, td: 10, yac: 343, ypg: 76.1, long: 47, gp: 13, drops: 5, team: 'CSU', id:'exum_r_2026_rec' },
+                            { name: 'Elijah Boyd', pos: 'TE', rec: 56, yds: 879, avg: 15.7, td: 8, yac: 253, ypg: 67.6, long: 47, gp: 13, drops: 7, team: 'CSU', id:'boyd_e_2026' },
+                            { name: 'Caleb Goodloe', pos: 'WR', rec: 61, yds: 690, avg: 11.3, td: 9, yac: 311, ypg: 53.1, long: 36, gp: 13, drops: 2, team: 'CSU', id:'goodloe_c_2026_rec' },
+                            { name: 'Emmett Mosley V', pos: 'WR', rec: 37, yds: 653, avg: 17.6, td: 5, yac: 281, ypg: 50.2, long: 45, gp: 13, drops: 3, team: 'CSU', id:'mosley_e_2026_rec' },
+                            { name: 'Baraka Nwangwu', pos: 'HB', rec: 50, yds: 514, avg: 10.3, td: 1, yac: 307, ypg: 39.5, long: 30, gp: 13, drops: 5, team: 'CSU', id:'nwangwu_b_2026_rec' },
+                            { name: 'Mike Hardrick', pos: 'TE', rec: 20, yds: 295, avg: 14.8, td: 5, yac: 116, ypg: 22.7, long: 72, gp: 13, drops: 0, team: 'CSU', id:'hardrick_m_2026' },
+                            { name: 'Nakai Amachree', pos: 'HB', rec: 12, yds: 193, avg: 16.1, td: 3, yac: 157, ypg: 14.8, long: 66, gp: 13, drops: 1, team: 'CSU', id:'amachree_n_2026_rec' },
+                            { name: 'Marcus Sanders Jr.', pos: 'WR', rec: 10, yds: 102, avg: 10.2, td: 0, yac: 33, ypg: 7.8, long: 22, gp: 13, drops: 1, team: 'CSU', id:'sanders_m_2026' },
+                            { name: 'Jacob Harris', pos: 'TE', rec: 4, yds: 33, avg: 8.3, td: 0, yac: 9, ypg: 2.5, long: 20, gp: 13, drops: 0, team: 'CSU', id:'harris_j_2026_rec' },
+                            { name: 'Shawn Thigpen', pos: 'WR', rec: 1, yds: 28, avg: 28.0, td: 0, yac: 9, ypg: 2.2, long: 28, gp: 13, drops: 0, team: 'CSU', id:'thigpen_s_2026_rec' }
+                        ],
+                        kicking: [
+                            { name: 'Jackson Kleather', pos: 'K', fgm: 9, fga: 13, fg_pct: '69.23%', xpm: 63, xpa: 65, xp_pct: '97%', long: 54, fgm_u29: '0/1', fgm_30_39: '4/6', fgm_40_49: '3/3', fgm_50_plus: '2/3', team: 'CSU', id:'kleather_j_2026' }
+                        ]
+                    },
+                    '2027': {
+                        passing: [
+                            { name: 'Amar\'e Hocker', pos: 'QB', yds: 5317, avg_g: 409.0, comp: 358, att: 532, td: 55, int: 23, comp_pct: '67%', rate: 176.7, ypa: 10.0, long: 88, sacks: 27, gp: 13, qbr: 82.8, team: 'CSU', id:'hocker_a_2027' },
+                            { name: 'Morgan Landry', pos: 'QB', yds: 99, avg_g: 8.3, comp: 7, att: 17, td: 1, int: 1, comp_pct: '41%', rate: 97.7, ypa: 5.8, long: 25, sacks: 2, gp: 12, qbr: 9.3, team: 'CSU', id:'landry_m_2027' }
+                        ],
+                        rushing: [
+                            { name: 'Baraka Nwangwu', pos: 'RB', car: 131, yds: 817, ypc: 6.2, td: 6, ypg: 62.8, fumb: 2, long: 43, gp: 13, plus20: 9, team: 'CSU', id:'nwangwu_b_2027' },
+                            { name: 'Amar\'e Hocker', pos: 'QB', car: 107, yds: 256, ypc: 2.4, td: 10, ypg: 19.7, fumb: 7, long: 27, gp: 13, plus20: 3, team: 'CSU', id:'hocker_a_2027_rush' },
+                            { name: 'Marquese Williams', pos: 'HB', car: 42, yds: 155, ypc: 3.7, td: 3, ypg: 11.9, fumb: 2, long: 13, gp: 13, plus20: 0, team: 'CSU', id:'williams_m_2027' },
+                            { name: 'Kenny Tongues', pos: 'WR', car: 5, yds: 26, ypc: 5.2, td: 0, ypg: 2.0, fumb: 0, long: 9, gp: 13, plus20: 0, team: 'CSU', id:'tongues_k_2027_rush' },
+                            { name: 'Emmett Mosley V', pos: 'WR', car: 3, yds: 9, ypc: 3.0, td: 0, ypg: 0.7, fumb: 0, long: 5, gp: 13, plus20: 0, team: 'CSU', id:'mosley_e_2027_rush' },
+                            { name: 'Terrelle Francis', pos: 'HB', car: 3, yds: 4, ypc: 1.3, td: 0, ypg: 0.7, fumb: 0, long: 4, gp: 6, plus20: 0, team: 'CSU', id:'francis_t_2027_rush' },
+                            { name: 'Rashaud Exum', pos: 'WR', car: 1, yds: 3, ypc: 3.0, td: 0, ypg: 0.2, fumb: 0, long: 3, gp: 13, plus20: 0, team: 'CSU', id:'exum_r_2027_rush' }
+                        ],
+                        receiving: [
+                            { name: 'Kenny Tongues', pos: 'WR', rec: 96, yds: 1445, avg: 15.1, td: 23, yac: 582, ypg: 111.2, long: 88, gp: 13, drops: 11, team: 'CSU', id:'tongues_k_2027_rec' },
+                            { name: 'Darren Klein', pos: 'TE', rec: 50, yds: 960, avg: 19.2, td: 5, yac: 314, ypg: 73.8, long: 75, gp: 13, drops: 5, team: 'CSU', id:'klein_d_2027' },
+                            { name: 'Rashaud Exum', pos: 'WR', rec: 73, yds: 916, avg: 12.5, td: 7, yac: 259, ypg: 70.5, long: 52, gp: 13, drops: 6, team: 'CSU', id:'exum_r_2027_rec' },
+                            { name: 'Emmett Mosley V', pos: 'WR', rec: 49, yds: 822, avg: 16.8, td: 12, yac: 489, ypg: 63.2, long: 82, gp: 13, drops: 2, team: 'CSU', id:'mosley_e_2027_rec' },
+                            { name: 'Caleb Goodloe', pos: 'WR', rec: 28, yds: 448, avg: 16.0, td: 2, yac: 234, ypg: 34.5, long: 60, gp: 13, drops: 5, team: 'CSU', id:'goodloe_c_2027_rec' },
+                            { name: 'Marquese Williams', pos: 'HB', rec: 31, yds: 299, avg: 9.6, td: 2, yac: 289, ypg: 23.0, long: 30, gp: 13, drops: 1, team: 'CSU', id:'williams_m_2027_rec' },
+                            { name: 'Baraka Nwangwu', pos: 'HB', rec: 17, yds: 283, avg: 16.6, td: 3, yac: 123, ypg: 21.8, long: 71, gp: 13, drops: 1, team: 'CSU', id:'nwangwu_b_2027_rec' },
+                            { name: 'Mike Hardrick', pos: 'TE', rec: 12, yds: 164, avg: 13.7, td: 1, yac: 79, ypg: 12.6, long: 38, gp: 13, drops: 3, team: 'CSU', id:'hardrick_m_2027_rec' },
+                            { name: 'Sam Russo', pos: 'WR', rec: 2, yds: 37, avg: 18.5, td: 0, yac: 22, ypg: 37.0, long: 25, gp: 1, drops: 0, team: 'CSU', id:'russo_s_2027' }, 
+                            { name: 'Jacob Harris', pos: 'TE', rec: 4, yds: 21, avg: 5.3, td: 1, yac: 8, ypg: 1.6, long: 7, gp: 13, drops: 2, team: 'CSU', id:'harris_j_2027_rec' },
+                            { name: 'Kareem Duggan', pos: 'WR', rec: 3, yds: 21, avg: 7.0, td: 0, yac: 2, ypg: 1.6, long: 14, gp: 13, drops: 0, team: 'CSU', id:'duggan_k_2027_rec' }
+                        ],
+                        kicking: [
+                            { name: 'Rashaud Boiman', pos: 'K', fgm: 10, fga: 11, fg_pct: '90.91%', xpm: 64, xpa: 66, xp_pct: '97%', long: 54, fgm_u29: '2/2', fgm_30_39: '4/4', fgm_40_49: '4/5', fgm_50_plus: '0/0', team: 'CSU', id:'boiman_r_2027' }
+                        ]
+                    },
+                    '2028': {
+                        passing: [
+                            { name: 'Amar\'e Hocker', pos: 'QB', yds: 5364, avg_g: 335.3, comp: 349, att: 482, td: 63, int: 24, comp_pct: '72%', rate: 199.0, ypa: 11.1, long: 78, sacks: 24, gp: 16, qbr: 100.7, team: 'CSU', id:'hocker_a_2028' },
+                            { name: 'Morgan Landry', pos: 'QB', yds: 189, avg_g: 13.5, comp: 12, att: 15, td: 3, int: 1, comp_pct: '80%', rate: 238.5, ypa: 12.6, long: 38, sacks: 1, gp: 14, qbr: 11.9, team: 'CSU', id:'landry_m_2028' }
+                        ],
+                        rushing: [
+                            { name: 'Baraka Nwangwu', pos: 'RB', car: 369, yds: 2329, ypc: 6.3, td: 15, ypg: 179.2, fumb: 1, long: 71, gp: 13, plus20: 16, team: 'CSU', id:'nwangwu_b_2028' }, 
+                            { name: 'Amar\'e Hocker', pos: 'QB', car: 103, yds: 289, ypc: 2.8, td: 24, ypg: 22.2, fumb: 3, long: 53, gp: 13, plus20: 3, team: 'CSU', id:'hocker_a_2028_rush' }, 
+                            { name: 'Nakai Amachree', pos: 'HB', car: 51, yds: 255, ypc: 5.0, td: 2, ypg: 19.6, fumb: 0, long: 28, gp: 13, plus20: 1, team: 'CSU', id:'amachree_n_2028' }, 
+                            { name: 'Sam Russo', pos: 'WR', car: 4, yds: 69, ypc: 17.3, td: 0, ypg: 5.3, fumb: 0, long: 45, gp: 13, plus20: 1, team: 'CSU', id:'russo_s_2028_rush' }, 
+                            { name: 'Morgan Landry', pos: 'QB', car: 6, yds: 41, ypc: 6.8, td: 0, ypg: 3.2, fumb: 0, long: 15, gp: 13, plus20: 0, team: 'CSU', id:'landry_m_2028_rush' }, 
+                            { name: 'Rashaud Exum', pos: 'WR', car: 2, yds: 26, ypc: 13.0, td: 0, ypg: 4.3, fumb: 0, long: 23, gp: 6, plus20: 1, team: 'CSU', id:'exum_r_2028_rush' },
+                            { name: 'Kenny Tongues', pos: 'WR', car: 3, yds: 13, ypc: 4.3, td: 0, ypg: 1.0, fumb: 0, long: 12, gp: 13, plus20: 0, team: 'CSU', id:'tongues_k_2028_rush' } 
+                        ],
+                        receiving: [
+                            { name: 'Kenny Tongues', pos: 'WR', rec: 100, yds: 1685, avg: 16.9, td: 26, yac: 619, ypg: 105.3, long: 78, gp: 16, drops: 12, team: 'CSU', id:'tongues_k_2028_rec' },
+                            { name: 'Rashaud Exum', pos: 'WR', rec: 45, yds: 828, avg: 18.4, td: 11, yac: 328, ypg: 51.8, long: 71, gp: 16, drops: 3, team: 'CSU', id:'exum_r_2028_rec' },
+                            { name: 'Sam Russo', pos: 'WR', rec: 41, yds: 805, avg: 19.6, td: 8, yac: 329, ypg: 50.3, long: 65, gp: 16, drops: 2, team: 'CSU', id:'russo_s_2028_rec' },
+                            { name: 'Baraka Nwangwu', pos: 'HB', rec: 60, yds: 751, avg: 12.5, td: 6, yac: 383, ypg: 46.9, long: 45, gp: 16, drops: 5, team: 'CSU', id:'nwangwu_b_2028_rec' },
+                            { name: 'Kareem Duggan', pos: 'TE', rec: 48, yds: 663, avg: 13.8, td: 10, yac: 378, ypg: 41.4, long: 76, gp: 16, drops: 0, team: 'CSU', id:'duggan_k_2028_rec' },
+                            { name: 'Isaiah Boutte', pos: 'WR', rec: 20, yds: 227, avg: 11.4, td: 2, yac: 85, ypg: 14.2, long: 36, gp: 16, drops: 1, team: 'CSU', id:'boutte_i_2028' },
+                            { name: 'Darren Klein', pos: 'TE', rec: 15, yds: 210, avg: 14.0, td: 2, yac: 95, ypg: 26.3, long: 25, gp: 8, drops: 2, team: 'CSU', id:'klein_d_2028_rec' },
+                            { name: 'Jayden Kafka', pos: 'WR', rec: 13, yds: 173, avg: 13.3, td: 0, yac: 44, ypg: 10.8, long: 24, gp: 16, drops: 2, team: 'CSU', id:'kafka_j_2028' },
+                            { name: 'Dell Ojabo', pos: 'TE', rec: 9, yds: 135, avg: 15.0, td: 0, yac: 32, ypg: 15.0, long: 38, gp: 9, drops: 2, team: 'CSU', id:'ojabo_d_2028' },
+                            { name: 'Stephen Everett', pos: 'TE', rec: 4, yds: 33, avg: 8.3, td: 0, yac: 18, ypg: 2.1, long: 13, gp: 16, drops: 0, team: 'CSU', id:'everett_s_2028_rec' },
+                            { name: 'Dakota McNitt', pos: 'WR', rec: 3, yds: 24, avg: 8.0, td: 1, yac: 5, ypg: 1.5, long: 16, gp: 16, drops: 0, team: 'CSU', id:'mcnitt_d_2028_rec' }
+                        ],
+                        kicking: [
+                            { name: 'Rashaud Boiman', pos: 'K', fgm: 8, fga: 9, fg_pct: '88.89%', xpm: 87, xpa: 89, xp_pct: '98%', long: 52, fgm_u29: '4/4', fgm_30_39: '2/2', fgm_40_49: '1/2', fgm_50_plus: '1/1', team: 'CSU', id:'boiman_r_2028' }
+                        ]
+                    },
+                    '2029': {
+                        passing: [
+                            { name: 'Greg Price', pos: 'QB', yds: 5121, avg_g: 301.2, comp: 331, att: 524, td: 53, int: 24, comp_pct: '63%', rate: 169.4, ypa: 9.8, long: 70, sacks: 25, gp: 17, qbr: 107.4, team: 'CSU', id:'price_g_2029' },
+                            { name: 'Dave Shelley', pos: 'QB', yds: 463, avg_g: 33.1, comp: 22, att: 35, td: 5, int: 2, comp_pct: '63%', rate: 209.6, ypa: 13.2, long: 68, sacks: 7, gp: 14, qbr: 17.3, team: 'CSU', id:'shelley_d_2029' }
+                        ],
+                        rushing: [
+                            { name: 'Baraka Nwangwu', pos: 'RB', car: 402, yds: 2536, ypc: 6.3, td: 30, ypg: 149.2, fumb: 1, long: 92, gp: 17, plus20: 22, team: 'CSU', id:'nwangwu_b_2029' },
+                            { name: 'Greg Price', pos: 'QB', car: 108, yds: 598, ypc: 5.5, td: 10, ypg: 35.2, fumb: 3, long: 35, gp: 17, plus20: 12, team: 'CSU', id:'price_g_2029_rush' },
+                            { name: 'Terrelle Francis', pos: 'HB', car: 36, yds: 249, ypc: 6.9, td: 4, ypg: 16.6, fumb: 1, long: 42, gp: 15, plus20: 2, team: 'CSU', id:'francis_t_2029' },
+                            { name: 'Collin Sandland', pos: 'HB', car: 27, yds: 136, ypc: 5.0, td: 3, ypg: 12.4, fumb: 0, long: 18, gp: 11, plus20: 0, team: 'CSU', id:'sandland_c_2029' },
+                            { name: 'Dave Shelley', pos: 'QB', car: 17, yds: 101, ypc: 5.9, td: 2, ypg: 7.2, fumb: 0, long: 36, gp: 14, plus20: 3, team: 'CSU', id:'shelley_d_2029_rush' },
+                            { name: 'Dakota McNitt', pos: 'WR', car: 27, yds: 28, ypc: 1.0, td: 0, ypg: 1.6, fumb: 0, long: 5, gp: 17, plus20: 0, team: 'CSU', id:'mcnitt_d_2029_rush' },
+                            { name: 'Kenny Tongues', pos: 'WR', car: 5, yds: 4, ypc: 0.8, td: 0, ypg: 0.2, fumb: 1, long: 3, gp: 17, plus20: 0, team: 'CSU', id:'tongues_k_2029_rush' }
+                        ],
+                        receiving: [
+                            { name: 'Kenny Tongues', pos: 'WR', rec: 88, yds: 1771, avg: 20.1, td: 22, yac: 560, ypg: 104.2, long: 86, gp: 17, drops: 12, team: 'CSU', id:'tongues_k_2029_rec' },
+                            { name: 'Dakota McNitt', pos: 'WR', rec: 78, yds: 978, avg: 12.5, td: 12, yac: 308, ypg: 57.5, long: 80, gp: 17, drops: 3, team: 'CSU', id:'mcnitt_d_2029_rec' }, // Corrected AVG
+                            { name: 'Stephen Everett', pos: 'TE', rec: 58, yds: 756, avg: 13.0, td: 9, yac: 215, ypg: 44.5, long: 43, gp: 17, drops: 2, team: 'CSU', id:'everett_s_2029_rec' }, // Corrected REC and AVG
+                            { name: 'Nazir McNitt', pos: 'WR', rec: 51, yds: 713, avg: 14.0, td: 4, yac: 309, ypg: 41.9, long: 90, gp: 17, drops: 5, team: 'CSU', id:'mcnitt_n_2029' }, // Corrected REC and AVG
+                            { name: 'Isaiah Boutte', pos: 'WR', rec: 38, yds: 527, avg: 13.9, td: 5, yac: 182, ypg: 31.0, long: 68, gp: 17, drops: 0, team: 'CSU', id:'boutte_i_2029_rec' }, // Corrected REC and AVG
+                            { name: 'Baraka Nwangwu', pos: 'HB', rec: 34, yds: 427, avg: 12.6, td: 1, yac: 187, ypg: 25.1, long: 47, gp: 17, drops: 1, team: 'CSU', id:'nwangwu_b_2029_rec' }, // Corrected REC and AVG
+                            { name: 'Darren Klein', pos: 'TE', rec: 16, yds: 327, avg: 20.4, td: 1, yac: 178, ypg: 19.2, long: 74, gp: 17, drops: 2, team: 'CSU', id:'klein_d_2029_rec' },
+                            { name: 'Greg Soliday', pos: 'TE', rec: 5, yds: 35, avg: 7.0, td: 0, yac: 14, ypg: 2.1, long: 12, gp: 17, drops: 2, team: 'CSU', id:'soliday_g_2029' },
+                            { name: 'Terrelle Francis', pos: 'HB', rec: 2, yds: 21, avg: 10.5, td: 0, yac: 6, ypg: 1.4, long: 14, gp: 15, drops: 1, team: 'CSU', id:'francis_t_2029_rec' },
+                            { name: 'Sam Russo', pos: 'WR', rec: 1, yds: 18, avg: 18.0, td: 0, yac: 11, ypg: 1.1, long: 18, gp: 17, drops: 0, team: 'CSU', id:'russo_s_2029_rec' },
+                            { name: 'Collin Sandland', pos: 'HB', rec: 2, yds: 11, avg: 5.5, td: 0, yac: 7, ypg: 1.0, long: 15, gp: 11, drops: 0, team: 'CSU', id:'sandland_c_2029_rec' }
+                        ],
+                        kicking: [
+                            { name: 'Rashaud Boiman', pos: 'K', fgm: 9, fga: 12, fg_pct: '75.00%', xpm: 100, xpa: 102, xp_pct: '98%', long: 52, fgm_u29: '0/1', fgm_30_39: '3/5', fgm_40_49: '5/7', fgm_50_plus: '1/1', team: 'CSU', id:'boiman_r_2029' }
+                        ]
+                    },
+                    '2030': { passing: [], rushing: [], receiving: [], kicking: [] } 
+                },
+                openPlayerModal(player) {
+                    this.$dispatch('open-player-modal', player);
+                },
+                init() {
+                    for (const year in this.allSeasonData) {
+                        if(this.allSeasonData[year].passing) this.allSeasonData[year].passing.sort((a,b) => b.yds - a.yds);
+                        if(this.allSeasonData[year].rushing) this.allSeasonData[year].rushing.sort((a,b) => b.yds - a.yds);
+                        if(this.allSeasonData[year].receiving) this.allSeasonData[year].receiving.sort((a,b) => b.yds - a.yds);
+                    }
+                }
+            };
+        }
+
+        // Combined JavaScript for header and page-specific logic
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const tickerWrapElement = document.querySelector('.ticker-wrap'); 
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px'; 
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem'; 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+            
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+            
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null; 
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) { 
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator); 
+            }
+            
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+                slidingIndicator.style.width = `${tabRect.width}px`;
+                slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'stats.html'); 
+                setActiveTab(currentPageTab || allTabs[0]); 
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                    tab.addEventListener('click', (e) => {
+                        setActiveTab(tab); 
+                    });
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+                
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 150);
+                }
+            }
+            adjustLayout(); 
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                const tabRect = activeTabElem.getBoundingClientRect();
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                indicator.style.width = `${tabRect.width}px`;
+                indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+        }); 
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    indicator.style.width = `${tabRect.width}px`;
+                    indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+        }); 
+    </script>
+</body>
+</ht

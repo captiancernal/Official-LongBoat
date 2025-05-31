@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Awards - Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57; 
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Palette from original player_awards.html (for page content) */
+            --award-bg: #FDFBF5; 
+            --award-wood-dark: #6F4E37; 
+            --award-wood-light: #A07855; 
+            --award-gold-primary: #D4AF37; 
+            --award-gold-secondary: #E6C66E; 
+            --award-text-primary: #4A3B31; 
+            --award-text-on-dark: #FDFBF5; 
+        }
+
+        /* Global body styles, adapted for player_awards.html */
+        body {
+            font-family: 'Lato', sans-serif; /* Lato for main content of this page */
+            overflow-x: hidden; 
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0; 
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--award-bg); 
+            color: var(--award-text-primary); 
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper { 
+            position: relative;
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-end; 
+            padding-bottom: 3px; 
+        }
+        
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center; 
+            gap: 0.1rem; 
+            width: auto; 
+        }
+
+        nav .nav-tab-row:nth-child(2) { 
+            margin-top: -0.25rem; 
+        }
+
+        nav .nav-tab-row a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.70rem;  
+            letter-spacing: 0.04em; 
+            text-transform: uppercase; 
+            padding: 0.6rem 0.7rem; 
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative; 
+            z-index: 2; 
+            white-space: nowrap;
+            background-color: transparent; 
+            border-radius: 4px 4px 0 0; 
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+        
+        nav .nav-tab-row a.active-tab { 
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0; 
+            height: 3px; 
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1); 
+            z-index: 1; 
+        }
+        
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green); 
+        }
+        nav #mobile-menu a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.9rem; 
+            display: block; 
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem; 
+        }
+
+        /* --- Styles specific to player_awards.html content --- */
+        .awards-header h1 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--award-wood-dark);
+            text-shadow: 1px 1px 2px var(--award-gold-secondary);
+        }
+        .awards-header p {
+            color: var(--award-wood-light);
+        }
+
+        .award-tab-button {
+            font-family: 'Oswald', sans-serif;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--award-wood-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap; 
+            cursor: pointer;
+        }
+        .award-tab-button.active, .award-tab-button:hover {
+            color: var(--award-gold-primary);
+            border-bottom-color: var(--award-gold-primary);
+        }
+        .award-tab-button.active {
+            background-color: rgba(212, 175, 55, 0.05);
+        }
+        .tabs-container {
+            width: 100%; 
+            overflow: hidden; 
+        }
+        .tabs-container nav {
+             display: flex; 
+             overflow-x: auto;  
+             -webkit-overflow-scrolling: touch; 
+             -ms-overflow-style: none;  
+             scrollbar-width: none;  
+             padding-bottom: 1px; 
+        }
+        .tabs-container nav::-webkit-scrollbar { 
+            display: none;
+        }
+
+        .award-card {
+            background-color: var(--csu-white); /* Or var(--award-bg) if preferred for consistency */
+            border: 1px solid var(--award-gold-primary);
+            border-left: 5px solid var(--award-gold-primary);
+            box-shadow: 0 4px 15px rgba(111, 78, 55, 0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        .award-card-heisman { 
+            background-color: #fffaf0; 
+            border-color: var(--award-gold-primary);
+            border-left-width: 8px; 
+        }
+        .award-title {
+            font-family: 'Oswald', sans-serif;
+            color: var(--award-wood-dark);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--award-gold-secondary);
+            text-align: center;
+        }
+
+        .winners-list { list-style: none; padding-left: 0; }
+        .winners-list li {
+            padding: 0.6rem 0.25rem;
+            border-bottom: 1px solid #f3eade; 
+            font-size: 0.95rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .winners-list li:last-child { border-bottom: none; }
+        .winner-year {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            color: var(--award-gold-primary);
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+        .winner-details { flex-grow: 1; text-align: right; }
+        .winner-name { font-weight: 700; color: var(--award-text-primary); }
+        .winner-team-pos { font-style: italic; color: var(--award-wood-light); font-size: 0.9em; margin-left: 0.25rem; }
+        
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green); 
+            color: var(--csu-white); /* Using var for consistency */
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem; 
+            margin-top: 3rem; /* mt-12 */
+            border-top: 4px solid var(--award-gold-primary); /* From original player_awards */
+        }
+        footer p {
+            font-size: 0.875rem; /* text-sm */
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+
+    </style>
+</head>
+<body class="bg-award-bg"> <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper"> 
+                    <div class="nav-tabs-container"> 
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;"> 
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> 
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="mb-10 text-center awards-header mt-8"> <h1 class="text-4xl md:text-5xl font-bold mb-3">Player Awards Showcase</h1>
+                <p class="text-lg md:text-xl">Celebrating the finest achievements in college football.</p>
+            </header>
+
+            <div x-data="awardsPageData()" class="mb-6">
+                <div class="border-b-2 border-award-gold-secondary mb-6 tabs-container">
+                    <nav class="-mb-px flex space-x-1 sm:space-x-2 pb-1" aria-label="Awards">
+                        <template x-for="awardName in orderedAwardNames" :key="awardName">
+                            <button @click="selectedAward = awardName; $event.target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });"
+                                    :class="{ 'active': selectedAward === awardName }"
+                                    class="award-tab-button">
+                                <span x-text="awardName"></span>
+                            </button>
+                        </template>
+                    </nav>
+                </div>
+
+                <div class="mt-6">
+                    <template x-for="awardName in orderedAwardNames" :key="awardName">
+                        <div x-show="selectedAward === awardName" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
+                            <div :class="awardName === 'Heisman Trophy' ? 'award-card award-card-heisman' : 'award-card'">
+                                <h2 class="award-title" x-text="awardName"></h2>
+                                <h3 class="text-lg font-semibold text-award-wood-dark mt-6 mb-3 font-['Oswald']">Past Winners:</h3>
+                                <ul class="winners-list">
+                                    <template x-for="winner in awardsData[awardName]?.winners.sort((a,b) => b.year - a.year)" :key="winner.year + '-' + winner.name">
+                                        <li>
+                                            <span class="winner-year" x-text="winner.year + ':'"></span>
+                                            <div class="winner-details">
+                                                <span class="winner-name" x-text="winner.name"></span>
+                                                <span class="winner-team-pos" x-text="'(' + winner.team + (winner.pos ? ', ' + winner.pos : '') + ')'"></span>
+                                            </div>
+                                        </li>
+                                    </template>
+                                    <template x-if="!awardsData[awardName]?.winners || awardsData[awardName]?.winners.length === 0">
+                                        <li class="text-award-wood-light italic">No winners listed for this award yet.</li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        function awardsPageData() {
+            return {
+                selectedAward: 'Heisman Trophy', 
+                orderedAwardNames: [
+                    'Heisman Trophy', 'Maxwell Award', 'Walter Camp Award', 'Bednarik Award',
+                    'Bronko Nagurski Trophy', 'Davey O\'Brien Award', 'Doak Walker Award',
+                    'Biletnikoff Award', 'John Mackey Award', 'Outland Trophy', 'Rimington Trophy',
+                    'Lombardi Award', 'Butkus Award', 'Jim Thorpe Award', 'Lou Groza Award', 'Ray Guy Award'
+                ],
+                awardsData: {
+                    'Heisman Trophy': { winners: [ { year: 2029, name: 'Keke Odighizuwa', team: 'M-OH', pos: 'WR' }, { year: 2028, name: 'Amar\'e Hocker', team: 'CLEV', pos: 'QB' }, { year: 2027, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2026, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2025, name: 'Ty Simpson', team: 'BAMA', pos: 'QB' }, { year: 2024, name: 'Jalen Milroe', team: 'BAMA', pos: 'QB' }, { year: 2023, name: 'Jayden Daniels', team: 'LSU', pos: 'QB' } ] },
+                    'Maxwell Award': { winners: [ { year: 2029, name: 'Keke Odighizuwa', team: 'M-OH', pos: 'WR' }, { year: 2028, name: 'Amar\'e Hocker', team: 'CLEV', pos: 'QB' }, { year: 2027, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2026, name: 'Cam Coleman', team: 'FLA', pos: 'WR' }, { year: 2025, name: 'Cade Klubnik', team: 'CLEM', pos: 'QB' }, { year: 2024, name: 'Jalen Milroe', team: 'BAMA', pos: 'QB' }, { year: 2023, name: 'Michael Penix Jr.', team: 'WASH', pos: 'QB' } ] },
+                    'Walter Camp Award': { winners: [ { year: 2029, name: 'Cornell Tavares', team: 'M-OH', pos: 'QB' }, { year: 2028, name: 'Amar\'e Hocker', team: 'CLEV', pos: 'QB' }, { year: 2027, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2026, name: 'Amar\'e Hocker', team: 'CLEV', pos: 'QB' }, { year: 2025, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2024, name: 'Cade McDonald', team: 'M-OH', pos: 'WR' }, { year: 2023, name: 'Jayden Daniels', team: 'LSU', pos: 'QB' } ] },
+                    'Bednarik Award': { winners: [ { year: 2029, name: 'Nelson Kumar', team: 'M-OH', pos: 'LB' }, { year: 2028, name: 'Owen Long', team: 'CSU', pos: 'LB' }, { year: 2027, name: 'Tavares Jameson', team: 'ORE', pos: 'DB' }, { year: 2026, name: 'Red Murdock', team: 'BUFF', pos: 'LB' }, { year: 2025, name: 'Jo\'Laison Landry', team: 'TXST', pos: 'DL' }, { year: 2024, name: 'Donovan Ezeiruaku', team: 'BC', pos: 'DL' }, { year: 2023, name: 'Payton Wilson', team: 'NCST', pos: 'LB' } ] },
+                    'Bronko Nagurski Trophy': { winners: [ { year: 2029, name: 'Josh Eason', team: 'UGA', pos: 'DL' }, { year: 2028, name: 'Will Smith', team: 'TLSA', pos: 'DL' }, { year: 2027, name: 'Jeffery Rush', team: 'MISS', pos: 'DL' }, { year: 2026, name: 'Kamran James', team: 'FLA', pos: 'DL' }, { year: 2025, name: 'Travion Barnes', team: 'FIU', pos: 'LB' }, { year: 2024, name: 'Suntarine Perkins', team: 'MISS', pos: 'LB' }, { year: 2023, name: 'Xavier Watts', team: 'ND', pos: 'S' } ] },
+                    'Davey O\'Brien Award': { winners: [ { year: 2029, name: 'Cornell Tavares', team: 'M-OH', pos: 'QB' }, { year: 2028, name: 'Amar\'e Hocker', team: 'CLEV', pos: 'QB' }, { year: 2027, name: 'Marcel Reed', team: 'TAMU', pos: 'QB' }, { year: 2026, name: 'DJ Lagway', team: 'FLA', pos: 'QB' }, { year: 2025, name: 'Cade Klubnik', team: 'CLEM', pos: 'QB' }, { year: 2024, name: 'Jalen Milroe', team: 'BAMA', pos: 'QB' }, { year: 2023, name: 'Jayden Daniels', team: 'LSU', pos: 'QB' } ] },
+                    'Doak Walker Award': { winners: [ { year: 2029, name: 'Baraka Nwangwu', team: 'CLEV', pos: 'RB' }, { year: 2028, name: 'Baraka Nwangwu', team: 'CLEV', pos: 'RB' }, { year: 2027, name: 'Rickey Hunt Jr.', team: 'OHIO', pos: 'RB' }, { year: 2026, name: 'Rickey Hunt Jr.', team: 'OHIO', pos: 'RB' }, { year: 2025, name: 'DJ Giddens', team: 'KSU', pos: 'RB' }, { year: 2024, name: 'Cam Skattebo', team: 'ASU', pos: 'RB' }, { year: 2023, name: 'Ollie Gordon III', team: 'OKST', pos: 'RB' } ] },
+                    'Biletnikoff Award': { winners: [ { year: 2029, name: 'Keke Odighizuwa', team: 'M-OH', pos: 'WR' }, { year: 2028, name: 'Gordon Buggs', team: 'M-OH', pos: 'WR' }, { year: 2027, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2026, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2025, name: 'Lynel Billups-Williams', team: 'M-OH', pos: 'WR' }, { year: 2024, name: 'Cade McDonald', team: 'M-OH', pos: 'WR' }, { year: 2023, name: 'Marvin Harrison Jr.', team: 'OSU', pos: 'WR' } ] },
+                    'John Mackey Award': { winners: [ { year: 2029, name: 'Alani Hope', team: 'ORE', pos: 'TE' }, { year: 2028, name: 'Kareem Duggan', team: 'CLEV', pos: 'TE' }, { year: 2027, name: 'Darren Klein', team: 'CLEV', pos: 'TE' }, { year: 2026, name: 'Jelani Thurman', team: 'OSU', pos: 'TE' }, { year: 2025, name: 'Oscar Delp', team: 'UGA', pos: 'TE' }, { year: 2024, name: 'Harold Fannin Jr.', team: 'CLEV', pos: 'TE' }, { year: 2023, name: 'Brock Bowers', team: 'UGA', pos: 'TE' } ] },
+                    'Outland Trophy': { winners: [ { year: 2029, name: 'Garrison Yusef', team: 'STAN', pos: 'OL' }, { year: 2028, name: 'Sullivan Absher', team: 'ND', pos: 'OL' }, { year: 2027, name: 'Noah Dunham', team: 'WSU', pos: 'OL' }, { year: 2026, name: 'Cade Bourd', team: 'IOWA', pos: 'OL' }, { year: 2025, name: 'Tyler Booker', team: 'BAMA', pos: 'OL' }, { year: 2024, name: 'Tate Ratledge', team: 'UGA', pos: 'OL' }, { year: 2023, name: 'T\'Vondre Sweat', team: 'TEX', pos: 'DL' } ] },
+                    'Rimington Trophy': { winners: [ { year: 2029, name: 'Garrison Yusaf', team: 'STAN', pos: 'C' }, { year: 2028, name: 'Garrison Yusaf', team: 'STAN', pos: 'C' }, { year: 2027, name: 'Noah Dunham', team: 'WSU', pos: 'C' }, { year: 2026, name: 'Cade Bourd', team: 'IOWA', pos: 'C' }, { year: 2025, name: 'Jake Slaughter', team: 'FLA', pos: 'C' }, { year: 2024, name: 'Jacob Gardner', team: 'CSU', pos: 'C' }, { year: 2023, name: 'J. Powers-Johnson', team: 'ORE', pos: 'C' } ] },
+                    'Lombardi Award': { winners: [ { year: 2029, name: 'Steve Fuentes', team: 'MISS', pos: 'DL/LB' }, { year: 2028, name: 'Chris Burge', team: 'UAB', pos: 'DL/LB' }, { year: 2027, name: 'Jeffery Rush', team: 'MISS', pos: 'DL' }, { year: 2026, name: 'T.J. Parker', team: 'CLEM', pos: 'DL' }, { year: 2025, name: 'Romello Height', team: 'GT', pos: 'DL/LB' }, { year: 2024, name: 'Donovan Ezeiruaku', team: 'BC', pos: 'DL' }, { year: 2023, name: 'Laiatu Latu', team: 'UCLA', pos: 'DL' } ] },
+                    'Butkus Award': { winners: [ { year: 2029, name: 'Nelson Kumar', team: 'M-OH', pos: 'LB' }, { year: 2028, name: 'Owen Long', team: 'CSU', pos: 'LB' }, { year: 2027, name: 'Tavares Jameson', team: 'ORE', pos: 'LB' }, { year: 2026, name: 'Red Murdock', team: 'BUFF', pos: 'LB' }, { year: 2025, name: 'Kobe King', team: 'PSU', pos: 'LB' }, { year: 2024, name: 'Suntarine Perkins', team: 'MISS', pos: 'LB' }, { year: 2023, name: 'Laiatu Latu', team: 'UCLA', pos: 'LB' } ] },
+                    'Jim Thorpe Award': { winners: [ { year: 2029, name: 'Santiago Huertelou', team: 'STAN', pos: 'DB' }, { year: 2028, name: 'Nate Cavka', team: 'CLEV', pos: 'DB' }, { year: 2027, name: 'Terry Bussey', team: 'TAMU', pos: 'DB' }, { year: 2026, name: 'OJ Frederique Jr.', team: 'MIA', pos: 'DB' }, { year: 2025, name: 'Kamari Wilson', team: 'FLA', pos: 'DB' }, { year: 2024, name: 'Malachi Moore', team: 'BAMA', pos: 'DB' }, { year: 2023, name: 'Trey Taylor', team: 'AFA', pos: 'S' } ] },
+                    'Lou Groza Award': { winners: [ { year: 2029, name: 'Erik Teamer', team: 'GSU', pos: 'K' }, { year: 2028, name: 'Vinny LeClair', team: 'LT', pos: 'K' }, { year: 2027, name: 'Caden Chittenden', team: 'UNLV', pos: 'K' }, { year: 2026, name: 'Tyler Robles', team: 'USC', pos: 'K' }, { year: 2025, name: 'Peyton Woodring', team: 'UGA', pos: 'K' }, { year: 2024, name: 'Jonah Dalmas', team: 'BOIS', pos: 'K' }, { year: 2023, name: 'Graham Nicholson', team: 'AFA', pos: 'K' } ] },
+                    'Ray Guy Award': { winners: [ { year: 2029, name: 'Clyde Garrison', team: 'EMU', pos: 'P' }, { year: 2028, name: 'Robert McCracken', team: 'SDSU', pos: 'P' }, { year: 2027, name: 'Devin Wayne', team: 'AFA', pos: 'P' }, { year: 2026, name: 'Jacob Ulrich', team: 'KENN', pos: 'P' }, { year: 2025, name: 'Ryan Eckley', team: 'MSU', pos: 'P' }, { year: 2024, name: 'Alex Mastromanno', team: 'FSU', pos: 'P' }, { year: 2023, name: 'Tory Taylor', team: 'IOWA', pos: 'P' } ] }
+                },
+                init() {
+                    for (const award in this.awardsData) {
+                        if (this.awardsData[award] && this.awardsData[award].winners) {
+                            this.awardsData[award].winners.sort((a, b) => b.year - a.year);
+                        }
+                    }
+                }
+            };
+        }
+
+        // Combined JavaScript for header and page-specific logic
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const tickerWrapElement = document.querySelector('.ticker-wrap'); 
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+
+                // if (tickerWrapElement) { // Ticker is not on this page
+                //     tickerWrapElement.style.top = navHeight + 'px';
+                //     totalOffset += tickerWrapElement.offsetHeight;
+                // }
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px'; 
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem'; 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+            
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+            
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null; 
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) { 
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator); 
+            }
+            
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+                slidingIndicator.style.width = `${tabRect.width}px`;
+                slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                // THIS IS THE LINE TO CHANGE FOR EACH PAGE
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'player_awards.html'); 
+                setActiveTab(currentPageTab || allTabs[0]); 
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                    tab.addEventListener('click', (e) => {
+                        setActiveTab(tab); 
+                    });
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+                
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 150);
+                }
+            }
+            adjustLayout(); 
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                const tabRect = activeTabElem.getBoundingClientRect();
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                indicator.style.width = `${tabRect.width}px`;
+                indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+        }); 
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    indicator.style.width = `${tabRect.width}px`;
+                    indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+        }); 
+    </script>
+</body>
+</html>

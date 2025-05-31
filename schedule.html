@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - CSU Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        // Moved JavaScript to head, after Alpine.js
+        // Alpine.js data function
+        function scheduleData() {
+            return {
+                selectedSeason: '2030', // Default to the latest season
+                schedules: {
+                    '2024': [
+                        { gameNum: 1, date: 'CLEV', homeAway: '@', opponent: 'TULN', finalScore: '24-21', result: 'W', record: '1-0' },
+                        { gameNum: 2, date: 'CLEV', homeAway: 'VS', opponent: 'KSU', finalScore: '42-31', result: 'L', record: '1-1' },
+                        { gameNum: 3, date: 'CLEV', homeAway: 'VS', opponent: 'WMU', finalScore: '45-42', result: 'W', record: '2-1' },
+                        { gameNum: 4, date: 'CLEV', homeAway: 'VS', opponent: 'HAW', finalScore: '28-20', result: 'W', record: '3-1' },
+                        { gameNum: 5, date: 'CLEV', homeAway: '@', opponent: 'TTU', finalScore: '17-13', result: 'L', record: '3-2' },
+                        { gameNum: 6, date: 'CLEV', homeAway: '@', opponent: 'SMU', finalScore: '28-22', result: 'W', record: '4-2' },
+                        { gameNum: 7, date: 'CLEV', homeAway: '@', opponent: 'COLO', finalScore: '24-21', result: 'L', record: '4-3' },
+                        { gameNum: 8, date: 'CLEV', homeAway: 'VS', opponent: 'KU', finalScore: '34-13', result: 'W', record: '5-3' },
+                        { gameNum: 9, date: 'CLEV', homeAway: 'VS', opponent: 'OHIO', finalScore: '49-24', result: 'L', record: '5-4' },
+                        { gameNum: 10, date: 'CLEV', homeAway: 'VS', opponent: 'OKST', finalScore: '31-28', result: 'W', record: '6-4' },
+                        { gameNum: 11, date: 'CLEV', homeAway: '@', opponent: 'UCF', finalScore: '34-27', result: 'W', record: '7-4' },
+                        { gameNum: 12, date: 'CLEV', homeAway: '@', opponent: 'M-OH', finalScore: '46-45', result: 'W', record: '8-4' },
+                        { gameNum: 'B12-CH', date: 'CLEV', homeAway: 'VS', opponent: 'N/A', finalScore: '0-0', result: 'N/A', record: '8-4' },
+                        { gameNum: 'LIBERTY BWL', date: 'CLEV', homeAway: 'VS', opponent: 'ARMY', finalScore: '31-21', result: 'W', record: '9-4 (Liberty Bowl Champions)' }
+                    ],
+                    '2025': [
+                        { gameNum: 1, date: 'CLEV', homeAway: '@', opponent: 'MASS', finalScore: '37-17', result: 'W', record: '1-0' },
+                        { gameNum: 2, date: 'CLEV', homeAway: 'VS', opponent: 'AFA', finalScore: '34-24', result: 'W', record: '2-0' },
+                        { gameNum: 3, date: 'CLEV', homeAway: 'VS', opponent: 'FCSNW', finalScore: '56-13', result: 'W', record: '3-0' },
+                        { gameNum: 4, date: 'CLEV', homeAway: '@', opponent: 'LOU', finalScore: '62-28', result: 'W', record: '4-0' },
+                        { gameNum: 5, date: 'CLEV', homeAway: 'VS', opponent: 'UH', finalScore: '31-17', result: 'W', record: '5-0' },
+                        { gameNum: 6, date: 'CLEV', homeAway: '@', opponent: 'ISU', finalScore: '24-20', result: 'W', record: '6-0' },
+                        { gameNum: 7, date: 'CLEV', homeAway: '@', opponent: 'COLO', finalScore: '37-14', result: 'L', record: '6-1' },
+                        { gameNum: 8, date: 'CLEV', homeAway: 'VS', opponent: 'M-OH', finalScore: '35-33', result: 'W', record: '7-1' },
+                        { gameNum: 9, date: 'CLEV', homeAway: 'VS', opponent: 'ARIZ', finalScore: '35-14', result: 'L', record: '7-2' },
+                        { gameNum: 10, date: 'CLEV', homeAway: '@', opponent: 'OHIO', finalScore: '56-38', result: 'W', record: '8-2' },
+                        { gameNum: 11, date: 'CLEV', homeAway: 'VS', opponent: 'UCF', finalScore: '28-16', result: 'W', record: '9-2' },
+                        { gameNum: 12, date: 'CLEV', homeAway: '@', opponent: 'KSU', finalScore: '48-17', result: 'L', record: '9-3' },
+                        { gameNum: 'B12-CH', date: 'CLEV', homeAway: 'VS', opponent: 'N/A', finalScore: '0-0', result: 'N/A', record: '9-3' },
+                        { gameNum: 'TEXAS BWL', date: 'CLEV', homeAway: 'VS', opponent: 'UT', finalScore: '31-24', result: 'W', record: '10-3 (Texas Bowl Champions)' }
+                    ],
+                    '2026': [
+                        { gameNum: 1, date: 'CLEV', homeAway: 'VS', opponent: 'MASS', finalScore: '52-17', result: 'W', record: '1-0' },
+                        { gameNum: 2, date: 'CLEV', homeAway: 'VS', opponent: 'TLSA', finalScore: '41-14', result: 'W', record: '2-0' },
+                        { gameNum: 3, date: 'CLEV', homeAway: 'VS', opponent: 'ISU', finalScore: '46-39', result: 'W', record: '3-0' },
+                        { gameNum: 4, date: 'CLEV', homeAway: '@', opponent: 'COLO', finalScore: '35-28', result: 'W', record: '4-0' },
+                        { gameNum: 5, date: 'CLEV', homeAway: 'VS', opponent: 'MTSU', finalScore: '38-15', result: 'W', record: '5-0' },
+                        { gameNum: 6, date: 'CLEV', homeAway: '@', opponent: 'TTU', finalScore: '34-20', result: 'W', record: '6-0' },
+                        { gameNum: 7, date: 'CLEV', homeAway: '@', opponent: 'M-OH', finalScore: '59-53', result: 'W', record: '7-0' },
+                        { gameNum: 8, date: 'CLEV', homeAway: '@', opponent: 'UCF', finalScore: '38-24', result: 'W', record: '8-0' },
+                        { gameNum: 9, date: 'CLEV', homeAway: '@', opponent: 'UTAH', finalScore: '45-27', result: 'W', record: '9-0' },
+                        { gameNum: 10, date: 'CLEV', homeAway: '@', opponent: 'ARIZ', finalScore: '25-24', result: 'W', record: '10-0' },
+                        { gameNum: 11, date: 'CLEV', homeAway: 'VS', opponent: 'OKST', finalScore: '38-20', result: 'W', record: '11-0' },
+                        { gameNum: 12, date: 'CLEV', homeAway: 'VS', opponent: 'OHIO', finalScore: '47-42', result: 'L', record: '11-1' },
+                        { gameNum: 'B12-CH', date: 'CLEV', homeAway: 'VS', opponent: 'N/A', finalScore: '0-0', result: 'N/A', record: '11-1' },
+                        { gameNum: 'Alamo Bwl', date: 'CLEV', homeAway: 'VS', opponent: 'IOWA', finalScore: '38-28', result: 'W', record: '12-1 (Alamo Bowl Champions)' }
+                    ],
+                    '2027': [
+                        { gameNum: 1, date: 'CLEV', homeAway: 'VS', opponent: 'TOL', finalScore: '45-24', result: 'W', record: '1-0' },
+                        { gameNum: 2, date: 'CLEV', homeAway: 'VS', opponent: 'KENT', finalScore: '35-30', result: 'W', record: '2-0' },
+                        { gameNum: 3, date: 'CLEV', homeAway: '@', opponent: 'ASU', finalScore: '24-20', result: 'W', record: '3-0' },
+                        { gameNum: 4, date: 'CLEV', homeAway: 'VS', opponent: 'AKR', finalScore: '63-30', result: 'W', record: '4-0' },
+                        { gameNum: 5, date: 'CLEV', homeAway: 'VS', opponent: 'BU', finalScore: '59-24', result: 'W', record: '5-0' },
+                        { gameNum: 6, date: 'CLEV', homeAway: '@', opponent: 'TTU', finalScore: '42-13', result: 'W', record: '6-0' },
+                        { gameNum: 7, date: 'CLEV', homeAway: 'VS', opponent: 'M-OH', finalScore: '53-49', result: 'W', record: '7-0' },
+                        { gameNum: 8, date: 'CLEV', homeAway: '@', opponent: 'UCF', finalScore: '59-27', result: 'L', record: '7-1' },
+                        { gameNum: 9, date: 'CLEV', homeAway: 'VS', opponent: 'OHIO', finalScore: '35-7', result: 'W', record: '8-1' },
+                        { gameNum: 10, date: 'CLEV', homeAway: '@', opponent: 'ARIZ', finalScore: '48-31', result: 'W', record: '9-1' },
+                        { gameNum: 11, date: 'CLEV', homeAway: '@', opponent: 'OKST', finalScore: '45-42', result: 'L', record: '9-2' },
+                        { gameNum: 12, date: 'CLEV', homeAway: 'VS', opponent: 'UTAH', finalScore: '34-29', result: 'W', record: '10-2' },
+                        { gameNum: 'Pop-Tart Bwl', date: 'CLEV', homeAway: 'VS', opponent: 'LOU', finalScore: '30-13', result: 'W', record: '11-2 (Pop Tart Bowl Champions)' }
+                    ],
+                    '2028': [
+                        { gameNum: 1, date: 'CLEV', homeAway: '@', opponent: 'UK', finalScore: '33-14', result: 'W', record: '1-0' },
+                        { gameNum: 2, date: 'CLEV', homeAway: '@', opponent: 'KENT', finalScore: '56-19', result: 'W', record: '2-0' },
+                        { gameNum: 3, date: 'CLEV', homeAway: 'VS', opponent: 'TOL', finalScore: '42-28', result: 'W', record: '3-0' },
+                        { gameNum: 4, date: 'CLEV', homeAway: '@', opponent: 'BYU', finalScore: '63-21', result: 'W', record: '4-0' },
+                        { gameNum: 5, date: 'CLEV', homeAway: '@', opponent: 'OKST', finalScore: '49-17', result: 'W', record: '5-0' },
+                        { gameNum: 6, date: 'CLEV', homeAway: 'VS', opponent: 'UTAH', finalScore: '34-17', result: 'W', record: '6-0' },
+                        { gameNum: 7, date: 'CLEV', homeAway: 'VS', opponent: 'TTU', finalScore: '44-30', result: 'W', record: '7-0' },
+                        { gameNum: 8, date: 'CLEV', homeAway: 'VS', opponent: 'OHIO', finalScore: '41-38', result: 'L', record: '7-1' },
+                        { gameNum: 9, date: 'CLEV', homeAway: '@', opponent: 'UCF', finalScore: '52-24', result: 'W', record: '8-1' },
+                        { gameNum: 10, date: 'CLEV', homeAway: 'VS', opponent: 'ASU', finalScore: '56-23', result: 'W', record: '9-1' },
+                        { gameNum: 11, date: 'CLEV', homeAway: '@', opponent: 'M-OH', finalScore: '84-70', result: 'W', record: '10-1' },
+                        { gameNum: 12, date: 'CLEV', homeAway: 'VS', opponent: 'TCU', finalScore: '70-24', result: 'W', record: '11-1' },
+                        { gameNum: 'B12-CH', date: 'CLEV', homeAway: 'VS', opponent: 'OHIO', finalScore: '48-17', result: 'W', record: '12-1' },
+                        { gameNum: 'RD 2', date: 'CLEV', homeAway: 'VS', opponent: 'OSU', finalScore: '45-38', result: 'W', record: '13-1' },
+                        { gameNum: 'RD 3', date: 'CLEV', homeAway: 'VS', opponent: 'CHAR', finalScore: '45-28', result: 'W', record: '14-1' },
+                        { gameNum: 'NC', date: 'CLEV', homeAway: 'VS', opponent: 'UGA', finalScore: '34-24', result: 'W', record: '15-1 (National Champions)' }
+                    ],
+                    '2029': [
+                        { gameNum: 1, date: 'CLEV', homeAway: '@', opponent: 'KENT', finalScore: '71-7', result: 'W', record: '1-0' },
+                        { gameNum: 2, date: 'CLEV', homeAway: '@', opponent: 'TOL', finalScore: '49-35', result: 'W', record: '2-0' },
+                        { gameNum: 3, date: 'CLEV', homeAway: 'VS', opponent: 'ARMY', finalScore: '56-24', result: 'W', record: '3-0' },
+                        { gameNum: 4, date: 'CLEV', homeAway: '@', opponent: 'BU', finalScore: '55-14', result: 'W', record: '4-0' },
+                        { gameNum: 5, date: 'CLEV', homeAway: 'VS', opponent: 'BYU', finalScore: '76-34', result: 'W', record: '5-0' },
+                        { gameNum: 6, date: 'CLEV', homeAway: 'VS', opponent: 'SMU', finalScore: '59-13', result: 'W', record: '6-0' },
+                        { gameNum: 7, date: 'CLEV', homeAway: 'VS', opponent: 'M-OH', finalScore: '51-29', result: 'L', record: '6-1' },
+                        { gameNum: 8, date: 'CLEV', homeAway: 'VS', opponent: 'UCF', finalScore: '49-14', result: 'W', record: '7-1' },
+                        { gameNum: 9, date: 'CLEV', homeAway: '@', opponent: 'OHIO', finalScore: '49-21', result: 'W', record: '8-1' },
+                        { gameNum: 10, date: 'CLEV', homeAway: 'VS', opponent: 'UTAH', finalScore: '54-6', result: 'W', record: '9-1' },
+                        { gameNum: 11, date: 'CLEV', homeAway: '@', opponent: 'TTU', finalScore: '34-20', result: 'L', record: '9-2' },
+                        { gameNum: 12, date: 'CLEV', homeAway: 'VS', opponent: 'ASU', finalScore: '42-14', result: 'W', record: '10-2' },
+                        { gameNum: 'B12-CH', date: 'CLEV', homeAway: 'VS', opponent: 'M-OH', finalScore: '34-28', result: 'L', record: '10-3' },
+                        { gameNum: 'RD 1', date: 'CLEV', homeAway: 'VS', opponent: 'OU', finalScore: '51-21', result: 'W', record: '11-3' },
+                        { gameNum: 'RD 2', date: 'CLEV', homeAway: 'VS', opponent: 'M-OH', finalScore: '48-42', result: 'W', record: '12-3' },
+                        { gameNum: 'RD 3', date: 'CLEV', homeAway: 'VS', opponent: 'UGA', finalScore: '31-14', result: 'W', record: '13-3' },
+                        { gameNum: 'NC', date: 'CLEV', homeAway: 'VS', opponent: 'OHIO', finalScore: '52-36', result: 'L', record: '13-4 (Championship Appearance)' }
+                    ],
+                    '2030': [
+                        { gameNum: 1, date: 'CLEV', homeAway: '@', opponent: 'ECU', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 2, date: 'CLEV', homeAway: 'VS', opponent: 'KSU', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 3, date: 'CLEV', homeAway: 'VS', opponent: 'TOL', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 4, date: 'CLEV', homeAway: '@', opponent: 'BU', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 5, date: 'CLEV', homeAway: 'VS', opponent: 'BYU', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 6, date: 'CLEV', homeAway: '@', opponent: 'ASU', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 7, date: 'CLEV', homeAway: 'VS', opponent: 'UCF', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 8, date: 'CLEV', homeAway: '@', opponent: 'SMU', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 9, date: 'CLEV', homeAway: 'VS', opponent: 'OHIO', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 10, date: 'CLEV', homeAway: '@', opponent: 'UTAH', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 11, date: 'CLEV', homeAway: '@', opponent: 'M-OH', finalScore: 'TBD', result: 'TBD', record: '0-0' },
+                        { gameNum: 12, date: 'CLEV', homeAway: 'VS', opponent: 'TTU', finalScore: 'TBD', result: 'TBD', record: '0-0' }
+                    ]
+                }
+            };
+        }
+
+        // Layout adjustment and navigation logic
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const mainElement = document.querySelector('main');
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                mainElement.style.paddingTop = navHeight + 'px';
+                document.body.style.paddingTop = '0px';
+            } else if (mainElement) {
+                mainElement.style.paddingTop = '12rem'; // Fallback
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            // Footer year
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+
+            // Navigation tab indicator logic
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null;
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) {
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator);
+            }
+
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+                if (tabRect.width > 0 && tabRect.height > 0) {
+                    slidingIndicator.style.width = `${tabRect.width}px`;
+                    slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'schedule.html');
+                setActiveTab(currentPageTab || allTabs[0]);
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 200);
+                }
+            }
+            adjustLayout(); // Initial call
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            if (activeTabElem && indicator && navTabsWrapper) {
+                 setTimeout(() => {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    if (tabRect.width > 0 && tabRect.height > 0) {
+                        indicator.style.width = `${tabRect.width}px`;
+                        indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                    }
+                }, 150);
+            }
+        });
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    if (tabRect.width > 0 && tabRect.height > 0) {
+                        indicator.style.width = `${tabRect.width}px`;
+                        indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                    }
+                }
+            }
+        });
+    </script>
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57;
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Variables specific to schedule.html content */
+            --page-bg-schedule: #f3f4f6; /* Original bg-gray-100 */
+            --table-header-bg: #f3f4f6; /* gray-100 */
+            --table-row-even-bg: #f9fafb; /* gray-50 */
+            --table-row-hover-bg: #f0f9ff; /* sky-50 */
+            --result-win-text: #16a34a; /* green-600 */
+            --result-loss-text: #dc2626; /* red-600 */
+            --result-tie-text: #6b7280; /* gray-500 */
+            --upcoming-game-text: #4b5563; /* gray-600 */
+            --game-outcome-w-bg: rgba(74, 222, 128, 0.1); /* green-200 with opacity */
+            --game-outcome-l-bg: rgba(248, 113, 113, 0.1); /* red-200 with opacity */
+            --game-outcome-tbd-text: #4b5563; /* gray-600 for TBD scores/results */
+        }
+
+        /* Global body styles, adapted for schedule.html */
+        body {
+            font-family: 'Inter', sans-serif; /* Keep Inter for main content of this page */
+            overflow-x: hidden;
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--page-bg-schedule);
+            color: var(--csu-gray); /* Default text color for this page */
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding-bottom: 3px;
+        }
+
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center;
+            gap: 0.1rem;
+            width: auto;
+        }
+
+        nav .nav-tab-row:nth-child(2) {
+            margin-top: -0.25rem;
+        }
+
+        nav .nav-tab-row a {
+            font-family: 'Audiowide', cursive;
+            font-size: 0.70rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.6rem 0.7rem;
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+            background-color: transparent;
+            border-radius: 4px 4px 0 0;
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+
+        nav .nav-tab-row a.active-tab {
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+            z-index: 1;
+        }
+
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green);
+        }
+        nav #mobile-menu a {
+            font-family: 'Audiowide', cursive;
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem;
+        }
+
+        /* --- Styles specific to schedule.html content --- */
+        th { background-color: var(--table-header-bg); font-weight: 600; }
+        td, th { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 0.875rem; }
+        tr:nth-child(even) { background-color: var(--table-row-even-bg); }
+        tr { transition: background-color 0.2s ease; }
+        tr:hover { background-color: var(--table-row-hover-bg); }
+
+        .result-win { color: var(--result-win-text); font-weight: 600; }
+        .result-loss { color: var(--result-loss-text); font-weight: 600; }
+        .result-tie { color: var(--result-tie-text); font-weight: 600; }
+        .result-tbd { color: var(--game-outcome-tbd-text); } /* Style for TBD results */
+        .upcoming-game td { color: var(--upcoming-game-text); } /* Applied to entire row for upcoming games */
+        .game-outcome-w { background-color: var(--game-outcome-w-bg); }
+        .game-outcome-l { background-color: var(--game-outcome-l-bg); }
+
+
+        .tab-button { /* For season tabs within schedule page */
+            transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom-width: 2px;
+            border-color: transparent;
+            color: #6b7280;
+            border-radius: 0.375rem 0.375rem 0 0;
+            white-space: nowrap;
+        }
+        .tab-button.active {
+            border-color: var(--csu-green);
+            color: var(--csu-green);
+            background-color: #e0f2f1; /* A light green for active tab */
+        }
+        .tab-button:not(.active):hover {
+            background-color: #f3f4f6;
+        }
+        .tabs-container nav { /* For season tabs container */
+             -ms-overflow-style: none;
+             scrollbar-width: none;
+        }
+        .tabs-container nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green);
+            color: var(--csu-white);
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            margin-top: 2.5rem; /* mt-10 */
+        }
+        footer p {
+            font-size: 0.875rem; /* text-sm */
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+
+    </style>
+</head>
+<body class="bg-page-bg-schedule">
+    <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper">
+                    <div class="nav-tabs-container">
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;">
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <header class="mb-8 mt-8">
+                <h1 class="text-3xl font-bold text-center text-gray-900">Season Schedule & Results</h1>
+                <p class="text-center text-gray-600 mt-2">Track the Vikings matchups across different seasons.</p>
+            </header>
+
+            <div x-data="scheduleData()" class="mb-6">
+                <div class="border-b border-gray-200 tabs-container">
+                    <nav class="-mb-px flex space-x-2 sm:space-x-4 overflow-x-auto pb-1" aria-label="Tabs">
+                        <template x-for="year in Object.keys(schedules).sort((a, b) => a - b)" :key="year">
+                            <button
+                                @click="selectedSeason = year"
+                                :class="{ 'active': selectedSeason === year }"
+                                class="tab-button"
+                            >
+                                <span x-text="year + ' Season'"></span>
+                            </button>
+                        </template>
+                    </nav>
+                </div>
+
+                <div class="mt-6">
+                    <template x-for="year in Object.keys(schedules).sort((a, b) => a - b)" :key="year">
+                        <div x-show="selectedSeason === year" x-transition>
+                             <h2 class="text-xl font-semibold text-gray-800 mb-3" x-text="year + ' Season Schedule - Cleveland State Vikings'"></h2>
+                             <div class="bg-white shadow-lg rounded-lg overflow-x-auto">
+                                <table class="w-full min-w-[750px]">
+                                    <thead class="border-b border-gray-200">
+                                        <tr>
+                                            <th>Game #</th>
+                                            <th>Date</th>
+                                            <th>Home/Away</th>
+                                            <th>Opponent</th>
+                                            <th>Final Score</th>
+                                            <th>Result (W/L)</th>
+                                            <th>Record</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        <template x-if="schedules[selectedSeason] && schedules[selectedSeason].length > 0">
+                                            <template x-for="(game, index) in schedules[selectedSeason]" :key="index">
+                                                <tr :class="{ 'game-outcome-w': game.result === 'W', 'game-outcome-l': game.result === 'L', 'upcoming-game': !game.result || game.result === 'N/A' || game.result === 'TBD' }">
+                                                    <td x-text="game.gameNum"></td>
+                                                    <td x-text="game.date"></td>
+                                                    <td x-text="game.homeAway"></td>
+                                                    <td x-text="game.opponent"></td>
+                                                    <td x-text="game.finalScore" :class="{'result-win': game.result === 'W', 'result-loss': game.result === 'L', 'result-tie': game.result === 'T', 'result-tbd': !game.result || game.result === 'N/A' || game.result === 'TBD'}"></td>
+                                                    <td x-text="game.result" :class="{'result-win': game.result === 'W', 'result-loss': game.result === 'L', 'result-tie': game.result === 'T', 'result-tbd': !game.result || game.result === 'N/A' || game.result === 'TBD'}"></td>
+                                                    <td x-text="game.record"></td>
+                                                </tr>
+                                            </template>
+                                        </template>
+                                        <template x-if="!schedules[selectedSeason] || schedules[selectedSeason].length === 0">
+                                            <tr>
+                                                <td colspan="7" class="text-center text-gray-500 py-4">Schedule for the <span x-text="selectedSeason"></span> season will be updated soon.</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+    </body>
+</html>

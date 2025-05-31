@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleveland State Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&display=swap" rel="stylesheet">
+    <style>
+        /* Apply Inter font globally */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            padding-top: 0;
+            background: linear-gradient(to bottom, #e9eff3, #f4f6f8);
+        }
+        /* Simple placeholder style */
+        .placeholder-bg {
+            background-color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-style: italic;
+            min-height: 150px;
+            border-radius: 0.375rem;
+        }
+        /* Define CSU Vikings Colors */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57;
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+        }
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+
+        /* Logo Styling */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs --- */
+        nav .nav-tabs-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column; /* Stack rows vertically */
+            align-items: flex-end; /* Align rows to the right */
+            padding-bottom: 3px; /* Space for the indicator */
+        }
+
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center;
+            gap: 0.1rem;
+            width: auto; /* Allow row to size based on content */
+        }
+
+        nav .nav-tab-row:nth-child(2) { /* Second row for offset */
+            margin-top: -0.25rem; /* Slight overlap or reduced gap */
+        }
+
+
+        nav .nav-tabs-container a { /* Styling for individual tabs */
+            font-family: 'Audiowide', cursive;
+            font-size: 0.70rem;  /* Adjusted for potentially tighter fit */
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.6rem 0.7rem; /* Adjusted padding */
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+            background-color: transparent;
+            border-radius: 4px 4px 0 0;
+            text-align: center;
+        }
+
+        nav .nav-tabs-container a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+
+        nav .nav-tabs-container a.active-tab {
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0; /* At the very bottom of the nav-tabs-wrapper */
+            height: 3px;
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1); /* Slightly slower transition */
+            z-index: 1;
+        }
+
+        /* Mobile Menu: Keep it simple and functional */
+        nav #mobile-menu {
+            background-color: var(--csu-green); /* Ensure mobile menu has bg */
+        }
+        nav #mobile-menu a {
+            font-family: 'Audiowide', cursive;
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem; /* Reduced padding to help with height */
+        }
+
+        /* Fade-in Animation for sections */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-section { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
+        .fade-in-section:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in-section:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in-section:nth-child(3) { animation-delay: 0.3s; }
+        /* .fade-in-section:nth-child(4) was for the Cauldron section, now Quick Links will be 4th if no other changes */
+        .fade-in-section:nth-child(4) { animation-delay: 0.4s; }
+
+
+        /* Scrolling Ticker Animation */
+        .ticker-wrap { width: 100%; overflow: hidden; background-color: var(--csu-gray); padding: 8px 0; position: fixed; left: 0; z-index: 40; }
+        .ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker-scroll 45s linear infinite; }
+        .ticker span { display: inline-block; padding: 0 2rem; color: var(--csu-white); font-size: 0.875rem; }
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        .ticker-wrap:hover .ticker { animation-play-state: paused; }
+
+        /* Header background placeholder style */
+        .header-bg-placeholder { background-image: linear-gradient(45deg, var(--csu-green), var(--csu-gray)); background-size: cover; background-position: center; position: relative; z-index: 1; border-radius: 0.5rem; }
+        .header-bg-placeholder::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.4); z-index: -1; border-radius: 0.5rem; }
+
+        @keyframes pageFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        main a { transition: color 0.3s ease, text-decoration 0.3s ease; }
+
+        .card-item { background-color: #ffffff; transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card-item:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 12px 24px rgba(0, 77, 64, 0.18); }
+        .section-title { font-family: 'Oswald', sans-serif; color: var(--csu-green); border-left: 4px solid var(--csu-gray); padding-left: 0.75rem; margin-bottom: 1.5rem; }
+
+    </style>
+    <script>
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const tickerWrapElement = document.querySelector('.ticker-wrap');
+            const mainElement = document.querySelector('main');
+
+            if (navElement && tickerWrapElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                tickerWrapElement.style.top = navHeight + 'px';
+                const tickerHeight = tickerWrapElement.offsetHeight;
+                mainElement.style.paddingTop = (navHeight + tickerHeight) + 'px';
+                document.body.style.paddingTop = '0px';
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem'; // Increased fallback for taller nav
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const currentYear = new Date().getFullYear();
+            const yearSpan = document.getElementById('current-year');
+            if (yearSpan) yearSpan.textContent = currentYear;
+
+            document.querySelectorAll('.fade-in-section').forEach((section, index) => {
+                section.style.animationDelay = `${index * 0.15}s`;
+            });
+
+            // --- Modern Dynamic Tab Logic ---
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null;
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) {
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator);
+            }
+
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+
+                if (tabRect.width > 0 && tabRect.height > 0) {
+                    slidingIndicator.style.width = `${tabRect.width}px`;
+                    slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+                let currentTabToActivate = allTabs.find(tab => tab.getAttribute('href') === currentPage);
+
+                if (!currentTabToActivate && allTabs.length > 0) {
+                     currentTabToActivate = allTabs[0];
+                }
+                setActiveTab(currentTabToActivate);
+
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => {
+                        moveIndicatorToTab(tab);
+                    });
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) {
+                       moveIndicatorToTab(activeTab);
+                    }
+                });
+
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 200);
+                }
+            }
+            // --- End Modern Dynamic Tab Logic ---
+
+            adjustLayout();
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tabs-container a.active-tab, nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                 setTimeout(() => {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                     if (tabRect.width > 0 && tabRect.height > 0) {
+                        indicator.style.width = `${tabRect.width}px`;
+                        indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                    }
+                }, 150);
+            }
+        });
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tabs-container a.active-tab, nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                     if (tabRect.width > 0 && tabRect.height > 0) {
+                        indicator.style.width = `${tabRect.width}px`;
+                        indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                    }
+                }
+            }
+        });
+
+    </script>
+</head>
+<body class="bg-gray-100">
+        <nav class="fixed-navbar">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="flex items-center justify-between h-full">
+                    <div class="flex-shrink-0 flex items-center">
+                         <a href="index.html" class="logo-title-container">
+                             <span id="logo-text" class="logo-text">
+                                 <span class="longboat">Longboat</span>
+                                 <span class="lounge">Lounge</span>
+                             </span>
+                         </a>
+                    </div>
+                    <div class="hidden md:block ml-auto nav-tabs-wrapper">
+                        <div class="nav-tabs-container"> <div class="nav-tab-row">
+                                <a href="index.html">Home</a>
+                                <a href="coaches.html">Coaches</a>
+                                <a href="playoffs.html">Playoffs</a>
+                                <a href="player_awards.html">Player Awards</a>
+                                <a href="all_americans.html">All-Americans</a>
+                                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                            </div>
+                            <div class="nav-tab-row" style="padding-left: 2.5rem;"> <a href="schedule.html">Schedule</a>
+                                <a href="stats.html">Stats Hub</a>
+                                <a href="top_25_rankings.html">Top 25</a>
+                                <a href="viking_recruiting.html">Viking Recruiting</a>
+                                <a href="the_cauldron.html">The Cauldron</a>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="-mr-2 flex md:hidden">
+                        <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                            <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="md:hidden hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> <a href="index.html">Home</a>
+                    <a href="coaches.html">Coaches</a>
+                    <a href="playoffs.html">Playoffs</a>
+                    <a href="player_awards.html">Player Awards</a>
+                    <a href="all_americans.html">All-Americans</a>
+                    <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                    <a href="schedule.html">Schedule</a>
+                    <a href="stats.html">Stats Hub</a>
+                    <a href="top_25_rankings.html">Top 25</a>
+                    <a href="viking_recruiting.html">Viking Recruiting</a>
+                    <a href="the_cauldron.html">The Cauldron</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="ticker-wrap">
+            <div class="ticker">
+                <span>Vikings Announce Schedule! Check it out now!</span>
+                <span>Player Stats Are Live - See Who's Leading the Pack!</span>
+                <span>Meet the Future: 2030 Viking Recruiting Class Unveiled!</span>
+                <span>Rivalry Game Tickets On Sale Next Week!</span>
+                <span>Vikings Announce 2030 Schedule! Check it out now!</span>
+                <span>Player Stats Are Live - See Who's Leading the Pack!</span>
+                <span>Meet the Future: 2030 Viking Recruiting Class Unveiled!</span>
+                <span>Rivalry Game Tickets On Sale Next Week!</span>
+            </div>
+        </div>
+
+        <main class="pb-10"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <header class="bg-white shadow-lg rounded-lg p-6 md:p-8 mb-10 text-center overflow-hidden header-bg-placeholder relative fade-in-section">
+                    <div class="relative z-10">
+                        <h1 class="text-4xl md:text-5xl font-bold text-csu-white mb-3 drop-shadow-lg font-['Oswald'] uppercase tracking-wide">Cleveland State Vikings Hub</h1>
+                        <p class="text-lg text-gray-100 mb-6 drop-shadow-md">Your official source for Vikings football: Stats, Schedules, Rivals & More!</p>
+                        <div class="placeholder-bg h-48 md:h-64 flex items-center justify-center text-gray-100 rounded-md opacity-75">
+                            <span class="text-2xl font-semibold">[Dynamic Scoreboard / Rivalry Graphic Placeholder]</span>
+                        </div>
+                    </div>
+                </header>
+
+                <section id="latest-updates" class="mb-10 fade-in-section">
+                    <h2 class="text-3xl section-title">Latest Updates</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card-item shadow-xl rounded-lg overflow-hidden">
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2 font-['Oswald']">2030 Season Schedule Available</h3>
+                                <p class="text-gray-700 text-sm mb-4">Check out the full 2030 Cleveland State Vikings football schedule, including all home and away games, game times, and final scores as they happen.</p>
+                                <a href="schedule.html" class="inline-block bg-csu-green text-csu-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-80 transition-colors">View Schedule &rarr;</a>
+                            </div>
+                            <div class="bg-gray-50 px-6 py-3 text-xs text-gray-500">
+                                Updated: May 23, 2025
+                            </div>
+                        </div>
+                         <div class="card-item shadow-xl rounded-lg overflow-hidden">
+                             <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2 font-['Oswald']">Explore Player Stats</h3>
+                                <p class="text-gray-700 text-sm mb-4">Dive into the comprehensive statistics for all Vikings players. Track passing, rushing, receiving, and defensive performance.</p>
+                                <a href="stats.html" class="inline-block bg-csu-green text-csu-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-80 transition-colors">Go to Stats Hub &rarr;</a>
+                            </div>
+                             <div class="bg-gray-50 px-6 py-3 text-xs text-gray-500">
+                                Updated: May 23, 2025
+                            </div>
+                        </div>
+                         <div class="card-item shadow-xl rounded-lg overflow-hidden">
+                             <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-900 mb-2 font-['Oswald']">Meet the 2030 Recruiting Class</h3>
+                                <p class="text-gray-700 text-sm mb-4">Get the latest information on the newest Vikings recruits for the 2030 class, including player rankings, positions, and commitments.</p>
+                                <a href="viking_recruiting.html" class="inline-block bg-csu-green text-csu-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-80 transition-colors">See 2030 Recruits &rarr;</a>
+                            </div>
+                             <div class="bg-gray-50 px-6 py-3 text-xs text-gray-500">
+                               Updated: May 23, 2025
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="quick-links" class="mb-6 fade-in-section"> <h2 class="text-3xl section-title">Quick Links</h2>
+                    <div class="bg-white shadow-xl rounded-lg p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
+                            <a href="coaches.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">Coaches Corner</a>
+                            <a href="playoffs.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">Playoff Brackets</a>
+                            <a href="player_awards.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">Player Awards Showcase</a>
+                            <a href="all_americans.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">All-American Selections</a>
+                            <a href="csu_depth_chart.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">CSU Vikings Depth Chart</a>
+                            <a href="schedule.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">Full Schedule & Results</a>
+                            <a href="stats.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">Player & Team Stats Hub</a>
+                            <a href="top_25_rankings.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">Final Top 25 Rankings</a>
+                            <a href="viking_recruiting.html" class="block text-csu-green hover:text-opacity-70 font-medium py-2 transition-colors">Viking Recruiting Central</a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <footer class="bg-csu-green text-gray-300 py-8 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p class="text-sm mt-4">&copy; <span id="current-year">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+                <p class="text-xs mt-1 opacity-75">Powered by the Longboat Lounge - Go Vikings!</p>
+            </div>
+        </footer>
+
+    </body>
+    </html>

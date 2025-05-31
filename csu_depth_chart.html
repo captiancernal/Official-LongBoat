@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSU Depth Chart - Vikings Football Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57; 
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Variables specific to csu_depth_chart.html content */
+            --page-bg-depth-chart: #f9fafb; /* Lighter overall page background from original */
+            --elite-bg: #FFD700; 
+            --elite-text: #4A3B31; 
+            --great-bg: #006A4E; 
+            --great-text: #FFFFFF;
+            --good-bg: #A7D7C5; 
+            --good-text: #004D40; 
+            --poor-bg: #E5E7EB;  
+            --poor-text: #374151; 
+        }
+
+        /* Global body styles, adapted for csu_depth_chart.html */
+        body {
+            font-family: 'Inter', sans-serif; /* Keep Inter for main content of this page */
+            overflow-x: hidden; 
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0; 
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--page-bg-depth-chart); 
+            color: var(--csu-gray); /* Default text color for this page */
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper { 
+            position: relative;
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-end; 
+            padding-bottom: 3px; 
+        }
+        
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center; 
+            gap: 0.1rem; 
+            width: auto; 
+        }
+
+        nav .nav-tab-row:nth-child(2) { 
+            margin-top: -0.25rem; 
+        }
+
+        nav .nav-tab-row a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.70rem;  
+            letter-spacing: 0.04em; 
+            text-transform: uppercase; 
+            padding: 0.6rem 0.7rem; 
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative; 
+            z-index: 2; 
+            white-space: nowrap;
+            background-color: transparent; 
+            border-radius: 4px 4px 0 0; 
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+        
+        nav .nav-tab-row a.active-tab { 
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0; 
+            height: 3px; 
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1); 
+            z-index: 1; 
+        }
+        
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green); 
+        }
+        nav #mobile-menu a { 
+            font-family: 'Audiowide', cursive; 
+            font-size: 0.9rem; 
+            display: block; 
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem; 
+        }
+
+        /* --- Styles specific to csu_depth_chart.html content --- */
+        .player-overall-badge {
+            border-radius: 0.25rem; font-weight: 600; font-size: 0.8rem; padding: 0.125rem 0.5rem;
+            min-width: 32px; text-align: center; line-height: 1.2;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .overall-elite { background-color: var(--elite-bg); color: var(--elite-text); border: 1px solid #DAA520; }
+        .overall-great { background-color: var(--great-bg); color: var(--great-text); }
+        .overall-good { background-color: var(--good-bg); color: var(--good-text); }
+        .overall-poor { background-color: var(--poor-bg); color: var(--poor-text); }
+        .superstar-indicator-name { color: var(--elite-bg); margin-right: 0.25rem; font-size: 0.9em; }
+
+        .tab-button { transition: all 0.3s ease; font-family: 'Oswald', sans-serif; }
+        .tab-button.active { border-color: var(--csu-green); color: var(--csu-green); background-color: #e0f2f1; }
+        .tab-button:not(.active):hover { background-color: #f3f4f6; }
+
+        main button.player-link {
+            transition: color 0.3s ease, background-color 0.3s ease, text-decoration 0.3s ease;
+            cursor: pointer; text-align: left; background: none; border: none; padding: 0;
+        }
+        main button.player-link:hover { text-decoration: underline; }
+
+        .position-card { background-color: var(--csu-white); box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-radius: 0.5rem; overflow: hidden; }
+        .position-title-bar { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 500; color: var(--csu-white); background-color: var(--csu-green); padding: 0.6rem 1rem; border-bottom: 1px solid var(--csu-green); }
+        .player-list-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; font-size: 0.9rem; }
+        .player-list-item:last-child { border-bottom: none; }
+        .player-name-container { display: flex; align-items: center; }
+        .player-name { color: var(--csu-green); font-weight: 500; }
+        .player-name:hover { text-decoration: underline; }
+        .depth-number { color: var(--csu-gray); font-weight: 500; margin-right: 0.5rem; }
+        .section-title { font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; color: var(--csu-green); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--csu-green); }
+        .tabs-container nav { -ms-overflow-style: none; scrollbar-width: none; }
+        .tabs-container nav::-webkit-scrollbar { display: none; }
+
+        /* Modal Styles */
+        .modal-backdrop { position: fixed; inset: 0; z-index: 60; background-color: rgba(55, 65, 81, 0.7); transition: opacity 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; backdrop-filter: blur(0px); }
+        .modal-backdrop-visible { opacity: 1; pointer-events: auto; backdrop-filter: blur(4px); }
+        .modal-content { background-color: white; border-radius: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); width: 100%; max-width: 48rem; padding: 1.5rem; position: relative; border-top: 4px solid var(--csu-green); transition: transform 0.3s ease-out, opacity 0.3s ease-out; max-height: 90vh; overflow-y: auto; opacity: 0; transform: scale(0.95); }
+        .modal-content-visible { opacity: 1; transform: scale(1); }
+        .profile-photo-modal { width: 120px; height: 120px; background-color: #e2e8f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 1rem; color: var(--csu-gray); font-style: italic; border: 4px solid var(--csu-white); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .modal-section-title { font-size: 1.1rem; font-weight: 600; color: var(--csu-green); border-bottom: 1px solid #e5e7eb; padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+        .modal-stat-label { font-weight: 600; color: var(--csu-gray); font-size: 0.875rem; }
+        .modal-stat-value { font-weight: 500; color: #000; font-size: 0.875rem; }
+        .modal-table th { background-color: #f9fafb; font-size: 0.75rem; padding: 0.4rem 0.5rem; text-align: left; white-space: nowrap;}
+        .modal-table td { padding: 0.4rem 0.5rem; font-size: 0.75rem; border-bottom: 1px solid #e5e7eb; text-align: right; }
+        .modal-table td:first-child { text-align: left; font-weight: 500;}
+        .modal-table tr:last-child td { border-bottom: none; }
+        .modal-table thead th { position: sticky; top: 0; background-color: #f3f4f6; z-index: 1; }
+        .table-container { max-height: 250px; overflow-y: auto; }
+
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green); 
+            color: var(--csu-white); 
+            padding-top: 1.5rem; 
+            padding-bottom: 1.5rem; 
+            margin-top: 2.5rem; /* mt-10 */
+        }
+        footer p {
+            font-size: 0.875rem; /* text-sm */
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+    </style>
+</head>
+<body class="bg-page-bg-depth-chart"> <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper"> 
+                    <div class="nav-tabs-container"> 
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;"> 
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3"> 
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10" x-data="depthChartPageData()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="mb-8 mt-8"> <h1 class="text-3xl font-bold text-center text-gray-900">CSU Vikings Depth Chart</h1>
+                <p class="text-center text-gray-600 mt-2">Team lineup by position and season.</p>
+            </header>
+
+            <div class="mb-6">
+                <div class="border-b border-gray-200 tabs-container">
+                    <nav class="-mb-px flex space-x-4 sm:space-x-6 overflow-x-auto pb-1" aria-label="Tabs">
+                        <template x-for="year in Object.keys(depthChartData).sort((a,b) => a - b)" :key="year">
+                            <button @click="selectedSeason = year"
+                                    :class="{ 'active': selectedSeason === year }"
+                                    class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm text-gray-500 border-transparent rounded-t-md">
+                                <span x-text="year + ' Season'"></span>
+                            </button>
+                        </template>
+                    </nav>
+                </div>
+
+                <div class="mt-6">
+                    <template x-if="depthChartData[selectedSeason]">
+                        <div x-transition>
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center" x-text="selectedSeason + ' Depth Chart'"></h2>
+
+                            <section class="mb-10">
+                                <h3 class="section-title">Offense</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <template x-for="position in depthChartData[selectedSeason].offense" :key="position.name">
+                                        <div class="position-card">
+                                            <h4 class="position-title-bar" x-text="position.name"></h4>
+                                            <div class="p-1">
+                                                <template x-for="(player, index) in position.players" :key="player.name + player.overall">
+                                                    <div class="player-list-item">
+                                                        <div class="player-name-container">
+                                                            <span class="depth-number" x-text="(index + 1) + '.'"></span>
+                                                            <template x-if="player.overall >= 90">
+                                                                <span class="superstar-indicator-name">⭐</span>
+                                                            </template>
+                                                            <button class="player-name"
+                                                                    @click="openPlayerModal(player, selectedSeason)"
+                                                                    x-text="player.name"></button>
+                                                        </div>
+                                                        <span class="player-overall-badge" :class="getOverallClass(player.overall)">
+                                                            <span x-text="player.overall"></span>
+                                                            </span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </section>
+
+                            <section class="mb-10">
+                                <h3 class="section-title">Defense</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <template x-for="position in depthChartData[selectedSeason].defense" :key="position.name">
+                                        <div class="position-card">
+                                            <h4 class="position-title-bar" x-text="position.name"></h4>
+                                            <div class="p-1">
+                                                <template x-for="(player, index) in position.players" :key="player.name + player.overall">
+                                                    <div class="player-list-item">
+                                                        <div class="player-name-container">
+                                                            <span class="depth-number" x-text="(index + 1) + '.'"></span>
+                                                             <template x-if="player.overall >= 90">
+                                                                <span class="superstar-indicator-name">⭐</span>
+                                                            </template>
+                                                            <button class="player-name"
+                                                                    @click="openPlayerModal(player, selectedSeason)"
+                                                                    x-text="player.name"></button>
+                                                        </div>
+                                                        <span class="player-overall-badge" :class="getOverallClass(player.overall)">
+                                                            <span x-text="player.overall"></span>
+                                                            </span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </section>
+
+                            <section>
+                                <h3 class="section-title">Special Teams</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <template x-for="position in depthChartData[selectedSeason].specialTeams" :key="position.name">
+                                        <div class="position-card">
+                                            <h4 class="position-title-bar" x-text="position.name"></h4>
+                                            <div class="p-1">
+                                                <template x-for="(player, index) in position.players" :key="player.name + player.overall">
+                                                    <div class="player-list-item">
+                                                        <div class="player-name-container">
+                                                            <span class="depth-number" x-text="(index + 1) + '.'"></span>
+                                                            <template x-if="player.overall >= 90">
+                                                                <span class="superstar-indicator-name">⭐</span>
+                                                            </template>
+                                                            <button class="player-name"
+                                                                    @click="openPlayerModal(player, selectedSeason)"
+                                                                    x-text="player.name"></button>
+                                                        </div>
+                                                        <span class="player-overall-badge" :class="getOverallClass(player.overall)">
+                                                            <span x-text="player.overall"></span>
+                                                            </span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </section>
+                             <p class="text-center text-gray-500 mt-8 italic">[End of depth chart for the <span x-text="selectedSeason"></span> season]</p>
+                        </div>
+                    </template>
+                    <template x-if="!depthChartData[selectedSeason]">
+                        <p class="text-center text-gray-500 mt-8">Depth chart data for the selected season is not available yet.</p>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="playerModal" class="modal-backdrop"
+         x-show="modalOpen"
+         @keydown.escape.window="closeModal()"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         :class="{ 'modal-backdrop-visible': modalOpen }"
+         @click.self="closeModal()" style="display: none;"> <div class="modal-content"
+             x-show="modalOpen"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 transform scale-95"
+             x-transition:enter-end="opacity-100 transform scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 transform scale-100"
+             x-transition:leave-end="opacity-0 transform scale-95"
+             :class="{ 'modal-content-visible': modalOpen }"
+             @click.stop>
+            <button @click="closeModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="text-center mb-5">
+                <div class="profile-photo-modal">[Photo]</div>
+                <h2 x-text="selectedPlayer.name" class="text-2xl font-bold text-gray-900"></h2>
+                <p class="text-lg text-csu-green font-semibold mt-1">
+                    <span x-text="selectedPlayer.pos"></span> |
+                    <span :class="getOverallClass(selectedPlayer.overall)" class="player-overall-badge text-lg px-2 py-0.5">
+                        OVR: <span x-text="selectedPlayer.overall"></span>
+                        </span>
+                </p>
+            </div>
+            <div>
+                <section class="mb-4">
+                    <h3 class="modal-section-title">Player Info</h3>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div><span class="modal-stat-label block">Name:</span><span x-text="selectedPlayer.name" class="modal-stat-value"></span></div>
+                        <div><span class="modal-stat-label block">Position:</span><span x-text="selectedPlayer.pos" class="modal-stat-value"></span></div>
+                        <div><span class="modal-stat-label block">Overall:</span><span x-text="selectedPlayer.overall" class="modal-stat-value"></span></div>
+                        <div><span class="modal-stat-label block">Season:</span><span x-text="modalSeason" class="modal-stat-value"></span></div>
+                        <div><span class="modal-stat-label block">Number:</span><span x-text="selectedPlayer.number || 'N/A'" class="modal-stat-value"></span></div>
+                        <div><span class="modal-stat-label block">Class:</span><span x-text="selectedPlayer.classYear || 'N/A'" class="modal-stat-value"></span></div>
+
+                    </div>
+                </section>
+                <section class="mb-4">
+                    <h3 class="modal-section-title">Season Statistics</h3>
+                     <div id="modalSeasonStatsContainer" class="table-container">
+                        <p class="text-sm text-gray-500 italic">Season stats for this player will be shown here.</p>
+                    </div>
+                </section>
+                 <section class="mb-4">
+                    <h3 class="modal-section-title">Awards & Accolades</h3>
+                    <ul x-html="selectedPlayer.awards ? selectedPlayer.awards.split(',').map(a => '<li>'+a.trim()+'</li>').join('') : '<li>No awards listed yet.</li>'" class="list-disc list-inside text-xs text-gray-700 space-y-1 pl-2"></ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        function depthChartPageData() {
+            return {
+                selectedSeason: '2024', 
+                modalOpen: false,
+                selectedPlayer: {},
+                modalSeason: '',
+                getOverallClass(overall) {
+                    if (overall >= 90) return 'overall-elite';
+                    if (overall >= 80) return 'overall-great';
+                    if (overall >= 70) return 'overall-good';
+                    return 'overall-poor';
+                },
+                depthChartData: {
+                    '2024': {
+                        offense: [
+                            { name: 'Quarterback (QB)', players: [ { name: 'Connor Bazelak', overall: 81, pos: 'QB', classYear: 'SR(RS)' }, { name: 'Camden Orth', overall: 67, pos: 'QB', classYear: 'JR' }, { name: 'Lucian Anderson III', overall: 66, pos: 'QB', classYear: 'FR' } ] },
+                            { name: 'Running Back (RB)', players: [ { name: 'Terion Stewart', overall: 86, pos: 'RB', classYear: 'JR(RS)' }, { name: 'Jaison Patterson', overall: 74, pos: 'RB', classYear: 'SO' }, { name: 'Jamal Johnson', overall: 68, pos: 'RB', classYear: 'FR' }, { name: 'Justin Pegues', overall: 68, pos: 'RB', classYear: 'FR' } ] },
+                            { name: 'Fullback (FB)', players: [ { name: 'Eric Baber', overall: 57, pos: 'FB', classYear: 'SR' } ] },
+                            { name: 'Wide Receiver (WR)', players: [ { name: 'Malcolm Johnson Jr.', overall: 77, pos: 'WR', classYear: 'SR' }, { name: 'RJ Garcia II', overall: 73, pos: 'WR', classYear: 'SO' }, { name: 'Jaylon Tillman', overall: 72, pos: 'WR', classYear: 'JR' }, { name: 'Finn Hogan', overall: 70, pos: 'WR', classYear: 'SO' }, { name: 'Shawn Thigpen', overall: 66, pos: 'WR', classYear: 'FR' }, { name: 'Jacob Harris', overall: 73, pos: 'WR', classYear: 'FR' }, { name: 'Cynceir McNeal', overall: 65, pos: 'WR', classYear: 'FR' }, { name: 'Trey Johnson', overall: 60, pos: 'WR', classYear: 'FR' } ] },
+                            { name: 'Tight End (TE)', players: [ { name: 'Harold Fannin Jr.', overall: 95, pos: 'TE', classYear: 'JR' }, { name: 'Levi Gazarek', overall: 74, pos: 'TE', classYear: 'SR' }, { name: 'Caleb Goodloe', overall: 68, pos: 'TE', classYear: 'FR' }, { name: 'Elijah Boyd', overall: 73, pos: 'TE', classYear: 'SO' } ] },
+                            { name: 'Left Tackle (LT)', players: [ { name: 'Nick Reimer', overall: 73, pos: 'LT', classYear: 'SR' }, { name: 'Billie Roberts', overall: 72, pos: 'LT', classYear: 'JR' } ] },
+                            { name: 'Left Guard (LG)', players: [ { name: 'Nate Pabst', overall: 84, pos: 'LG', classYear: 'SR' }, { name: 'Cade Zimmerly', overall: 75, pos: 'LG', classYear: 'SO' } ] },
+                            { name: 'Center (C)', players: [ { name: 'Alex Padgett', overall: 84, pos: 'C', classYear: 'SR' }, { name: 'Brody Bolyn', overall: 70, pos: 'C', classYear: 'FR' }, { name: 'Julian Henderson', overall: 69, pos: 'C', classYear: 'SO' } ] },
+                            { name: 'Right Guard (RG)', players: [ { name: 'Tunde Fatukasi', overall: 77, pos: 'RG', classYear: 'SR' }, { name: 'Jake Burns', overall: 71, pos: 'RG', classYear: 'JR' } ] },
+                            { name: 'Right Tackle (RT)', players: [ { name: 'Alex Wollschlaeger', overall: 80, pos: 'RT', classYear: 'SR' }, { name: 'James Thomas Jr.', overall: 72, pos: 'RT', classYear: 'SO' } ] }
+                        ],
+                        defense: [
+                            { name: 'Left Defensive End (LE)', players: [ { name: 'Ali Saad', overall: 79, pos: 'LE', classYear: 'SR(RS)' }, { name: 'Chace Davis', overall: 72, pos: 'LE', classYear: 'SO' } ] },
+                            { name: 'Defensive Tackle (DT)', players: [ { name: 'Dontrez Brown', overall: 78, pos: 'DT', classYear: 'SR' }, { name: 'Anthony Hawkins', overall: 76, pos: 'DT', classYear: 'JR' }, { name: 'Davonte Miles', overall: 74, pos: 'DT', classYear: 'SO' }, { name: 'Dierre Kelly', overall: 73, pos: 'DT', classYear: 'FR' } ] },
+                            { name: 'Right Defensive End (RE)', players: [ { name: 'Jordan Porter', overall: 73, pos: 'RE', classYear: 'SR' }, { name: 'Martreece Dillard', overall: 73, pos: 'RE', classYear: 'SO' }, { name: 'Joe Shimko', overall: 69, pos: 'RE', classYear: 'JR(RS)' } ] },
+                            { name: 'Left Outside LB (LOLB)', players: [ { name: 'Charles Rosser', overall: 78, pos: 'LOLB', classYear: 'SR' }, { name: 'Demetrius Hardamon', overall: 75, pos: 'LOLB', classYear: 'SR' }, { name: 'Avi McGary', overall: 68, pos: 'LOLB', classYear: 'FR' } ] },
+                            { name: 'Middle Linebacker (MLB)', players: [ { name: 'Brock Horne', overall: 83, pos: 'MLB', classYear: 'SR(RS)' }, { name: 'Donny Stephens', overall: 74, pos: 'MLB', classYear: 'SR' }, { name: 'Jabari Mitchell', overall: 68, pos: 'MLB', classYear: 'SO' } ] },
+                            { name: 'Right Outside LB (ROLB)', players: [ { name: 'Joseph Sipp Jr.', overall: 79, pos: 'ROLB', classYear: 'SR' }, { name: 'Trent Simms', overall: 76, pos: 'ROLB', classYear: 'SR' }, { name: 'Justin Eklund', overall: 73, pos: 'ROLB', classYear: 'SO' } ] },
+                            { name: 'Cornerback 1 (CB1)', players: [ { name: 'Jordan Oladokun', overall: 88, pos: 'CB1', classYear: 'SR' }, { name: 'Edward Rhambo', overall: 75, pos: 'CB1', classYear: 'JR' }, { name: 'Kal-El Pascal', overall: 68, pos: 'CB1', classYear: 'SO' } ] },
+                            { name: 'Cornerback 2 (CB2)', players: [ { name: 'Darius McClendon', overall: 77, pos: 'CB2', classYear: 'SR(RS)' }, { name: 'Todd Bumphis', overall: 71, pos: 'CB2', classYear: 'FR' }, { name: 'Jace Henry', overall: 60, pos: 'CB2', classYear: 'FR' } ] },
+                            { name: 'Cornerback 3 (CB3)', players: [ { name: 'Jacorey Benjamin', overall: 77, pos: 'CB3', classYear: 'SR' }, { name: 'Jalen Burton', overall: 70, pos: 'CB3', classYear: 'FR' } ] },
+                            { name: 'Free Safety (FS)', players: [ { name: 'Darius Lorfils', overall: 75, pos: 'FS', classYear: 'SR' }, { name: 'Tracy Revels', overall: 73, pos: 'FS', classYear: 'JR' } ] },
+                            { name: 'Strong Safety (SS)', players: [ { name: 'CJ Brown', overall: 75, pos: 'SS', classYear: 'SR' }, { name: 'Patrick Day', overall: 70, pos: 'SS', classYear: 'SO' }, { name: 'Larry Yates', overall: 69, pos: 'SS', classYear: 'FR' } ] }
+                        ],
+                        specialTeams: [
+                            { name: 'Kicker (K)', players: [ { name: 'Jackson Kleather', overall: 73, pos: 'K', classYear: 'SO' } ] },
+                            { name: 'Punter (P)', players: [ { name: 'John Henderson', overall: 77, pos: 'P', classYear: 'SR' } ] }
+                        ]
+                    },
+                    '2025': {
+                        offense: [
+                            { name: 'Quarterback (QB)', players: [ { name: 'Amar\'e Hocker', overall: 77, pos: 'QB', classYear: 'FR' }, { name: 'Morgan Landry', overall: 69, pos: 'QB', classYear: 'FR' }, { name: 'Lucien Anderson III', overall: 68, pos: 'QB', classYear: 'SO' } ] },
+                            { name: 'Running Back (RB)', players: [ { name: 'Terion Stewart', overall: 86, pos: 'RB', classYear: 'SR(RS)' }, { name: 'Nolan McCormick', overall: 72, pos: 'RB', classYear: 'FR*' }, { name: 'Nakai Amachree', overall: 70, pos: 'RB', classYear: 'FR(RS)' }, { name: 'Justin Pegues', overall: 69, pos: 'RB', classYear: 'SO' } ] },
+                            { name: 'Fullback (FB)', players: [ { name: 'Willie Brooks', overall: 68, pos: 'FB', classYear: 'FR' } ] },
+                            { name: 'Wide Receiver (WR)', players: [ { name: 'RJ Garcia II', overall: 75, pos: 'WR', classYear: 'JR' }, { name: 'Caleb Goodloe', overall: 72, pos: 'WR', classYear: 'SO' }, { name: 'Finn Hogan', overall: 72, pos: 'WR', classYear: 'JR' }, { name: 'Shawn Thigpen', overall: 68, pos: 'WR', classYear: 'SO' }, { name: 'Cynceir McNeal', overall: 65, pos: 'WR', classYear: 'SO' }, { name: 'Kareem Duggan', overall: 65, pos: 'WR', classYear: 'FR' } ] },
+                            { name: 'Tight End (TE)', players: [ { name: 'Elijah Boyd', overall: 80, pos: 'TE', classYear: 'JR(RS)' }, { name: 'Jacob Harris', overall: 75, pos: 'TE', classYear: 'SO' }, { name: 'Mike Hardrick', overall: 66, pos: 'TE', classYear: 'FR' } ] },
+                            { name: 'Left Tackle (LT)', players: [ { name: 'Nate Pabst', overall: 82, pos: 'LT', classYear: 'SR(RS)' }, { name: 'Rico Steele', overall: 76, pos: 'LT', classYear: 'FR' } ] },
+                            { name: 'Left Guard (LG)', players: [ { name: 'Cade Zimmerly', overall: 79, pos: 'LG', classYear: 'JR' }, { name: 'Julian Henderson', overall: 76, pos: 'LG', classYear: 'JR' } ] },
+                            { name: 'Center (C)', players: [ { name: 'Jacob Rizzi', overall: 81, pos: 'C', classYear: 'SR*' }, { name: 'Brody Bolyn', overall: 71, pos: 'C', classYear: 'SO' } ] },
+                            { name: 'Right Guard (RG)', players: [ { name: 'Alex Padgett', overall: 84, pos: 'RG', classYear: 'SR(RS)' }, { name: 'Ian Van Der Merwe', overall: 71, pos: 'RG', classYear: 'FR' } ] },
+                            { name: 'Right Tackle (RT)', players: [ { name: 'Rico Steele', overall: 76, pos: 'RT', classYear: 'FR' }, { name: 'Storm Lampman', overall: 71, pos: 'RT', classYear: 'FR' }, { name: 'Tyree Moses', overall: 69, pos: 'RT', classYear: 'FR' } ] }
+                        ],
+                        defense: [
+                            { name: 'Left Defensive End (LE)', players: [ { name: 'Elias Owens', overall: 78, pos: 'LE', classYear: 'FR(RS)' }, { name: 'Martreece Dillard', overall: 73, pos: 'LE', classYear: 'JR' } ] },
+                            { name: 'Defensive Tackle (DT)', players: [ { name: 'Davonte Miles', overall: 75, pos: 'DT', classYear: 'JR' }, { name: 'Darius Gaddy', overall: 74, pos: 'DT', classYear: 'FR*' }, { name: 'Evan Branch-Hayes', overall: 74, pos: 'DT', classYear: 'SR*' }, { name: 'Alex Sharp', overall: 66, pos: 'DT', classYear: 'FR' } ] },
+                            { name: 'Right Defensive End (RE)', players: [ { name: 'Joe Shimko', overall: 70, pos: 'RE', classYear: 'SR(RS)' }, { name: 'Cam Booker', overall: 69, pos: 'RE', classYear: 'FR' }, { name: 'Russ Cheeks', overall: 66, pos: 'RE', classYear: 'FR' } ] },
+                            { name: 'Left Outside LB (LOLB)', players: [ { name: 'Joseph Sipp Jr.', overall: 80, pos: 'LOLB', classYear: 'SR(RS)' }, { name: 'Justin Eklund', overall: 73, pos: 'LOLB', classYear: 'JR' }, { name: 'Jeremy Peppers', overall: 69, pos: 'LOLB', classYear: 'FR' } ] },
+                            { name: 'Middle Linebacker (MLB)', players: [ { name: 'Donny Stephens', overall: 74, pos: 'MLB', classYear: 'SR(RS)' }, { name: 'Jabari Mitchell', overall: 69, pos: 'MLB', classYear: 'JR' }, { name: 'Deandre Salaam', overall: 65, pos: 'MLB', classYear: 'FR' } ] },
+                            { name: 'Right Outside LB (ROLB)', players: [ { name: 'Alijah Williams', overall: 70, pos: 'ROLB', classYear: 'FR' }, { name: 'Dorian Pringle', overall: 70, pos: 'ROLB', classYear: 'FR' }, { name: 'Myles Bradley', overall: 64, pos: 'ROLB', classYear: 'FR' } ] },
+                            { name: 'Cornerback 1 (CB1)', players: [ { name: 'CJ Brown', overall: 75, pos: 'CB1', classYear: 'SR(RS)' }, { name: 'Kal-el Pascal', overall: 70, pos: 'CB1', classYear: 'JR' } ] },
+                            { name: 'Cornerback 2 (CB2)', players: [ { name: 'Edward Rhambo', overall: 76, pos: 'CB2', classYear: 'SR' }, { name: 'Layne Robbins', overall: 59, pos: 'CB2', classYear: 'FR' } ] },
+                            { name: 'Cornerback 3 (CB3)', players: [ { name: 'Jace Henry', overall: 72, pos: 'CB3', classYear: 'SO' } ] },
+                            { name: 'Free Safety (FS)', players: [ { name: 'Darius Lorfils', overall: 77, pos: 'FS', classYear: 'SR(RS)' }, { name: 'Tracy Revels', overall: 74, pos: 'FS', classYear: 'SR' }, { name: 'TJ Nelson', overall: 67, pos: 'FS', classYear: 'FR' } ] },
+                            { name: 'Strong Safety (SS)', players: [ { name: 'Larry Yates', overall: 80, pos: 'SS', classYear: 'SO' }, { name: 'Mitch Mesko', overall: 75, pos: 'SS', classYear: 'FR' }, { name: 'D\'Kyah Banks', overall: 62, pos: 'SS', classYear: 'FR' } ] }
+                        ],
+                        specialTeams: [
+                            { name: 'Kicker (K)', players: [ { name: 'Jackson Kleather', overall: 75, pos: 'K', classYear: 'JR' } ] },
+                            { name: 'Punter (P)', players: [ { name: 'John Henderson', overall: 79, pos: 'P', classYear: 'SR(RS)' } ] }
+                        ]
+                    },
+                     '2026': {
+                        offense: [
+                            { name: 'Quarterback (QB)', players: [ { name: 'Amar\'e Hocker', overall: 81, pos: 'QB', classYear: 'SO' }, { name: 'Morgan Landry', overall: 76, pos: 'QB', classYear: 'SO' }, { name: 'Juan Newcomb', overall: 73, pos: 'QB', classYear: 'FR' }, { name: 'Lucien Anderson III', overall: 71, pos: 'QB', classYear: 'JR' } ] },
+                            { name: 'Running Back (RB)', players: [ { name: 'Nakai Amachree', overall: 74, pos: 'RB', classYear: 'SO(RS)' }, { name: 'Bakara Nwangwu', overall: 73, pos: 'RB', classYear: 'FR' }, { name: 'Terrelle Francis', overall: 72, pos: 'RB', classYear: 'FR' }, { name: 'Justin Pegues', overall: 71, pos: 'RB', classYear: 'JR' } ] },
+                            { name: 'Fullback (FB)', players: [ { name: 'Willie Brooks', overall: 68, pos: 'FB', classYear: 'SO' } ] },
+                            { name: 'Wide Receiver (WR)', players: [ { name: 'Reshaud Exum', overall: 80, pos: 'WR', classYear: 'SO(RS)' }, { name: 'Emmett Mosley V', overall: 80, pos: 'WR', classYear: 'FR*' }, { name: 'Caleb Goodloe', overall: 78, pos: 'WR', classYear: 'JR' }, { name: 'Marcus Sanders Jr.', overall: 77, pos: 'WR', classYear: 'FR*' }, { name: 'Shawn Thigpen', overall: 72, pos: 'WR', classYear: 'JR' }, { name: 'Cynceir McNeal', overall: 72, pos: 'WR', classYear: 'JR' }, { name: 'Kareem Duggan', overall: 70, pos: 'WR', classYear: 'SO' }, { name: 'Sam Russo', overall: 68, pos: 'WR', classYear: 'FR' }, { name: 'George Ghee', overall: 67, pos: 'WR', classYear: 'FR' } ] },
+                            { name: 'Tight End (TE)', players: [ { name: 'Elijah Boyd', overall: 80, pos: 'TE', classYear: 'SR(RS)' }, { name: 'Mike Hardrick', overall: 77, pos: 'TE', classYear: 'SO' }, { name: 'Jacob Harris', overall: 76, pos: 'TE', classYear: 'JR' }, { name: 'Darren Klein', overall: 73, pos: 'TE', classYear: 'FR' } ] },
+                            { name: 'Left Tackle (LT)', players: [ { name: 'Rico Steele', overall: 77, pos: 'LT', classYear: 'SO' }, { name: 'Deontae Meekins', overall: 75, pos: 'LT', classYear: 'FR*' }, { name: 'Dillon Robinson', overall: 72, pos: 'LT', classYear: 'FR' } ] },
+                            { name: 'Left Guard (LG)', players: [ { name: 'Ian Van Der Merwe', overall: 79, pos: 'LG', classYear: 'SO' }, { name: 'Julian Henderson', overall: 79, pos: 'LG', classYear: 'SR' }, { name: 'Marquise Willett', overall: 73, pos: 'LG', classYear: 'FR' } ] },
+                            { name: 'Center (C)', players: [ { name: 'Brody Bolyn', overall: 77, pos: 'C', classYear: 'JR' }, { name: 'Tyree Moses', overall: 75, pos: 'C', classYear: 'SO' } ] },
+                            { name: 'Right Guard (RG)', players: [ { name: 'Jalen Slappy', overall: 80, pos: 'RG', classYear: 'FR*' }, { name: 'Finau Vittatoe', overall: 77, pos: 'RG', classYear: 'FR*' }, { name: 'Jamie Cleveland', overall: 74, pos: 'RG', classYear: 'FR' } ] },
+                            { name: 'Right Tackle (RT)', players: [ { name: 'James Thomas Jr.', overall: 77, pos: 'RT', classYear: 'SR' }, { name: 'Darren Colclough', overall: 74, pos: 'RT', classYear: 'FR' }, { name: 'Storm Lampman', overall: 73, pos: 'RT', classYear: 'SO' } ] }
+                        ],
+                        defense: [
+                            { name: 'Left Defensive End (LE)', players: [ { name: 'Elias Owens', overall: 78, pos: 'LE', classYear: 'SO(RS)' }, { name: 'Martreece Dillard', overall: 78, pos: 'LE', classYear: 'SR' }, { name: 'Russ Cheeks', overall: 77, pos: 'LE', classYear: 'SO' } ] },
+                            { name: 'Defensive Tackle (DT)', players: [ { name: 'Davonte Miles', overall: 79, pos: 'DT', classYear: 'SR' }, { name: 'Alex Sharp', overall: 72, pos: 'DT', classYear: 'SO' }, { name: 'Moses Keglar', overall: 66, pos: 'DT', classYear: 'FR' } ] },
+                            { name: 'Right Defensive End (RE)', players: [ { name: 'Joe Shimko', overall: 76, pos: 'RE', classYear: 'SR(RS)' }, { name: 'Dalyn White', overall: 74, pos: 'RE', classYear: 'FR*' }, { name: 'J.D. Tanney', overall: 74, pos: 'RE', classYear: 'FR' }, { name: 'Cam Booker', overall: 74, pos: 'RE', classYear: 'SO' } ] },
+                            { name: 'Left Outside LB (LOLB)', players: [ { name: 'Justin Eklund', overall: 75, pos: 'LOLB', classYear: 'SR' }, { name: 'Jeremy Peppers', overall: 72, pos: 'LOLB', classYear: 'SO' }, { name: 'Duane Droege', overall: 64, pos: 'LOLB', classYear: 'FR' } ] },
+                            { name: 'Middle Linebacker (MLB)', players: [ { name: 'Bryce Eliuk', overall: 82, pos: 'MLB', classYear: 'SR(RS)' }, { name: 'Deandre Salaam', overall: 74, pos: 'MLB', classYear: 'SO' }, { name: 'Jabari Mitchell', overall: 70, pos: 'MLB', classYear: 'SR' } ] },
+                            { name: 'Right Outside LB (ROLB)', players: [ { name: 'Alijah Williams', overall: 72, pos: 'ROLB', classYear: 'SO' }, { name: 'Dorian Pringle', overall: 70, pos: 'ROLB', classYear: 'SO' } ] },
+                            { name: 'Cornerback 1 (CB1)', players: [ { name: 'Jayden Bellamy', overall: 90, pos: 'CB1', classYear: 'SR(RS)' }, { name: 'Reshard Adkins', overall: 76, pos: 'CB1', classYear: 'FR*' }, { name: 'Nate Cavka', overall: 69, pos: 'CB1', classYear: 'FR' }, { name: 'Paul McCutcheon', overall: 65, pos: 'CB1', classYear: 'FR' } ] },
+                            { name: 'Cornerback 2 (CB2)', players: [ { name: 'Edward Rhambo', overall: 78, pos: 'CB2', classYear: 'SR(RS)' }, { name: 'Kal-El Pascal', overall: 73, pos: 'CB2', classYear: 'SR' }, { name: 'Cliff Jackson', overall: 67, pos: 'CB2', classYear: 'FR' }, { name: 'Jon McNeal', overall: 64, pos: 'CB2', classYear: 'FR' } ] },
+                            { name: 'Cornerback 3 (CB3)', players: [ { name: 'Jace Henry', overall: 77, pos: 'CB3', classYear: 'JR' }, { name: 'Layne Robbins', overall: 73, pos: 'CB3', classYear: 'SO' }, { name: 'Calvin Sauer', overall: 66, pos: 'CB3', classYear: 'FR' } ] },
+                            { name: 'Free Safety (FS)', players: [ { name: 'Michael Richard', overall: 80, pos: 'FS', classYear: 'FR*' }, { name: 'Tracy Revels', overall: 78, pos: 'FS', classYear: 'SR(RS)' }, { name: 'TJ Nelson', overall: 77, pos: 'FS', classYear: 'SO' } ] },
+                            { name: 'Strong Safety (SS)', players: [ { name: 'Mitch Mesko', overall: 81, pos: 'SS', classYear: 'SO' }, { name: 'Larry Yates', overall: 81, pos: 'SS', classYear: 'JR' }, { name: 'Myles Bradley', overall: 74, pos: 'SS', classYear: 'SO' }, { name: 'D\'Kyah Banks', overall: 62, pos: 'SS', classYear: 'SO' } ] }
+                        ],
+                        specialTeams: [
+                            { name: 'Kicker (K)', players: [ { name: 'Jackson Kleather', overall: 83, pos: 'K', classYear: 'SR' } ] },
+                            { name: 'Punter (P)', players: [ { name: 'John Henderson', overall: 79, pos: 'P', classYear: 'SR(RS)' } ] }
+                        ]
+                    },
+                    '2027': {
+                        offense: [
+                            { name: 'Quarterback (QB)', players: [ { name: 'Amar\'e Hocker', overall: 86, pos: 'QB', classYear: 'JR' }, { name: 'Morgan Landry', overall: 81, pos: 'QB', classYear: 'JR' }, { name: 'Juan Newcomb', overall: 77, pos: 'QB', classYear: 'SO' }, { name: 'Willie Gado', overall: 77, pos: 'QB', classYear: 'FR*' } ] },
+                            { name: 'Running Back (RB)', players: [ { name: 'Bakara Nwangwu', overall: 83, pos: 'RB', classYear: 'SO' }, { name: 'Marquese Williams', overall: 83, pos: 'RB', classYear: 'FR*' }, { name: 'Nakai Amachree', overall: 82, pos: 'RB', classYear: 'JR(RS)' }, { name: 'Shareef Bradbury', overall: 77, pos: 'RB', classYear: 'FR*' }, { name: 'Terrelle Francis', overall: 75, pos: 'RB', classYear: 'SO' } ] },
+                            { name: 'Fullback (FB)', players: [ { name: 'Willie Brooks', overall: 68, pos: 'FB', classYear: 'JR' } ] },
+                            { name: 'Wide Receiver (WR)', players: [ { name: 'Rashaud Exum', overall: 84, pos: 'WR', classYear: 'JR(RS)' }, { name: 'Emmett Mosley V', overall: 81, pos: 'WR', classYear: 'SO*' }, { name: 'Caleb Goodloe', overall: 78, pos: 'WR', classYear: 'SR' }, { name: 'Kenny Tonges', overall: 78, pos: 'WR', classYear: 'FR*' }, { name: 'Sam Russo', overall: 74, pos: 'WR', classYear: 'SO' }, { name: 'Kareem Duggan', overall: 74, pos: 'WR', classYear: 'JR' }, { name: 'George Ghee', overall: 70, pos: 'WR', classYear: 'SO' } ] },
+                            { name: 'Tight End (TE)', players: [ { name: 'Darren Klein', overall: 82, pos: 'TE', classYear: 'SO' }, { name: 'Mike Hardrick', overall: 77, pos: 'TE', classYear: 'JR' }, { name: 'Jacob Harris', overall: 76, pos: 'TE', classYear: 'SR' } ] },
+                            { name: 'Left Tackle (LT)', players: [ { name: 'Deontae Meekins', overall: 80, pos: 'LT', classYear: 'SO*' }, { name: 'Dillon Robinson', overall: 78, pos: 'LT', classYear: 'SO' }, { name: 'Rico Steele', overall: 77, pos: 'LT', classYear: 'JR' }, { name: 'Marcus Durant', overall: 76, pos: 'LT', classYear: 'FR*' } ] },
+                            { name: 'Left Guard (LG)', players: [ { name: 'Ian Van Der Merwe', overall: 82, pos: 'LG', classYear: 'JR' }, { name: 'Julian Henderson', overall: 79, pos: 'LG', classYear: 'SR(RS)' }, { name: 'Marquise Willett', overall: 73, pos: 'LG', classYear: 'SO' } ] },
+                            { name: 'Center (C)', players: [ { name: 'Brody Bolyn', overall: 82, pos: 'C', classYear: 'SR' }, { name: 'Tyree Moses', overall: 78, pos: 'C', classYear: 'JR' } ] },
+                            { name: 'Right Guard (RG)', players: [ { name: 'Jamie Cleveland', overall: 81, pos: 'RG', classYear: 'SO' }, { name: 'Finau Vittatoe', overall: 80, pos: 'RG', classYear: 'SO*' } ] },
+                            { name: 'Right Tackle (RT)', players: [ { name: 'Darren Colclough', overall: 79, pos: 'RT', classYear: 'SO' }, { name: 'James Thomas Jr.', overall: 77, pos: 'RT', classYear: 'SR(RS)' }, { name: 'Storm Lampman', overall: 77, pos: 'RT', classYear: 'JR' }, { name: 'Cameron McPhearson', overall: 75, pos: 'RT', classYear: 'FR*' } ] }
+                        ],
+                        defense: [
+                            { name: 'Left Defensive End (LE)', players: [ { name: 'Elias Owens', overall: 85, pos: 'LE', classYear: 'JR(RS)' }, { name: 'Martreece Dillard', overall: 82, pos: 'LE', classYear: 'SR(RS)' }, { name: 'Russ Cheeks', overall: 81, pos: 'LE', classYear: 'JR' } ] },
+                            { name: 'Defensive Tackle (DT)', players: [ { name: 'Davonte Miles', overall: 79, pos: 'DT', classYear: 'SR(RS)' }, { name: 'Alex Sharp', overall: 75, pos: 'DT', classYear: 'JR' }, { name: 'Moses Keglar', overall: 72, pos: 'DT', classYear: 'SO' } ] },
+                            { name: 'Right Defensive End (RE)', players: [ { name: 'Joe Shimko', overall: 80, pos: 'RE', classYear: 'SR(RS)' }, { name: 'J.D. Tanney', overall: 80, pos: 'RE', classYear: 'SO' }, { name: 'Cam Booker', overall: 78, pos: 'RE', classYear: 'JR' }, { name: 'Melvin Maginn', overall: 74, pos: 'RE', classYear: 'FR*' } ] },
+                            { name: 'Left Outside LB (LOLB)', players: [ { name: 'Jeremy Peppers', overall: 79, pos: 'LOLB', classYear: 'JR' }, { name: 'Duane Droege', overall: 73, pos: 'LOLB', classYear: 'SO' }, { name: 'Demarco Locke', overall: 72, pos: 'LOLB', classYear: 'FR*' } ] },
+                            { name: 'Middle Linebacker (MLB)', players: [ { name: 'Deandre Salaam', overall: 79, pos: 'MLB', classYear: 'JR' }, { name: 'Marquel Bakhtiari', overall: 75, pos: 'MLB', classYear: 'FR*' } ] },
+                            { name: 'Right Outside LB (ROLB)', players: [ { name: 'Dorian Pringle', overall: 76, pos: 'ROLB', classYear: 'JR' }, { name: 'Alijah Williams', overall: 73, pos: 'ROLB', classYear: 'JR' } ] },
+                            { name: 'Cornerback 1 (CB1)', players: [ { name: 'Jace Henry', overall: 82, pos: 'CB1', classYear: 'SR' }, { name: 'Calvin Sauer', overall: 76, pos: 'CB1', classYear: 'SO' }, { name: 'Paul McCutcheon', overall: 75, pos: 'CB1', classYear: 'SO' } ] },
+                            { name: 'Cornerback 2 (CB2)', players: [ { name: 'Nate Cavka', overall: 79, pos: 'CB2', classYear: 'SO' }, { name: 'Layne Robbins', overall: 76, pos: 'CB2', classYear: 'JR' }, { name: 'Cliff Jackson', overall: 74, pos: 'CB2', classYear: 'SO' } ] },
+                            { name: 'Cornerback 3 (CB3)', players: [ { name: 'Kal-El Pascal', overall: 78, pos: 'CB3', classYear: 'SR(RS)' }, { name: 'Steven Magnum', overall: 75, pos: 'CB3', classYear: 'FR*' } ] },
+                            { name: 'Free Safety (FS)', players: [ { name: 'TJ Nelson', overall: 77, pos: 'FS', classYear: 'JR' }, { name: 'Tracy Revels', overall: 78, pos: 'FS', classYear: 'SR(RS)' } ] },
+                            { name: 'Strong Safety (SS)', players: [ { name: 'Mitch Mesko', overall: 84, pos: 'SS', classYear: 'JR' }, { name: 'Larry Yates', overall: 83, pos: 'SS', classYear: 'SR' } ] }
+                        ],
+                        specialTeams: [
+                            { name: 'Kicker (K)', players: [ { name: 'Rashaud Boiman', overall: 69, pos: 'K', classYear: 'FR*' } ] },
+                            { name: 'Punter (P)', players: [ { name: 'Jermaine Kasay', overall: 74, pos: 'P', classYear: 'FR*' } ] }
+                        ]
+                    },
+                    '2028': {
+                        offense: [
+                            { name: 'Quarterback (QB)', players: [ { name: 'Amar\'e Hocker', overall: 86, pos: 'QB', classYear: 'SR' }, { name: 'Morgan Landry', overall: 84, pos: 'QB', classYear: 'SR' }, { name: 'Juan Newcomb', overall: 80, pos: 'QB', classYear: 'JR' }, { name: 'Dave Shelley', overall: 79, pos: 'QB', classYear: 'FR*' }, { name: 'Greg Price', overall: 75, pos: 'QB', classYear: 'FR(RS)' } ] },
+                            { name: 'Running Back (RB)', players: [ { name: 'Bakara Nwangwu', overall: 87, pos: 'RB', classYear: 'JR' }, { name: 'Nakai Amachree', overall: 82, pos: 'RB', classYear: 'SR(RS)' }, { name: 'Shareef Bradbury', overall: 81, pos: 'RB', classYear: 'SO*' }, { name: 'Terrelle Francis', overall: 79, pos: 'RB', classYear: 'JR' }, { name: 'Collin Sandland', overall: 74, pos: 'RB', classYear: 'FR*' } ] },
+                            { name: 'Fullback (FB)', players: [ { name: 'Willie Brooks', overall: 71, pos: 'FB', classYear: 'SR' }, { name: 'Greg Soliday', overall: 74, pos: 'FB', classYear: 'FR*' } ] },
+                            { name: 'Wide Receiver (WR)', players: [ { name: 'Rashaud Exum', overall: 85, pos: 'WR', classYear: 'SR(RS)' }, { name: 'Kenny Tonges', overall: 85, pos: 'WR', classYear: 'SO*' }, { name: 'Sam Russo', overall: 83, pos: 'WR', classYear: 'JR' }, { name: 'Jayden Kafka', overall: 79, pos: 'WR', classYear: 'FR*' }, { name: 'Isiah Boutte', overall: 79, pos: 'WR', classYear: 'FR*' }, { name: 'Dakota McNitt', overall: 76, pos: 'WR', classYear: 'FR*' }, { name: 'Nazir McNitt', overall: 74, pos: 'WR', classYear: 'FR*' } ] },
+                            { name: 'Tight End (TE)', players: [ { name: 'Darren Klein', overall: 85, pos: 'TE', classYear: 'JR' }, { name: 'Kareem Duggan', overall: 81, pos: 'TE', classYear: 'SR' }, { name: 'Dell Ojabo', overall: 78, pos: 'TE', classYear: 'FR*' }, { name: 'Stephen Everett', overall: 75, pos: 'TE', classYear: 'FR*' } ] },
+                            { name: 'Left Tackle (LT)', players: [ { name: 'Rico Steele', overall: 81, pos: 'LT', classYear: 'SR' }, { name: 'Deontae Meekins', overall: 81, pos: 'LT', classYear: 'JR*' }, { name: 'Marcus Durant', overall: 80, pos: 'LT', classYear: 'SO*' } ] },
+                            { name: 'Left Guard (LG)', players: [ { name: 'Julian Henderson', overall: 85, pos: 'LG', classYear: 'SR(RS)' }, { name: 'Andrew Dennis', overall: 76, pos: 'LG', classYear: 'FR*' }, { name: 'Tracey Connors', overall: 65, pos: 'LG', classYear: 'FR*' } ] },
+                            { name: 'Center (C)', players: [ { name: 'Tyree Moses', overall: 79, pos: 'C', classYear: 'SR' }, { name: 'Titus Peart', overall: 74, pos: 'C', classYear: 'FR*' }, { name: 'Bobby John', overall: 71, pos: 'C', classYear: 'FR*' } ] },
+                            { name: 'Right Guard (RG)', players: [ { name: 'Jamie Cleveland', overall: 86, pos: 'RG', classYear: 'JR' }, { name: 'Eric Carraway', overall: 77, pos: 'RG', classYear: 'FR*' }, { name: 'Kerry Herrmann', overall: 65, pos: 'RG', classYear: 'FR*' } ] },
+                            { name: 'Right Tackle (RT)', players: [ { name: 'Darren Colclough', overall: 80, pos: 'RT', classYear: 'JR' }, { name: 'Storm Lampman', overall: 79, pos: 'RT', classYear: 'SR' }, { name: 'Cameron McPhearson', overall: 79, pos: 'RT', classYear: 'SO*' }, { name: 'Gio Peat', overall: 69, pos: 'RT', classYear: 'FR*' } ] }
+                        ],
+                        defense: [
+                            { name: 'Left Defensive End (LE)', players: [ { name: 'Elias Owens', overall: 87, pos: 'LE', classYear: 'SR(RS)' }, { name: 'Martreece Dillard', overall: 84, pos: 'LE', classYear: 'SR(RS)' }, { name: 'Russ Cheeks', overall: 82, pos: 'LE', classYear: 'SR' }, { name: 'Ronnie Betiku', overall: 73, pos: 'LE', classYear: 'FR*' } ] },
+                            { name: 'Defensive Tackle (DT)', players: [ { name: 'Davonte Miles', overall: 80, pos: 'DT', classYear: 'SR(RS)' }, { name: 'Moses Keglar', overall: 73, pos: 'DT', classYear: 'JR' }, { name: 'Kevin Armah', overall: 66, pos: 'DT', classYear: 'FR*' }, { name: 'Fredrick Sharpe', overall: 63, pos: 'DT', classYear: 'FR*' } ] },
+                            { name: 'Right Defensive End (RE)', players: [ { name: 'Cam Booker', overall: 85, pos: 'RE', classYear: 'SR' }, { name: 'Joe Shimko', overall: 83, pos: 'RE', classYear: 'SR(RS)' }, { name: 'J.D. Tanney', overall: 83, pos: 'RE', classYear: 'JR' }, { name: 'Melvin Maginn', overall: 79, pos: 'RE', classYear: 'SO*' } ] },
+                            { name: 'Left Outside LB (LOLB)', players: [ { name: 'Jeremy Peppers', overall: 81, pos: 'LOLB', classYear: 'SR' }, { name: 'Carl Rhinehart', overall: 73, pos: 'LOLB', classYear: 'FR*' } ] },
+                            { name: 'Middle Linebacker (MLB)', players: [ { name: 'Deandre Salaam', overall: 79, pos: 'MLB', classYear: 'SR' }, { name: 'Duane Droege', overall: 77, pos: 'MLB', classYear: 'JR' }, { name: 'Marquel Bakhtiari', overall: 77, pos: 'MLB', classYear: 'SO*' }, { name: 'Josh Posey', overall: 74, pos: 'MLB', classYear: 'FR*' } ] },
+                            { name: 'Right Outside LB (ROLB)', players: [ { name: 'Dorian Pringle', overall: 83, pos: 'ROLB', classYear: 'SR' }, { name: 'Theo Paul', overall: 67, pos: 'ROLB', classYear: 'FR*' }, { name: 'Emeka Iwuoma', overall: 64, pos: 'ROLB', classYear: 'FR*' }, { name: 'Shane Brutus', overall: 65, pos: 'ROLB', classYear: 'FR*' } ] },
+                            { name: 'Cornerback 1 (CB1)', players: [ { name: 'Deliyon Freeman', overall: 85, pos: 'CB1', classYear: 'FR*' }, { name: 'Kal-El Pascal', overall: 81, pos: 'CB1', classYear: 'SR(RS)' }, { name: 'Calvin Sauer', overall: 76, pos: 'CB1', classYear: 'JR' } ] },
+                            { name: 'Cornerback 2 (CB2)', players: [ { name: 'Reshard Adkins', overall: 84, pos: 'CB2', classYear: 'JR*' }, { name: 'Steven Magnum', overall: 77, pos: 'CB2', classYear: 'SO*' }, { name: 'Paul McCutcheon', overall: 77, pos: 'CB2', classYear: 'JR' } ] },
+                            { name: 'Cornerback 3 (CB3)', players: [ { name: 'Nate Cavka', overall: 83, pos: 'CB3', classYear: 'JR' }, { name: 'Layne Robbins', overall: 77, pos: 'CB3', classYear: 'SR' } ] },
+                            { name: 'Free Safety (FS)', players: [ { name: 'Kona Vakapuna', overall: 80, pos: 'FS', classYear: 'FR*' }, { name: 'TJ Nelson', overall: 79, pos: 'FS', classYear: 'SR' }, { name: 'Buck Hepburn', overall: 76, pos: 'FS', classYear: 'FR*' }, { name: 'Jacques Jasmine', overall: 75, pos: 'FS', classYear: 'FR*' } ] },
+                            { name: 'Strong Safety (SS)', players: [ { name: 'Mitch Mesko', overall: 84, pos: 'SS', classYear: 'SR' }, { name: 'Tavares Kalu', overall: 80, pos: 'SS', classYear: 'FR*' }, { name: 'Jon Moss', overall: 68, pos: 'SS', classYear: 'FR*' }, { name: 'Alejandro Marquez', overall: 67, pos: 'SS', classYear: 'FR*' } ] }
+                        ],
+                        specialTeams: [
+                            { name: 'Kicker (K)', players: [ { name: 'Rashaud Boiman', overall: 74, pos: 'K', classYear: 'SO*' } ] },
+                            { name: 'Punter (P)', players: [ { name: 'Jermaine Kasay', overall: 77, pos: 'P', classYear: 'SO*' } ] }
+                        ]
+                    },
+                    '2029': {
+                        offense: [
+                            { name: 'Quarterback (QB)', players: [ { name: 'Greg Price', overall: 77, pos: 'QB', classYear: 'SO(RS)'}, { name: 'Dave Shelley', overall: 79, pos: 'QB', classYear: 'SO*'}, { name: 'Juan Newcomb', overall: 80, pos: 'QB', classYear: 'SR'}, { name: 'Joshua Talib', overall: 75, pos: 'QB', classYear: 'FR*'} ] },
+                            { name: 'Running Back (RB)', players: [ { name: 'Bakara Nwangwu', overall: 95, pos: 'RB', classYear: 'SR'}, { name: 'Terrelle Francis', overall: 84, pos: 'RB', classYear: 'SR'}, { name: 'Collin Sandland', overall: 81, pos: 'RB', classYear: 'SO*'}, { name: 'Robert Okoronkwo', overall: 79, pos: 'RB', classYear: 'FR*'}, { name: 'Dalton Jameson', overall: 73, pos: 'RB', classYear: 'FR*'} ] },
+                            { name: 'Fullback (FB)', players: [ { name: 'Lee Dailey', overall: 79, pos: 'FB', classYear: 'FR*'} ] },
+                            { name: 'Wide Receiver (WR)', players: [ { name: 'Kenny Tongues', overall: 91, pos: 'WR', classYear: 'JR*'}, { name: 'Sam Russo', overall: 83, pos: 'WR', classYear: 'SR'}, { name: 'Isiah Boutte', overall: 83, pos: 'WR', classYear: 'SO*'}, { name: 'Nazir McNitt', overall: 83, pos: 'WR', classYear: 'SO*'}, { name: 'Jayden Kafka', overall: 82, pos: 'WR', classYear: 'SO*'}, { name: 'Dakota McNitt', overall: 78, pos: 'WR', classYear: 'SO*'}, { name: 'B.J. Lord', overall: 75, pos: 'WR', classYear: 'FR*'} ] },
+                            { name: 'Tight End (TE)', players: [ { name: 'Stephen Everett', overall: 90, pos: 'TE', classYear: 'SO*'}, { name: 'Darren Klein', overall: 85, pos: 'TE', classYear: 'SR'}, { name: 'Greg Soliday', overall: 82, pos: 'TE', classYear: 'SO*'}, { name: 'Kareem Duggan', overall: 81, pos: 'TE', classYear: 'SR(RS)'}, { name: 'Dell Ojabo', overall: 80, pos: 'TE', classYear: 'SO*'} ] },
+                            { name: 'Left Tackle (LT)', players: [ { name: 'Deontae Meekins', overall: 85, pos: 'LT', classYear: 'SR*'}, { name: 'Marcus Durant', overall: 82, pos: 'LT', classYear: 'JR*'}, { name: 'Jarry Horner', overall: 76, pos: 'LT', classYear: 'FR*'} ] },
+                            { name: 'Left Guard (LG)', players: [ { name: 'Titus Peart', overall: 85, pos: 'LG', classYear: 'SO*'}, { name: 'Tyler Jameson', overall: 80, pos: 'LG', classYear: 'FR*'}, { name: 'Tracey Connors', overall: 74, pos: 'LG', classYear: 'SO*'} ] },
+                            { name: 'Center (C)', players: [ { name: 'Tyree Moses', overall: 80, pos: 'C', classYear: 'SR(RS)'}, { name: 'Bobby John', overall: 80, pos: 'C', classYear: 'SO*'}, { name: 'Malik Bean', overall: 75, pos: 'C', classYear: 'FR*'} ] },
+                            { name: 'Right Guard (RG)', players: [ { name: 'Jamie Cleveland', overall: 87, pos: 'RG', classYear: 'SR'}, { name: 'Eric Carraway', overall: 82, pos: 'RG', classYear: 'SO*'}, { name: 'Kerry Herrmann', overall: 80, pos: 'RG', classYear: 'SO*'} ] },
+                            { name: 'Right Tackle (RT)', players: [ { name: 'Storm Lampman', overall: 80, pos: 'RT', classYear: 'SR(RS)'}, { name: 'Cameron McPhearson', overall: 81, pos: 'RT', classYear: 'JR*'}, { name: 'Barry Rutter', overall: 75, pos: 'RT', classYear: 'FR*'}, { name: 'Gio Peat', overall: 73, pos: 'RT', classYear: 'SO*'} ] }
+                        ],
+                        defense: [
+                            { name: 'Left Defensive End (LE)', players: [ { name: 'Russ Cheeks', overall: 86, pos: 'LE', classYear: 'SR(RS)'}, { name: 'Ronnie Betiku', overall: 77, pos: 'LE', classYear: 'SO*'}, { name: 'Salesi Jewel', overall: 76, pos: 'LE', classYear: 'FR*'} ] },
+                            { name: 'Defensive Tackle (DT)', players: [ { name: 'Alex Sharp', overall: 81, pos: 'DT', classYear: 'SR'}, { name: 'Kevin Armah', overall: 75, pos: 'DT', classYear: 'SO*'}, { name: 'Fredrick Sharpe', overall: 72, pos: 'DT', classYear: 'SO*'}, { name: 'Jamaal Stubbs', overall: 72, pos: 'DT', classYear: 'FR*'}, { name: 'Vernon Turpin', overall: 72, pos: 'DT', classYear: 'FR*'} ] },
+                            { name: 'Right Defensive End (RE)', players: [ { name: 'J.D. Tanney', overall: 86, pos: 'RE', classYear: 'SR'}, { name: 'Melvin Maginn', overall: 80, pos: 'RE', classYear: 'JR*'} ] },
+                            { name: 'Left Outside LB (LOLB)', players: [ { name: 'Jeremy Peppers', overall: 82, pos: 'LOLB', classYear: 'SR(RS)'}, { name: 'Carl Rhinehart', overall: 77, pos: 'LOLB', classYear: 'SO*'} ] },
+                            { name: 'Middle Linebacker (MLB)', players: [ { name: 'Iosefa Savoie', overall: 78, pos: 'MLB', classYear: 'FR*'}, { name: 'Duane Droege', overall: 77, pos: 'MLB', classYear: 'SR'}, { name: 'Marquel Bakhtiari', overall: 77, pos: 'MLB', classYear: 'JR*'}, { name: 'Josh Posey', overall: 76, pos: 'MLB', classYear: 'SO*'} ] },
+                            { name: 'Right Outside LB (ROLB)', players: [ { name: 'Shane Brutus', overall: 80, pos: 'ROLB', classYear: 'SO*'}, { name: 'Theo Paul', overall: 75, pos: 'ROLB', classYear: 'SO*'}, { name: 'Emeka Iwuoma', overall: 72, pos: 'ROLB', classYear: 'SO*'} ] },
+                            { name: 'Cornerback 1 (CB1)', players: [ { name: 'Nate Cavka', overall: 85, pos: 'CB1', classYear: 'SR'}, { name: 'Steven Magnum', overall: 77, pos: 'CB1', classYear: 'JR*'}, { name: 'Nyles Sills', overall: 68, pos: 'CB1', classYear: 'FR*'} ] },
+                            { name: 'Cornerback 2 (CB2)', players: [ { name: 'Randy Andrews', overall: 81, pos: 'CB2', classYear: 'SO(RS)'}, { name: 'Layne Robbins', overall: 77, pos: 'CB2', classYear: 'SR(RS)'} ] },
+                            { name: 'Cornerback 3 (CB3)', players: [ { name: 'Paul McCutcheon', overall: 78, pos: 'CB3', classYear: 'SR'}, { name: 'James Whitt', overall: 68, pos: 'CB3', classYear: 'FR*'} ] },
+                            { name: 'Free Safety (FS)', players: [ { name: 'Kona Vakapuna', overall: 85, pos: 'FS', classYear: 'SO*'}, { name: 'Buck Hepburn', overall: 84, pos: 'FS', classYear: 'SO*'}, { name: 'Calvin Sauer', overall: 80, pos: 'FS', classYear: 'SR'}, { name: 'Jacques Jasmine', overall: 76, pos: 'FS', classYear: 'SO*'}, { name: 'Erick McCray', overall: 68, pos: 'FS', classYear: 'FR*'} ] },
+                            { name: 'Strong Safety (SS)', players: [ { name: 'Tavares Kalu', overall: 86, pos: 'SS', classYear: 'SO*'}, { name: 'Jon Moss', overall: 71, pos: 'SS', classYear: 'SO*'}, { name: 'Alejandro Marquez', overall: 70, pos: 'SS', classYear: 'SO*'} ] }
+                        ],
+                        specialTeams: [
+                            { name: 'Kicker (K)', players: [ { name: 'Rashaud Boiman', overall: 78, pos: 'K', classYear: 'JR*' } ] },
+                            { name: 'Punter (P)', players: [ { name: 'Jermaine Kasay', overall: 77, pos: 'P', classYear: 'JR*' } ] }
+                        ]
+                    },
+                    '2030': { // Added 2030 Season Data
+                        offense: [
+                            { name: 'Quarterback (QB)', players: [ { name: 'Greg Price', overall: 83, pos: 'QB', classYear: 'JR(RS)' }, { name: 'Dave Shelley', overall: 81, pos: 'QB', classYear: 'JR*' }, { name: 'Joshua Talib', overall: 79, pos: 'QB', classYear: 'SO*' }, { name: 'Clayton Gay', overall: 69, pos: 'QB', classYear: 'FR*' } ] },
+                            { name: 'Running Back (RB)', players: [ { name: 'Terrelle Francis', overall: 84, pos: 'RB', classYear: 'SR(RS)' }, { name: 'Robert Okoronkwo', overall: 84, pos: 'RB', classYear: 'SO*' }, { name: 'Sam Fatafehi', overall: 78, pos: 'RB', classYear: 'FR*' }, { name: 'Dalton Jameson', overall: 76, pos: 'RB', classYear: 'SO*' } ] },
+                            { name: 'Fullback (FB)', players: [ { name: 'Collin Sandland', overall: 78, pos: 'FB', classYear: 'JR*' }, { name: 'Matthew Hix', overall: 73, pos: 'FB', classYear: 'FR*'} ] },
+                            { name: 'Wide Receiver (WR)', players: [ { name: 'Nazir McNitt', overall: 90, pos: 'WR', classYear: 'JR*' }, { name: 'Isiah Boutte', overall: 85, pos: 'WR', classYear: 'JR*' }, { name: 'Dakota McNitt', overall: 85, pos: 'WR', classYear: 'JR*' }, { name: 'Sam Russo', overall: 83, pos: 'WR', classYear: 'SR(RS)' }, { name: 'Jayden Kafka', overall: 82, pos: 'WR', classYear: 'JR*' }, { name: 'B.J. Lord', overall: 75, pos: 'WR', classYear: 'SO*' }, { name: 'Darren Klein', overall: 72, pos: 'WR', classYear: 'SR(RS)'} ] },
+                            { name: 'Tight End (TE)', players: [ { name: 'Stephen Everett', overall: 93, pos: 'TE', classYear: 'JR*' }, { name: 'Greg Soliday', overall: 92, pos: 'TE', classYear: 'JR*' }, { name: 'Jon Donaldson', overall: 87, pos: 'TE', classYear: 'FR*' }, { name: 'Dell Ojabo', overall: 81, pos: 'TE', classYear: 'JR*' } ] },
+                            { name: 'Left Tackle (LT)', players: [ { name: 'Marcus Durant', overall: 83, pos: 'LT', classYear: 'SR*' }, { name: 'Jarry Horner', overall: 80, pos: 'LT', classYear: 'SO*' } ] },
+                            { name: 'Left Guard (LG)', players: [ { name: 'Titus Peart', overall: 89, pos: 'LG', classYear: 'JR*' }, { name: 'Willie Ausbon', overall: 89, pos: 'LG', classYear: 'FR*' }, { name: 'Tracey Connors', overall: 77, pos: 'LG', classYear: 'JR*' }, { name: 'Manuel Ramos', overall: 79, pos: 'LG', classYear: 'FR*'} ] },
+                            { name: 'Center (C)', players: [ { name: 'Bobby John', overall: 83, pos: 'C', classYear: 'JR*' }, { name: 'Malik Bean', overall: 78, pos: 'C', classYear: 'SO*' } ] },
+                            { name: 'Right Guard (RG)', players: [ { name: 'Jamie Cleveland', overall: 91, pos: 'RG', classYear: 'SR(RS)' }, { name: 'Eric Carraway', overall: 86, pos: 'RG', classYear: 'JR*' }, { name: 'Seth Molinaro', overall: 81, pos: 'RG', classYear: 'FR*'} ] },
+                            { name: 'Right Tackle (RT)', players: [ { name: 'Cameron McPhearson', overall: 82, pos: 'RT', classYear: 'SR*' }, { name: 'Barry Rutter', overall: 79, pos: 'RT', classYear: 'SO*' }, { name: 'Howie Stevens', overall: 78, pos: 'RT', classYear: 'FR*'} ] }
+                        ],
+                        defense: [
+                            { name: 'Left Defensive End (LE)', players: [ { name: 'Patrick Bickley', overall: 85, pos: 'LE', classYear: 'FR*' }, { name: 'Ronnie Betiku', overall: 77, pos: 'LE', classYear: 'JR*' } ] },
+                            { name: 'Defensive Tackle (DT)', players: [ { name: 'Kevin Armah', overall: 80, pos: 'DT', classYear: 'JR*' }, { name: 'Fredrick Sharpe', overall: 77, pos: 'DT', classYear: 'JR*' }, { name: 'Jamaal Stubbs', overall: 77, pos: 'DT', classYear: 'SO*' }, { name: 'Vernon Turpin', overall: 77, pos: 'DT', classYear: 'SO*' }, { name: 'Joshua Bucannon', overall: 74, pos: 'DT', classYear: 'FR*'} ] },
+                            { name: 'Right Defensive End (RE)', players: [ { name: 'Joe Goodin', overall: 84, pos: 'RE', classYear: 'FR*' }, { name: 'Melvin Maginn', overall: 80, pos: 'RE', classYear: 'SR*' } ] },
+                            { name: 'Left Outside LB (LOLB)', players: [ { name: 'Duane Droege', overall: 85, pos: 'LOLB', classYear: 'SR(RS)' }, { name: 'Josh Posey', overall: 81, pos: 'LOLB', classYear: 'JR*' }, { name: 'Cole Roseman', overall: 79, pos: 'LOLB', classYear: 'FR*' }, { name: 'Emeka Iwuoma', overall: 76, pos: 'LOLB', classYear: 'JR*' } ] },
+                            { name: 'Middle Linebacker (MLB)', players: [ { name: 'Iosefa Savoie', overall: 83, pos: 'MLB', classYear: 'SO*' }, { name: 'Marquel Bakhtiari', overall: 82, pos: 'MLB', classYear: 'SR*' }, { name: 'Steve Decicco', overall: 79, pos: 'MLB', classYear: 'FR*' }, { name: 'Shane Brutus', overall: 78, pos: 'MLB', classYear: 'JR*'} ] },
+                            { name: 'Right Outside LB (ROLB)', players: [ { name: 'Juan Rivera', overall: 84, pos: 'ROLB', classYear: 'FR*' }, { name: 'Carl Rhinehart', overall: 81, pos: 'ROLB', classYear: 'JR*' }, { name: 'Theo Paul', overall: 81, pos: 'ROLB', classYear: 'JR*' }, { name: 'Leon Azur', overall: 74, pos: 'ROLB', classYear: 'FR*'} ] },
+                            { name: 'Cornerback 1 (CB1)', players: [ { name: 'Nate Cavka', overall: 87, pos: 'CB1', classYear: 'SR(RS)' }, { name: 'Steven Magnum', overall: 80, pos: 'CB1', classYear: 'SR*' }, { name: 'James Whitt', overall: 74, pos: 'CB1', classYear: 'SO*' } ] },
+                            { name: 'Cornerback 2 (CB2)', players: [ { name: 'Randy Andrews', overall: 84, pos: 'CB2', classYear: 'SO(RS)' }, { name: 'Lyle Chick', overall: 80, pos: 'CB2', classYear: 'FR*' }, { name: 'Romeo Ford', overall: 74, pos: 'CB2', classYear: 'FR*'} ] },
+                            { name: 'Cornerback 3 (CB3)', players: [ { name: 'Paul McCutcheon', overall: 81, pos: 'CB3', classYear: 'SR(RS)' }, { name: 'Erick McCray', overall: 78, pos: 'CB3', classYear: 'SO*' } ] },
+                            { name: 'Free Safety (FS)', players: [ { name: 'Kona Vakapuna', overall: 85, pos: 'FS', classYear: 'JR*' }, { name: 'Calvin Sauer', overall: 82, pos: 'FS', classYear: 'SR(RS)' }, { name: 'Jesus Mond', overall: 80, pos: 'FS', classYear: 'FR*' }, { name: 'Andres Nagy', overall: 68, pos: 'FS', classYear: 'FR*'} ] },
+                            { name: 'Strong Safety (SS)', players: [ { name: 'Buck Hepburn', overall: 86, pos: 'SS', classYear: 'JR*' }, { name: 'Alejandro Marquez', overall: 75, pos: 'SS', classYear: 'JR*' }, { name: 'Jon Moss', overall: 71, pos: 'SS', classYear: 'JR*' }, { name: 'Shakir Vigil', overall: 63, pos: 'SS', classYear: 'FR*'} ] }
+                        ],
+                        specialTeams: [
+                            { name: 'Kicker (K)', players: [ { name: 'Rashaud Boiman', overall: 80, pos: 'K', classYear: 'SR*' } ] },
+                            { name: 'Punter (P)', players: [ { name: 'Nate Tripucka', overall: 70, pos: 'P', classYear: 'FR*' } ] }
+                        ]
+                    }
+                },
+                openPlayerModal(player, season) {
+                    this.selectedPlayer = player;
+                    this.modalSeason = season;
+                    this.modalOpen = true;
+                    const statsContainer = document.getElementById('modalSeasonStatsContainer');
+                    if (statsContainer) {
+                        statsContainer.innerHTML = `<p class="text-sm text-gray-500 italic">Season stats for ${player.name} (${season}) would appear here if available.</p>`;
+                    }
+                },
+                closeModal() {
+                    this.modalOpen = false;
+                    setTimeout(() => {
+                        this.selectedPlayer = {};
+                        this.modalSeason = '';
+                    }, 300); 
+                },
+                init() {
+                    for (const year in this.depthChartData) {
+                        if (this.depthChartData.hasOwnProperty(year)) {
+                            const seasonData = this.depthChartData[year];
+                            ['offense', 'defense', 'specialTeams'].forEach(teamPart => {
+                                if (seasonData[teamPart] && Array.isArray(seasonData[teamPart])) {
+                                    seasonData[teamPart].forEach(position => {
+                                        if (position && Array.isArray(position.players)) {
+                                            position.players.sort((a, b) => b.overall - a.overall);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    const years = Object.keys(this.depthChartData).sort((a, b) => b - a); 
+                    if (years.length > 0) {
+                        this.selectedSeason = years[0]; 
+                    } else {
+                        this.selectedSeason = '2024'; 
+                    }
+                }
+            };
+        }
+
+        // Combined JavaScript for header and page-specific logic
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const tickerWrapElement = document.querySelector('.ticker-wrap'); 
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+
+                // The ticker is not on this page, so the tickerWrapElement check will be false.
+                // if (tickerWrapElement) { 
+                //     tickerWrapElement.style.top = navHeight + 'px';
+                //     totalOffset += tickerWrapElement.offsetHeight;
+                // }
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px'; 
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '12rem'; 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+            
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+            
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null; 
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) { 
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator); 
+            }
+            
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                const tabRect = tabElement.getBoundingClientRect();
+                slidingIndicator.style.width = `${tabRect.width}px`;
+                slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                // THIS IS THE LINE TO CHANGE FOR EACH PAGE
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === 'csu_depth_chart.html'); 
+                setActiveTab(currentPageTab || allTabs[0]); 
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                    tab.addEventListener('click', (e) => {
+                        setActiveTab(tab); 
+                    });
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+                
+                if (activeTab) {
+                    setTimeout(() => moveIndicatorToTab(activeTab), 150);
+                }
+            }
+            adjustLayout(); 
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                const tabRect = activeTabElem.getBoundingClientRect();
+                const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                indicator.style.width = `${tabRect.width}px`;
+                indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+            }
+        }); 
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    indicator.style.width = `${tabRect.width}px`;
+                    indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                }
+            }
+        }); 
+    </script>
+</body>
+</html>

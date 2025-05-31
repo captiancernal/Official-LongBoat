@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Football Playoffs - Longboat Lounge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <script defer>
+        function playoffData() {
+            const createGame = (team1 = 'TBD', score1 = '-', team2 = 'TBD', score2 = '-', winner = 'TBD') => ({ team1, score1, team2, score2, winner });
+            return {
+                selectedSeason: '2024', // Default to 2024, ensures a bracket is shown on load
+                seasons: [
+                    {
+                        year: '2024',
+                        bracket: { // Data from Playoff Tracker for 2024
+                            byes: ['BAMA', 'MIA', 'ORE', 'ASU'], // #1 BAMA, #2 MIA, #3 ORE, #4 ASU
+                            firstRound: {
+                                gameA: createGame('OSU', '45', 'ECU', '17', 'OSU'),      // #5 OSU vs #12 ECU
+                                gameB: createGame('ND', '21', 'TEX', '13', 'ND'),       // #8 ND vs #9 TEX
+                                gameC: createGame('CLEM', '48', 'UGA', '46', 'CLEM'),    // #6 CLEM vs #11 UGA
+                                gameD: createGame('MISS', '31', 'KSU', '23', 'MISS')     // #7 MISS vs #10 KSU
+                            },
+                            quarterfinals: {
+                                qf1: createGame('BAMA', '30', 'ND', '38', 'ND'),      // #1 BAMA vs Winner Game B (ND)
+                                qf2: createGame('ASU', '20', 'OSU', '48', 'OSU'),     // #4 ASU vs Winner Game A (OSU)
+                                qf3: createGame('MIA', '31', 'MISS', '20', 'MIA'),    // #2 MIA vs Winner Game D (MISS)
+                                qf4: createGame('ORE', '42', 'CLEM', '28', 'ORE')     // #3 ORE vs Winner Game C (CLEM)
+                            },
+                            semifinals: {
+                                sf1: createGame('OSU', '20', 'ND', '21', 'ND'),       // Winner QF2 (OSU) vs Winner QF1 (ND)
+                                sf2: createGame('ORE', '35', 'MIA', '30', 'ORE')      // Winner QF4 (ORE) vs Winner QF3 (MIA)
+                            },
+                            championship: createGame('ND', '16', 'ORE', '38', 'ORE')   // Winner SF1 (ND) vs Winner SF2 (ORE)
+                        }
+                    },
+                    {
+                        year: '2025',
+                        bracket: { // Data from Playoff Tracker for 2025
+                            byes: ['BAMA', 'CLEM', 'ORE', 'BU'], // #1 BAMA, #2 CLEM, #3 ORE, #4 BU
+                            firstRound: {
+                                gameA: createGame('PSU', '33', 'TLSA', '7', 'PSU'),     // #5 PSU vs #12 TLSA
+                                gameB: createGame('UGA', '35', 'BC', '21', 'UGA'),      // #8 UGA vs #9 BC
+                                gameC: createGame('KSU', '33', 'GT', '14', 'KSU'),      // #6 KSU vs #11 GT
+                                gameD: createGame('ILL', '29', 'TEX', '25', 'ILL')      // #7 ILL vs #10 TEX
+                            },
+                            quarterfinals: {
+                                qf1: createGame('BAMA', '29', 'UGA', '17', 'BAMA'),    // #1 BAMA vs Winner Game B (UGA)
+                                qf2: createGame('BU', '24', 'PSU', '42', 'PSU'),      // #4 BU vs Winner Game A (PSU)
+                                qf3: createGame('CLEM', '27', 'ILL', '21', 'CLEM'),    // #2 CLEM vs Winner Game D (ILL)
+                                qf4: createGame('ORE', '32', 'KSU', '35', 'KSU')      // #3 ORE vs Winner Game C (KSU)
+                            },
+                            semifinals: {
+                                sf1: createGame('PSU', '40', 'BAMA', '38', 'PSU'),    // Winner QF2 (PSU) vs Winner QF1 (BAMA)
+                                sf2: createGame('KSU', '14', 'CLEM', '27', 'CLEM')    // Winner QF4 (KSU) vs Winner QF3 (CLEM)
+                            },
+                            championship: createGame('PSU', '56', 'CLEM', '38', 'PSU') // Winner SF1 (PSU) vs Winner SF2 (CLEM)
+                        }
+                    },
+                    {
+                        year: '2026',
+                        bracket: { // Data from Playoff Tracker for 2026
+                            byes: ['FLA', 'KSU', 'MIA', 'TULN'], // #1 FLA, #2 KSU, #3 MIA, #4 TULN
+                            firstRound: {
+                                gameA: createGame('UGA', '49', 'USC', '44', 'UGA'),     // #5 UGA vs #12 USC
+                                gameB: createGame('BAMA', '45', 'UMD', '14', 'BAMA'),    // #8 BAMA vs #9 UMD
+                                gameC: createGame('CLEM', '41', 'OSU', '31', 'CLEM'),    // #6 CLEM vs #11 OSU
+                                gameD: createGame('ORE', '22', 'PITT', '14', 'ORE')     // #7 ORE vs #10 PITT
+                            },
+                            quarterfinals: {
+                                qf1: createGame('FLA', '7', 'BAMA', '55', 'BAMA'),     // #1 FLA vs Winner Game B (BAMA)
+                                qf2: createGame('TULN', '17', 'UGA', '30', 'UGA'),     // #4 TULN vs Winner Game A (UGA)
+                                qf3: createGame('KSU', '16', 'ORE', '26', 'ORE'),      // #2 KSU vs Winner Game D (ORE) - ORE won
+                                qf4: createGame('MIA', '20', 'CLEM', '38', 'CLEM')     // #3 MIA vs Winner Game C (CLEM)
+                            },
+                            semifinals: {
+                                sf1: createGame('UGA', '29', 'BAMA', '17', 'UGA'),     // Winner QF2 (UGA) vs Winner QF1 (BAMA)
+                                sf2: createGame('CLEM', '28', 'ORE', '34', 'ORE')     // Winner QF4 (CLEM) vs Winner QF3 (ORE)
+                            },
+                            championship: createGame('UGA', '45', 'ORE', '17', 'UGA')  // Winner SF1 (UGA) vs Winner SF2 (ORE)
+                        }
+                    },
+                    {
+                        year: '2027',
+                        bracket: { // Data from Playoff Tracker for 2027
+                            byes: ['TAMU', 'OHIO', 'USC', 'AKR'], // #1 TAMU, #2 OHIO, #3 USC, #4 AKR
+                            firstRound: {
+                                gameA: createGame('BAMA', '25', 'MTSU', '24', 'BAMA'),   // #5 BAMA vs #12 MTSU
+                                gameB: createGame('WASH', '58', 'VT', '37', 'WASH'),    // #8 WASH vs #9 VT (Tracker has WASH 58)
+                                gameC: createGame('NCST', '20', 'PSU', '14', 'NCST'),   // #6 NCST vs #11 PSU
+                                gameD: createGame('M-OH', '41', 'LSU', '20', 'M-OH')    // #7 M-OH vs #10 LSU
+                            },
+                            quarterfinals: {
+                                qf1: createGame('TAMU', '28', 'WASH', '20', 'TAMU'),  // #1 TAMU vs Winner Game B (WASH)
+                                qf2: createGame('AKR', '27', 'BAMA', '30', 'BAMA'),   // #4 AKR vs Winner Game A (BAMA)
+                                qf3: createGame('OHIO', '41', 'M-OH', '42', 'M-OH'),  // #2 OHIO vs Winner Game D (M-OH)
+                                qf4: createGame('USC', '30', 'NCST', '20', 'USC')    // #3 USC vs Winner Game C (NCST)
+                            },
+                            semifinals: {
+                                sf1: createGame('BAMA', '58', 'TAMU', '7', 'BAMA'),   // Winner QF2 (BAMA) vs Winner QF1 (TAMU)
+                                sf2: createGame('USC', '22', 'M-OH', '44', 'M-OH')    // Winner QF4 (USC) vs Winner QF3 (M-OH)
+                            },
+                            championship: createGame('BAMA', '31', 'M-OH', '17', 'BAMA') // Winner SF1 (BAMA) vs Winner SF2 (M-OH)
+                        }
+                    },
+                    {
+                        year: '2028',
+                        bracket: { // Data from Playoff Tracker for 2028
+                            byes: ['CLEV', 'UGA', 'MTSU', 'NCST'], // #1 CLEV, #2 UGA, #3 MTSU, #4 NCST
+                            firstRound: {
+                                gameA: createGame('CHAR', '35', 'KSU', '21', 'CHAR'),   // #5 CHAR vs #12 KSU
+                                gameB: createGame('OSU', '26', 'BU', '13', 'OSU'),     // #8 OSU vs #9 BU
+                                gameC: createGame('M-OH', '31', 'TULN', '28', 'M-OH'),  // #6 M-OH vs #11 TULN (Tracker: M-OH 31, TULN 28)
+                                gameD: createGame('OHIO', '28', 'ND', '7', 'OHIO')     // #7 OHIO vs #10 ND
+                            },
+                            quarterfinals: {
+                                qf1: createGame('CLEV', '42', 'OSU', '38', 'CLEV'),   // #1 CLEV vs Winner Game B (OSU) (Tracker QF: CLEV 42 vs OSU 38)
+                                qf2: createGame('NCST', '24', 'CHAR', '42', 'CHAR'),  // #4 NCST vs Winner Game A (CHAR)
+                                qf3: createGame('UGA', '14', 'OHIO', '13', 'UGA'),    // #2 UGA vs Winner Game D (OHIO)
+                                qf4: createGame('MTSU', '31', 'M-OH', '38', 'M-OH')   // #3 MTSU vs Winner Game C (M-OH) (Tracker QF: M-OH 38 vs MTSU 31)
+                            },
+                            semifinals: {
+                                sf1: createGame('CHAR', '28', 'CLEV', '45', 'CLEV'),  // Winner QF2 (CHAR) vs Winner QF1 (CLEV)
+                                sf2: createGame('M-OH', '28', 'UGA', '31', 'UGA')    // Winner QF4 (M-OH) vs Winner QF3 (UGA)
+                            },
+                            championship: createGame('CLEV', '34', 'UGA', '24', 'CLEV')// Winner SF1 (CLEV) vs Winner SF2 (UGA)
+                        }
+                    },
+                    {
+                        year: '2029',
+                        bracket: { // Data from Playoff Tracker for 2029
+                            byes: ['ORE', 'UGA', 'M-OH', 'MASS'], // #1 ORE, #2 UGA, #3 M-OH, #4 MASS
+                            firstRound: {
+                                gameA: createGame('STAN', '38', 'ND', '35', 'STAN'),    // #5 STAN vs #12 ND
+                                gameB: createGame('OHIO', '37', 'MICH', '20', 'OHIO'),  // #8 OHIO vs #9 MICH
+                                gameC: createGame('CLEV', '51', 'OU', '21', 'CLEV'),    // #6 CLEV vs #11 OU (Tracker: CLEV 51 vs OU 21)
+                                gameD: createGame('ILL', '37', 'LSU', '20', 'ILL')     // #7 ILL vs #10 LSU (Tracker: ILL 37 vs LSU 20)
+                            },
+                            quarterfinals: {
+                                qf1: createGame('ORE', '21', 'OHIO', '40', 'OHIO'),   // #1 ORE vs Winner Game B (OHIO)
+                                qf2: createGame('MASS', '13', 'STAN', '37', 'STAN'),  // #4 MASS vs Winner Game A (STAN)
+                                qf3: createGame('UGA', '59', 'ILL', '13', 'UGA'),    // #2 UGA vs Winner Game D (ILL) (Tracker: UGA 59 vs ILL 13)
+                                qf4: createGame('M-OH', '28', 'CLEV', '42', 'CLEV')  // #3 M-OH vs Winner Game C (CLEV). Tracker QF: "CLEV 28 vs M-OH 42", but CLEV in SF. Adjusted CLEV to win QF.
+                            },
+                            semifinals: {
+                                sf1: createGame('STAN', '10', 'OHIO', '35', 'OHIO'),  // Winner QF2 (STAN) vs Winner QF1 (OHIO)
+                                sf2: createGame('CLEV', '31', 'UGA', '14', 'CLEV')   // Winner QF4 (CLEV) vs Winner QF3 (UGA)
+                            },
+                            championship: createGame('OHIO', '52', 'CLEV', '36', 'OHIO')// Winner SF1 (OHIO) vs Winner SF2 (CLEV)
+                        }
+                    }
+                ],
+                init() {
+                    // Alpine.js component initialization logic, if any, goes here.
+                    // Currently, it's empty, which is fine.
+                }
+            };
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* --- Root Variables for header (from index.html) --- */
+        :root {
+            --csu-green: #004D40;
+            --csu-white: #FFFFFF;
+            --csu-gray: #52545A;
+            --logo-gold: #B08D57;
+            --nav-tab-text: #cbd5e1; /* Tailwind slate-300 */
+            --nav-tab-hover-text: var(--csu-white);
+            --nav-tab-active-text: var(--csu-white);
+            --nav-indicator-color: var(--logo-gold);
+
+            /* Palette from original playoffs.html (for page content) */
+            --page-bg-playoffs: #FDFBF5;
+            --wood-dark-playoffs: #6F4E37;
+            --wood-light-playoffs: #A07855;
+            --gold-primary-playoffs: #D4AF37;
+            --gold-secondary-playoffs: #E6C66E;
+            --text-primary-playoffs: #4A3B31;
+            --text-on-dark-playoffs: #FDFBF5;
+            --seed-color-playoffs: #777;
+            --bracket-bg-playoffs: #FFFFFF;
+            --matchup-bg-playoffs: #fffaf0;
+            --connector-color-playoffs: #b0a08a;
+        }
+
+        /* Global body styles, adapted for playoffs.html */
+        body {
+            font-family: 'Lato', sans-serif;
+            overflow-x: hidden; /* Prevent body from scrolling horizontally, wrapper will handle bracket scroll */
+            animation: pageFadeIn 0.6s ease-out forwards;
+            opacity: 0;
+            padding-top: 0; /* Will be set by JS */
+            background-color: var(--page-bg-playoffs);
+            color: var(--text-primary-playoffs);
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bg-csu-green { background-color: var(--csu-green); }
+        .text-csu-white { color: var(--csu-white); }
+        .text-csu-gray { color: var(--csu-gray); }
+        .border-csu-green { border-color: var(--csu-green); }
+        .text-csu-green { color: var(--csu-green); }
+
+
+        /* Logo Styling from index.html */
+        .logo-title-container { display: flex; align-items: center; padding: 5px 0; }
+        .logo-text { font-size: 1.5rem; line-height: 1.1; color: var(--csu-white); display: flex; flex-direction: column; align-items: flex-start; }
+        .logo-text .longboat { font-family: 'Graduate', cursive; font-weight: 400; font-size: 1.8em; letter-spacing: 0.02em; color: var(--csu-white); text-shadow: 1px 1px 3px rgba(0,0,0,0.4); }
+        .logo-text .lounge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85em; letter-spacing: 0.15em; text-transform: uppercase; color: var(--logo-gold); margin-top: -0.3em; margin-left: 0.1em; }
+
+        /* --- Modern Dynamic Navigation Tabs from index.html --- */
+        nav .nav-tabs-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding-bottom: 3px;
+        }
+
+        nav .nav-tab-row {
+            display: flex;
+            align-items: center;
+            gap: 0.1rem;
+            width: auto;
+        }
+
+        nav .nav-tab-row:nth-child(2) {
+            margin-top: -0.25rem;
+        }
+
+        nav .nav-tab-row a {
+            font-family: 'Audiowide', cursive;
+            font-size: 0.70rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 0.6rem 0.7rem;
+            color: var(--nav-tab-text);
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+            background-color: transparent;
+            border-radius: 4px 4px 0 0;
+            text-align: center;
+        }
+
+        nav .nav-tab-row a:hover {
+            color: var(--nav-tab-hover-text);
+        }
+
+        nav .nav-tab-row a.active-tab {
+            color: var(--nav-tab-active-text);
+        }
+
+        .nav-sliding-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background-color: var(--nav-indicator-color);
+            border-radius: 2px;
+            transition: left 0.35s cubic-bezier(0.65, 0, 0.35, 1), width 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+            z-index: 1;
+        }
+
+        /* Mobile Menu from index.html */
+        nav #mobile-menu {
+            background-color: var(--csu-green);
+        }
+        nav #mobile-menu a {
+            font-family: 'Audiowide', cursive;
+            font-size: 0.9rem;
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--nav-tab-text);
+            border-radius: 0.25rem;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+        nav #mobile-menu a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--nav-tab-hover-text);
+        }
+
+        /* Navbar fixed styling from index.html */
+        nav.fixed-navbar {
+            background-color: var(--csu-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center;
+            padding-top: 0.1rem; padding-bottom: 0.1rem;
+        }
+
+        /* --- Styles specific to playoffs.html content --- */
+        .page-header h1 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--wood-dark-playoffs);
+            text-shadow: 1px 1px 2px var(--gold-secondary-playoffs);
+        }
+        .page-header p { color: var(--wood-light-playoffs); }
+
+        .content-tab-button { /* For season tabs within playoffs page */
+            font-family: 'Oswald', sans-serif;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--wood-light-playoffs);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .content-tab-button.active, .content-tab-button:hover {
+            color: var(--gold-primary-playoffs);
+            border-bottom-color: var(--gold-primary-playoffs);
+        }
+        .content-tab-button.active { background-color: rgba(212, 175, 55, 0.05); }
+
+        .tabs-container nav { /* For season tabs container */
+             -ms-overflow-style: none;
+             scrollbar-width: none;
+        }
+        .tabs-container nav::-webkit-scrollbar { display: none; }
+
+        .season-bracket-wrapper {
+            background-color: var(--bracket-bg-playoffs);
+            border: 1px solid var(--gold-secondary-playoffs);
+            border-left: 5px solid var(--gold-primary-playoffs);
+            box-shadow: 0 4px 15px rgba(111, 78, 55, 0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            overflow-x: auto; /* This will handle bracket scrolling if still needed */
+        }
+
+        .full-bracket {
+            display: flex;
+            justify-content: space-around;
+            align-items: stretch;
+            min-width: 960px; /* Adjusted for potentially wider content if team names are long */
+        }
+
+        .bracket-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 5px; /* Reduced horizontal padding */
+            flex-grow: 1;
+            flex-shrink: 1;
+            min-width: 130px; /* Slightly increased min-width for columns */
+            position: relative;
+        }
+        .bracket-column.championship-column {
+            justify-content: center;
+            min-width: 200px; /* Increased for championship display */
+        }
+
+        .round-label {
+            font-family: 'Oswald', sans-serif;
+            color: var(--wood-dark-playoffs);
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .matchup {
+            background-color: var(--matchup-bg-playoffs);
+            padding: 0.7rem; /* Slightly increased padding */
+            border-radius: 0.25rem;
+            border: 1px solid var(--gold-secondary-playoffs);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 170px; /* Increased max-width */
+            margin-bottom: 1.25rem; /* Increased margin for spacing */
+            font-size: 0.8rem; /* Increased base font size for matchup */
+        }
+        .matchup.championship-matchup {
+             max-width: 220px; /* Increased max-width */
+             padding: 1.2rem; /* Increased padding */
+             background-color: var(--gold-secondary-playoffs);
+             border-color: var(--gold-primary-playoffs);
+        }
+
+        .matchup-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem; /* Increased font size */
+            color: var(--wood-light-playoffs);
+            margin-bottom: 0.4rem; /* Increased margin */
+            font-weight: 500;
+            text-align: center;
+        }
+         .championship-matchup .matchup-title {
+            color: var(--text-on-dark-playoffs);
+            font-size: 1.1rem; /* Increased font size */
+         }
+
+        .team-line { display: flex; justify-content: space-between; align-items: center; padding: 0.2rem 0; } /* Increased padding */
+        .team-seed { font-size: 0.75em; color: var(--seed-color-playoffs); margin-right: 0.3em; min-width: 18px; } /* Adjusted */
+        .team-name {
+            font-weight: 600;
+            color: var(--text-primary-playoffs);
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.9em; /* Relative to .matchup, so effectively larger */
+        }
+         .championship-matchup .team-name { color: var(--wood-dark-playoffs); font-size: 0.95rem; }
+
+        .team-score {
+            font-weight: bold;
+            color: var(--csu-green);
+            margin-left: 0.4em; /* Increased margin */
+            min-width: 20px; /* Increased min-width */
+            text-align: right;
+            font-size: 0.9em; /* Relative to .matchup */
+        }
+        .championship-matchup .team-score { color: var(--wood-dark-playoffs); }
+
+        .winner-line { margin-top: 0.5rem; padding-top: 0.3rem; border-top: 1px dashed var(--gold-secondary-playoffs); font-size: 0.75rem; text-align: right; } /* Adjusted */
+        .winner-line strong { color: var(--gold-primary-playoffs); font-weight: bold; }
+
+        .bye-info { font-family: 'Oswald', sans-serif; text-align: center; margin-bottom: 1.5rem; padding: 0.5rem; background-color: #f8f8f8; border-radius: 0.25rem; }
+        .bye-info .round-label { margin-bottom: 0.5rem; font-size: 1.1rem;}
+        .bye-team-list div { margin-bottom: 0.3rem; font-size: 0.9rem;}
+
+        .final-champion-display { text-align: center; margin-top: 1.5rem; }
+        .final-champion-display .round-label { font-size: 1.5rem; color: var(--gold-primary-playoffs); }
+        .final-champion-display strong { font-family: 'Oswald', sans-serif; font-size: 2rem; color: var(--wood-dark-playoffs); text-shadow: 1px 1px var(--gold-secondary-playoffs); display: block; }
+
+        /* Footer Styling */
+        footer {
+            background-color: var(--csu-green);
+            color: var(--csu-white);
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid var(--gold-primary-playoffs);
+        }
+        footer p {
+            font-size: 0.875rem;
+        }
+         footer p.mt-1 {
+            margin-top: 0.25rem;
+         }
+
+    </style>
+</head>
+<body class="bg-page-bg-playoffs">
+    <nav class="fixed-navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex items-center justify-between h-full">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="index.html" class="logo-title-container">
+                         <span id="logo-text" class="logo-text">
+                             <span class="longboat">Longboat</span>
+                             <span class="lounge">Lounge</span>
+                         </span>
+                     </a>
+                </div>
+                <div class="hidden md:block ml-auto nav-tabs-wrapper">
+                    <div class="nav-tabs-container">
+                        <div class="nav-tab-row">
+                            <a href="index.html">Home</a>
+                            <a href="coaches.html">Coaches</a>
+                            <a href="playoffs.html">Playoffs</a>
+                            <a href="player_awards.html">Player Awards</a>
+                            <a href="all_americans.html">All-Americans</a>
+                            <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                        </div>
+                        <div class="nav-tab-row" style="padding-left: 2.5rem;">
+                            <a href="schedule.html">Schedule</a>
+                            <a href="stats.html">Stats Hub</a>
+                            <a href="top_25_rankings.html">Top 25</a>
+                            <a href="viking_recruiting.html">Viking Recruiting</a>
+                            <a href="the_cauldron.html">The Cauldron</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="menu-button" class="bg-csu-green inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-csu-green focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6 hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /> </svg>
+                        <svg class="hidden h-6 w-6 close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /> </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="index.html">Home</a>
+                <a href="coaches.html">Coaches</a>
+                <a href="playoffs.html">Playoffs</a>
+                <a href="player_awards.html">Player Awards</a>
+                <a href="all_americans.html">All-Americans</a>
+                <a href="csu_depth_chart.html">CSU Depth Chart</a>
+                <a href="schedule.html">Schedule</a>
+                <a href="stats.html">Stats Hub</a>
+                <a href="top_25_rankings.html">Top 25</a>
+                <a href="viking_recruiting.html">Viking Recruiting</a>
+                <a href="the_cauldron.html">The Cauldron</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <header class="mb-10 text-center page-header mt-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-3">College Football Playoffs</h1>
+                <p class="text-lg md:text-xl">Tracking the 12-Team Playoff Bracket (2024-2029)</p>
+            </header>
+
+            <div x-data="playoffData()" class="mb-6">
+                <div class="border-b-2 border-gold-secondary-playoffs mb-6 tabs-container">
+                    <nav class="-mb-px flex space-x-1 sm:space-x-2 overflow-x-auto pb-1" aria-label="Seasons">
+                        <template x-for="season in seasons" :key="season.year">
+                            <button @click="selectedSeason = season.year"
+                                    :class="{ 'active': selectedSeason === season.year }"
+                                    class="content-tab-button">
+                                <span x-text="season.year + ' Playoffs'"></span>
+                            </button>
+                        </template>
+                    </nav>
+                </div>
+                <div class="mt-6">
+                    <template x-for="season in seasons" :key="season.year">
+                        <div x-show="selectedSeason === season.year"
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100"
+                             class="season-bracket-wrapper">
+
+                            <div class="bye-info">
+                                <div class="round-label">First Round Byes</div>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 bye-team-list">
+                                    <div><span class="team-seed">#1</span> <span x-text="season.bracket.byes[0] || '[Bye #1]'"></span></div>
+                                    <div><span class="team-seed">#2</span> <span x-text="season.bracket.byes[1] || '[Bye #2]'"></span></div>
+                                    <div><span class="team-seed">#3</span> <span x-text="season.bracket.byes[2] || '[Bye #3]'"></span></div>
+                                    <div><span class="team-seed">#4</span> <span x-text="season.bracket.byes[3] || '[Bye #4]'"></span></div>
+                                </div>
+                            </div>
+
+                            <div class="full-bracket">
+                                <div class="bracket-column"> <div class="round-label">First Round</div>
+                                    <div class="matchup"> <div class="matchup-title">#5 vs #12</div>
+                                        <div class="team-line"><span class="team-seed">#5</span><span class="team-name" x-text="season.bracket.firstRound.gameA.team1"></span> <span class="team-score" x-text="season.bracket.firstRound.gameA.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">#12</span><span class="team-name" x-text="season.bracket.firstRound.gameA.team2"></span> <span class="team-score" x-text="season.bracket.firstRound.gameA.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.firstRound.gameA.winner"></strong></div>
+                                    </div>
+                                    <div class="matchup"> <div class="matchup-title">#8 vs #9</div>
+                                        <div class="team-line"><span class="team-seed">#8</span><span class="team-name" x-text="season.bracket.firstRound.gameB.team1"></span> <span class="team-score" x-text="season.bracket.firstRound.gameB.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">#9</span><span class="team-name" x-text="season.bracket.firstRound.gameB.team2"></span> <span class="team-score" x-text="season.bracket.firstRound.gameB.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.firstRound.gameB.winner"></strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="bracket-column"> <div class="round-label">Quarterfinals</div>
+                                     <div class="matchup"> <div class="matchup-title">#4 vs Winner (#5/#12)</div>
+                                        <div class="team-line"><span class="team-seed">#4</span><span class="team-name" x-text="season.bracket.byes[3]"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf2.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.firstRound.gameA.winner"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf2.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.quarterfinals.qf2.winner"></strong></div>
+                                    </div>
+                                    <div class="matchup"> <div class="matchup-title">#1 vs Winner (#8/#9)</div>
+                                        <div class="team-line"><span class="team-seed">#1</span><span class="team-name" x-text="season.bracket.byes[0]"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf1.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.firstRound.gameB.winner"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf1.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.quarterfinals.qf1.winner"></strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="bracket-column"> <div class="round-label">Semifinals</div>
+                                    <div class="matchup"> <div class="matchup-title">Semifinal 1</div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.quarterfinals.qf2.winner"></span> <span class="team-score" x-text="season.bracket.semifinals.sf1.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.quarterfinals.qf1.winner"></span> <span class="team-score" x-text="season.bracket.semifinals.sf1.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.semifinals.sf1.winner"></strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="bracket-column championship-column">
+                                    <div class="round-label">Championship</div>
+                                    <div class="matchup championship-matchup"> <div class="matchup-title">National Championship</div>
+                                        <div class="team-line"><span class="team-seed">SF1</span><span class="team-name" x-text="season.bracket.semifinals.sf1.winner"></span> <span class="team-score" x-text="season.bracket.championship.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">SF2</span><span class="team-name" x-text="season.bracket.semifinals.sf2.winner"></span> <span class="team-score" x-text="season.bracket.championship.score2"></span></div>
+                                    </div>
+                                     <div class="final-champion-display">
+                                        <div class="round-label">National Champion</div>
+                                        <strong x-text="season.bracket.championship.winner"></strong>
+                                    </div>
+                                </div>
+
+                                <div class="bracket-column"> <div class="round-label">Semifinals</div>
+                                     <div class="matchup"> <div class="matchup-title">Semifinal 2</div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.quarterfinals.qf4.winner"></span> <span class="team-score" x-text="season.bracket.semifinals.sf2.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.quarterfinals.qf3.winner"></span> <span class="team-score" x-text="season.bracket.semifinals.sf2.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.semifinals.sf2.winner"></strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="bracket-column"> <div class="round-label">Quarterfinals</div>
+                                    <div class="matchup"> <div class="matchup-title">#3 vs Winner (#6/#11)</div>
+                                        <div class="team-line"><span class="team-seed">#3</span><span class="team-name" x-text="season.bracket.byes[2]"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf4.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.firstRound.gameC.winner"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf4.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.quarterfinals.qf4.winner"></strong></div>
+                                    </div>
+                                     <div class="matchup"> <div class="matchup-title">#2 vs Winner (#7/#10)</div>
+                                        <div class="team-line"><span class="team-seed">#2</span><span class="team-name" x-text="season.bracket.byes[1]"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf3.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">W</span><span class="team-name" x-text="season.bracket.firstRound.gameD.winner"></span> <span class="team-score" x-text="season.bracket.quarterfinals.qf3.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.quarterfinals.qf3.winner"></strong></div>
+                                    </div>
+                                </div>
+
+                                <div class="bracket-column"> <div class="round-label">First Round</div>
+                                    <div class="matchup"> <div class="matchup-title">#6 vs #11</div>
+                                        <div class="team-line"><span class="team-seed">#6</span><span class="team-name" x-text="season.bracket.firstRound.gameC.team1"></span> <span class="team-score" x-text="season.bracket.firstRound.gameC.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">#11</span><span class="team-name" x-text="season.bracket.firstRound.gameC.team2"></span> <span class="team-score" x-text="season.bracket.firstRound.gameC.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.firstRound.gameC.winner"></strong></div>
+                                    </div>
+                                    <div class="matchup"> <div class="matchup-title">#7 vs #10</div>
+                                        <div class="team-line"><span class="team-seed">#7</span><span class="team-name" x-text="season.bracket.firstRound.gameD.team1"></span> <span class="team-score" x-text="season.bracket.firstRound.gameD.score1"></span></div>
+                                        <div class="team-line"><span class="team-seed">#10</span><span class="team-name" x-text="season.bracket.firstRound.gameD.team2"></span> <span class="team-score" x-text="season.bracket.firstRound.gameD.score2"></span></div>
+                                        <div class="winner-line">W: <strong x-text="season.bracket.firstRound.gameD.winner"></strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-center text-gray-500 mt-8 italic" x-text="'End of ' + season.year + ' Playoff Bracket.'"></p>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; <span id="current-year-footer">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+            <p class="mt-1">[Go Vikings!]</p>
+        </div>
+    </footer>
+
+    <script>
+        // Functions like adjustLayout and event listeners from the original script (excluding playoffData)
+        // Combined JavaScript for header and page-specific logic
+        function adjustLayout() {
+            const navElement = document.querySelector('nav.fixed-navbar');
+            const mainElement = document.querySelector('main');
+
+            if (navElement && mainElement) {
+                const navHeight = navElement.offsetHeight;
+                let totalOffset = navHeight;
+                mainElement.style.paddingTop = totalOffset + 'px';
+                document.body.style.paddingTop = '0px';
+            } else {
+                if (mainElement) mainElement.style.paddingTop = '8rem'; // Fallback padding
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
+                    menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
+                });
+            }
+
+            const yearSpanFooter = document.getElementById('current-year-footer');
+            if (yearSpanFooter) {
+                yearSpanFooter.textContent = new Date().getFullYear();
+            }
+
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+            const tabRows = navTabsWrapper ? Array.from(navTabsWrapper.querySelectorAll('.nav-tab-row')) : [];
+            const allTabs = [];
+            tabRows.forEach(row => allTabs.push(...Array.from(row.querySelectorAll('a'))));
+
+            let slidingIndicator = document.querySelector('.nav-sliding-indicator');
+            let activeTab = null;
+
+            if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) {
+                slidingIndicator = document.createElement('div');
+                slidingIndicator.className = 'nav-sliding-indicator';
+                navTabsWrapper.appendChild(slidingIndicator);
+            }
+
+            function setActiveTab(tabElement) {
+                allTabs.forEach(t => t.classList.remove('active-tab'));
+                if (tabElement) {
+                    tabElement.classList.add('active-tab');
+                    activeTab = tabElement;
+                    moveIndicatorToTab(activeTab);
+                }
+            }
+
+            function moveIndicatorToTab(tabElement) {
+                if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
+                // Ensure the wrapper has determined its layout if it's dynamically sized
+                requestAnimationFrame(() => {
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    const tabRect = tabElement.getBoundingClientRect();
+                    slidingIndicator.style.width = `${tabRect.width}px`;
+                    slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                });
+            }
+
+            if (allTabs.length > 0 && slidingIndicator) {
+                const currentPagePath = window.location.pathname.split("/").pop() || "index.html";
+                const currentPageTab = allTabs.find(tab => tab.getAttribute('href') === currentPagePath || (currentPagePath === "playoffs.html" && tab.getAttribute('href') === 'playoffs.html') );
+                setActiveTab(currentPageTab || allTabs.find(tab => tab.getAttribute('href') === 'playoffs.html') || allTabs[0]);
+
+
+                allTabs.forEach(tab => {
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
+                    // Click event is handled by href navigation, active tab set on load/DOMContentLoaded
+                });
+
+                navTabsWrapper.addEventListener('mouseleave', () => {
+                    if (activeTab) moveIndicatorToTab(activeTab);
+                });
+
+                // Initial positioning of the indicator
+                 if (activeTab) {
+                    // Use a small timeout to ensure DOM is fully rendered, especially if fonts cause layout shifts
+                    setTimeout(() => moveIndicatorToTab(activeTab), 150);
+                }
+            }
+            adjustLayout();
+        });
+
+        window.addEventListener('load', () => {
+            adjustLayout();
+            // Re-calculate indicator on load as final layout might change
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+            const indicator = document.querySelector('.nav-sliding-indicator');
+            const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+
+            if (activeTabElem && indicator && navTabsWrapper) {
+                 requestAnimationFrame(() => {
+                    const tabRect = activeTabElem.getBoundingClientRect();
+                    const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                    indicator.style.width = `${tabRect.width}px`;
+                    indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                });
+            }
+        });
+        window.addEventListener('resize', () => {
+            adjustLayout();
+            const activeTabElem = document.querySelector('nav .nav-tab-row a.active-tab');
+             if (activeTabElem) {
+                const indicator = document.querySelector('.nav-sliding-indicator');
+                const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
+                if (indicator && navTabsWrapper) {
+                    requestAnimationFrame(() => {
+                        const tabRect = activeTabElem.getBoundingClientRect();
+                        const wrapperRect = navTabsWrapper.getBoundingClientRect();
+                        indicator.style.width = `${tabRect.width}px`;
+                        indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
