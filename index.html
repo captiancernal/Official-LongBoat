@@ -10,6 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Cinzel:wght@700&family=Graduate&family=Audiowide&display=swap" rel="stylesheet">
     <style>
         /* Apply Inter font globally */
+        html {
+            scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+        }
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden; /* Prevent horizontal scrollbars */
@@ -138,11 +141,7 @@
         /* Fade-in Animation for sections */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in-section { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
-        /* Staggered animation delays for sections */
-        .fade-in-section:nth-child(1) { animation-delay: 0.1s; }
-        .fade-in-section:nth-child(2) { animation-delay: 0.2s; }
-        .fade-in-section:nth-child(3) { animation-delay: 0.3s; }
-        .fade-in-section:nth-child(4) { animation-delay: 0.4s; }
+        /* Staggered animation delays for sections - JS will handle this based on DOM order */
 
 
         /* Scrolling Ticker Animation */
@@ -200,12 +199,48 @@
         /* Ensure image in header takes up space and is styled */
         .header-image-container {
             height: 12rem; /* md:h-48 */
-            /* background-color: var(--csu-gray); Removed as object-cover will fill the space */
+        }
+        .header-image-container a { /* Ensure link wrapper takes full space */
+            display: block;
+            width: 100%;
+            height: 100%;
         }
         @media (min-width: 768px) { /* md breakpoint */
             .header-image-container {
                 height: 16rem; /* md:h-64 */
             }
+        }
+
+        /* Article Styling */
+        #qb-battle-article .article-content h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75rem; /* text-2xl */
+            font-weight: 600; /* semibold */
+            color: #1f2937; /* gray-800 */
+            margin-bottom: 0.5rem; /* mb-2 */
+            line-height: 1.3;
+        }
+        #qb-battle-article .article-content .article-meta {
+            font-size: 0.875rem; /* text-sm */
+            color: #6b7280; /* gray-500 */
+            margin-bottom: 1rem; /* mb-4 */
+            font-style: italic;
+        }
+        #qb-battle-article .article-content hr {
+            margin-top: 1rem; /* my-4 */
+            margin-bottom: 1rem; /* my-4 */
+            border-color: #e5e7eb; /* gray-200 */
+        }
+        #qb-battle-article .article-content p {
+            color: #374151; /* gray-700 */
+            margin-bottom: 1rem; /* mb-4 */
+            line-height: 1.65; /* leading-relaxed */
+        }
+         #qb-battle-article .article-content strong {
+            color: #111827; /* gray-900 */
+        }
+        #qb-battle-article .article-content em { /* Styling for italicized text from markdown */
+            font-style: italic;
         }
 
 
@@ -221,7 +256,7 @@
                 const navHeight = navElement.offsetHeight;
                 tickerWrapElement.style.top = navHeight + 'px'; // Position ticker below navbar
                 const tickerHeight = tickerWrapElement.offsetHeight;
-                mainElement.style.paddingTop = (navHeight + tickerHeight) + 'px'; // Add padding to main content
+                mainElement.style.paddingTop = (navHeight + tickerHeight + 20) + 'px'; // Add padding to main content (20px extra for breathing room)
                 document.body.style.paddingTop = '0px'; // Reset body padding as main handles it
             } else {
                 // Fallback if elements are not found
@@ -237,7 +272,6 @@
             if (menuButton && mobileMenu) {
                 menuButton.addEventListener('click', () => {
                     mobileMenu.classList.toggle('hidden');
-                    // Toggle icons if they exist
                     menuButton.querySelector('.hamburger-icon')?.classList.toggle('hidden');
                     menuButton.querySelector('.close-icon')?.classList.toggle('hidden');
                 });
@@ -248,9 +282,9 @@
             const yearSpan = document.getElementById('current-year');
             if (yearSpan) yearSpan.textContent = currentYear;
 
-            // Staggered fade-in for sections (already in CSS, JS can enhance or be removed if CSS is sufficient)
+            // Staggered fade-in for sections based on their DOM order
             document.querySelectorAll('.fade-in-section').forEach((section, index) => {
-                section.style.animationDelay = `${index * 0.15}s`; // This can be redundant if already in CSS but ensures it
+                section.style.animationDelay = `${index * 0.10}s`;
             });
 
             // --- Modern Dynamic Tab Logic ---
@@ -262,7 +296,6 @@
             let slidingIndicator = document.querySelector('.nav-sliding-indicator');
             let activeTab = null;
 
-            // Create indicator if it doesn't exist and there are tabs
             if (navTabsWrapper && !slidingIndicator && allTabs.length > 0) {
                 slidingIndicator = document.createElement('div');
                 slidingIndicator.className = 'nav-sliding-indicator';
@@ -274,17 +307,14 @@
                 if (tabElement) {
                     tabElement.classList.add('active-tab');
                     activeTab = tabElement;
-                    moveIndicatorToTab(activeTab); // Move indicator to the newly active tab
+                    moveIndicatorToTab(activeTab);
                 }
             }
 
             function moveIndicatorToTab(tabElement) {
                 if (!tabElement || !slidingIndicator || !navTabsWrapper ) return;
-
                 const wrapperRect = navTabsWrapper.getBoundingClientRect();
                 const tabRect = tabElement.getBoundingClientRect();
-
-                // Ensure tab has dimensions before trying to move indicator
                 if (tabRect.width > 0 && tabRect.height > 0) {
                     slidingIndicator.style.width = `${tabRect.width}px`;
                     slidingIndicator.style.left = `${tabRect.left - wrapperRect.left}px`;
@@ -292,54 +322,62 @@
             }
 
             if (allTabs.length > 0 && slidingIndicator) {
-                // Determine current page to set active tab
                 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
                 let currentTabToActivate = allTabs.find(tab => tab.getAttribute('href') === currentPage);
-
-                // If no specific tab matches, activate the first one as a fallback
-                if (!currentTabToActivate && allTabs.length > 0) {
-                     currentTabToActivate = allTabs[0];
-                }
+                if (!currentTabToActivate && allTabs.length > 0) currentTabToActivate = allTabs[0];
                 setActiveTab(currentTabToActivate);
 
-
                 allTabs.forEach(tab => {
-                    // Move indicator on mouse enter for visual feedback
-                    tab.addEventListener('mouseenter', () => {
-                        moveIndicatorToTab(tab);
-                    });
+                    tab.addEventListener('mouseenter', () => moveIndicatorToTab(tab));
                 });
-
-                // On mouse leave from the tab container, reset indicator to the active tab
                 navTabsWrapper.addEventListener('mouseleave', () => {
-                    if (activeTab) {
-                       moveIndicatorToTab(activeTab);
-                    }
+                    if (activeTab) moveIndicatorToTab(activeTab);
                 });
-
-                // Initial position of indicator after a slight delay for rendering
-                if (activeTab) {
-                    setTimeout(() => moveIndicatorToTab(activeTab), 200);
-                }
+                if (activeTab) setTimeout(() => moveIndicatorToTab(activeTab), 200);
             }
             // --- End Modern Dynamic Tab Logic ---
+
+            // --- Smooth Scroll for Header Image Link ---
+            const headerImageLink = document.getElementById('header-image-link');
+            if (headerImageLink) {
+                headerImageLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        const navElement = document.querySelector('nav.fixed-navbar');
+                        const tickerWrapElement = document.querySelector('.ticker-wrap');
+                        let offsetTop = 0;
+                        if (navElement) offsetTop += navElement.offsetHeight;
+                        if (tickerWrapElement && getComputedStyle(tickerWrapElement).position === 'fixed') {
+                             offsetTop += tickerWrapElement.offsetHeight;
+                        }
+                        
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                        const finalPosition = elementPosition - offsetTop - 20; // 20px for extra padding
+
+                        window.scrollTo({
+                            top: finalPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+            // --- End Smooth Scroll ---
 
             adjustLayout(); // Initial layout adjustment
         });
 
-        // Adjust layout on window load and resize
         window.addEventListener('load', () => {
             adjustLayout();
-            // Ensure indicator is correctly positioned on load, especially after fonts/images load
             const activeTabElem = document.querySelector('nav .nav-tabs-container a.active-tab, nav .nav-tab-row a.active-tab');
             const indicator = document.querySelector('.nav-sliding-indicator');
             const navTabsWrapper = document.querySelector('nav .nav-tabs-wrapper');
-
             if (activeTabElem && indicator && navTabsWrapper) {
-                 setTimeout(() => { // Delay to ensure all rendering is complete
+                 setTimeout(() => {
                     const tabRect = activeTabElem.getBoundingClientRect();
                     const wrapperRect = navTabsWrapper.getBoundingClientRect();
-                     if (tabRect.width > 0 && tabRect.height > 0) { // Check for valid dimensions
+                     if (tabRect.width > 0 && tabRect.height > 0) {
                         indicator.style.width = `${tabRect.width}px`;
                         indicator.style.left = `${tabRect.left - wrapperRect.left}px`;
                     }
@@ -348,7 +386,6 @@
         });
         window.addEventListener('resize', () => {
             adjustLayout();
-            // Reposition indicator on resize
             const activeTabElem = document.querySelector('nav .nav-tabs-container a.active-tab, nav .nav-tab-row a.active-tab');
              if (activeTabElem) {
                 const indicator = document.querySelector('.nav-sliding-indicator');
@@ -363,7 +400,6 @@
                 }
             }
         });
-
     </script>
 </head>
 <body class="bg-gray-100">
@@ -441,11 +477,13 @@
                     <div class="relative z-10"> <h1 class="text-4xl md:text-5xl font-bold text-csu-white mb-3 drop-shadow-lg font-['Oswald'] uppercase tracking-wide">Cleveland State Vikings Hub</h1>
                         <p class="text-lg text-gray-100 mb-6 drop-shadow-md">Your official source for Vikings football: Stats, Schedules, Rivals & More!</p>
                         <div class="header-image-container rounded-md overflow-hidden shadow-md">
-                            <img src="https://i.imgur.com/BBOlA0F.png"
-                                 alt="Spring Camp Quarterback Showdown - Greg Price vs Dave Shelley"
-                                 class="w-full h-full object-cover" 
-                                 style="object-position: center 15%;"
-                                 onerror="this.onerror=null; this.src='https://placehold.co/800x400/004D40/FFFFFF?text=Vikings+Football+Rivalry'; this.alt='Vikings Football Rivalry Placeholder';">
+                            <a href="#qb-battle-article" id="header-image-link" aria-label="Scroll to Quarterback Battle Article">
+                                <img src="https://i.imgur.com/BBOlA0F.png"
+                                     alt="Spring Camp Quarterback Showdown - Greg Price vs Dave Shelley"
+                                     class="w-full h-full object-cover cursor-pointer" 
+                                     style="object-position: center 15%;"
+                                     onerror="this.onerror=null; this.src='https://placehold.co/800x400/004D40/FFFFFF?text=Vikings+Football+Rivalry'; this.alt='Vikings Football Rivalry Placeholder';">
+                            </a>
                         </div>
                         </div>
                 </header>
@@ -486,7 +524,29 @@
                     </div>
                 </section>
 
-                <section id="quick-links" class="mb-6 fade-in-section">
+                <section id="qb-battle-article" class="mb-10 fade-in-section">
+                    <h2 class="text-3xl section-title">From The Cauldron</h2>
+                    <div class="bg-white shadow-xl rounded-lg p-6 md:p-8 article-content">
+                        <h3>Cleveland's QB Coin Flip: Price's Redemption vs. Shelley's Revolution</h3>
+                        <p class="article-meta">By The Cauldron Staff | August 28, 2030</p>
+                        <hr>
+                        <p>CLEVELAND, OH – Forget the late summer haze; the real heat in Cleveland is radiating from the Vikings' quarterback room. One year removed from a National Championship meltdown, Head Coach Josh Dolan is on the clock. With East Carolina looming in Week 1 of the 2030 season, he’s got to pick a lane: stick with the guy who got them there, or gamble on the kid who might redefine "there."</p>
+                        <p>This isn't some feel-good camp story. This is a high-stakes poker game with two former five-star chips from the heralded 2027 class, both redshirt sophomores, both convinced they’re the ace.</p>
+                        <p>First, you’ve got <strong>Greg Price</strong>. Remember him? The #31 recruit who lit up scoreboards for 15 weeks in 2029. We're talking 5,121 passing yards and 53 touchdowns. Price was a surgeon, his play-action a work of art. He was the guy... until he wasn’t. That National Championship first half against Ohio University? A complete system failure. Benched. Done. His final 2029 stat line tells a tale: brilliant passer rating (169.4) and a significant rushing contribution of 598 yards on 108 carries with 10 rushing touchdowns. He's certainly no statue. However, he still took 25 sacks, a number that raised eyebrows when the pocket collapsed under extreme pressure.</p>
+                        <p>Then there’s <strong>Dave Shelley</strong>. The #4 overall prospect. The challenger. Shelley got thrown into the championship fire when Price flamed out. His passing numbers that day, and for his limited 2029 action (463 yards, 5 TDs, 2 INTs), won't make you fall out of your chair. But watch the tape. While his overall rushing numbers for 2029 were more modest (101 yards on 17 carries with 2 TDs), it was the way he moved that caught everyone's attention. His burst and acceleration were noticeably a class above, offering a different kind of threat. See the 209.6 passer rating and 13.2 YPA in those flashes. That’s not just speed; that’s a different offensive dimension, a problem for defensive coordinators.</p>
+                        <p>That title game is the elephant in every film session. Price, an All-American candidate, got exposed in the passing game. Ohio U had his number, and the Vikings’ offensive juggernaut seized up. Shelley came in, didn't win it, but didn't blink either. He moved with an elusiveness that was starkly different, created, and gave a battered offensive line a reason to believe. "Dave changed the math with his legs; the tape doesn't lie about his speed," one coach whispered back then.</p>
+                        <p>Fast forward to now. August 2030. Price is back, reportedly chiseled and carrying a massive chip on his shoulder. The arm? Still elite. The play-action? Still deadly. He’s dissecting defenses in camp, determined to erase that nightmare ending.</p>
+                        <p>Shelley? He’s still electric. Every snap is a potential highlight reel. Broken play? Shelley turns it into a 15-yard gain. The coaches are even dabbling with more QB runs, more option – stuff that wasn’t in the playbook with Price. "You can't teach what Dave does with that raw speed," an assistant admitted. "That's pure X-factor."</p>
+                        <p>So, what’s Dolan to do?</p>
+                        <p><strong>Price:</strong> Proven production (those 53 passing TDs and 10 rushing TDs!). He knows the system inside and out. He took them to the brink. Can he prove that championship flameout was an aberration, not the rule, and that his solid rushing ability is enough?</p>
+                        <p><strong>Shelley:</strong> Untapped potential. Game-breaking speed that's evident on tape. In today’s college football, a QB who can gash you with that kind of elite athleticism is gold. Is he the key to an offense that’s truly unstoppable?</p>
+                        <p>"It's the decision that defines a season, maybe a career," an insider put it bluntly. "Experience, a cannon arm, and solid mobility versus raw, game-changing speed and a highlight waiting to happen. Both guys are leaders. Both guys want the damn ball."</p>
+                        <p>ECU isn't waiting. Their defense will be coming for blood. Dolan's choice isn’t just about Week 1; it’s about the Vikings' identity. Is it redemption for Price, proving 2029's end was a fluke? Or is it a revolution, with Shelley rewriting the offensive playbook with his electrifying pace?</p>
+                        <p>The heat is on. The coin is in the air. Cleveland waits.</p>
+                    </div>
+                </section>
+
+                <section id="quick-links" class="mb-10 fade-in-section"> 
                     <h2 class="text-3xl section-title">Quick Links</h2>
                     <div class="bg-white shadow-xl rounded-lg p-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
@@ -502,13 +562,12 @@
                         </div>
                     </div>
                 </section>
-
-            </div>
+                </div>
         </main>
 
         <footer class="bg-csu-green text-gray-300 py-8 mt-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p class="text-sm mt-4">&copy; <span id="current-year">[YEAR]</span> Fictional Football League Tracker. All rights reserved.</p>
+                <p class="text-sm mt-4">&copy; <span id="current-year">2025</span> Fictional Football League Tracker. All rights reserved.</p>
                 <p class="text-xs mt-1 opacity-75">Powered by the Longboat Lounge - Go Vikings!</p>
             </div>
         </footer>
